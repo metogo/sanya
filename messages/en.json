@@ -1,0 +1,50 @@
+{
+  "header": {
+    "title": "Sanya Attractions",
+    "subtitle": "Discover China's Tropical Paradise 🌴",
+    "searchPlaceholder": "Search by name, description, tags..."
+  },
+  "filters": {
+    "categories": "Categories",
+    "all": "All",
+    "beach": "🏖️ Beaches",
+    "culture": "🏛️ Culture",
+    "nature": "🌴 Nature",
+    "entertainment": "🎢 Entertainment",
+    "ratings": "Rating",
+    "allRatings": "All Ratings",
+    "rating4Plus": "4+ ⭐",
+    "rating45Plus": "4.5+ ⭐",
+    "rating5": "5 ⭐",
+    "prices": "Price",
+    "allPrices": "All Prices",
+    "free": "Free",
+    "budget": "Under ¥100",
+    "premium": "¥100+"
+  },
+  "main": {
+    "popularPlaces": "Popular Places",
+    "foundAttractions": "Attractions found:",
+    "averageRating": "Average rating:",
+    "noResults": "No Results Found",
+    "noResultsDescription": "Try changing your search or filter criteria",
+    "resetFilters": "Reset Filters"
+  },
+  "card": {
+    "reviews": "reviews",
+    "from": "from",
+    "free": "Free",
+    "details": "Learn More"
+  },
+  "footer": {
+    "title": "🏛️ Sanya Attractions",
+    "subtitle": "Discover China's Tropical Paradise 🌴",
+    "copyright": "© 2025 Sanya Attractions | Made for Travelers",
+    "rights": "All rights reserved"
+  },
+  "meta": {
+    "title": "Sanya Attractions | China's Tropical Paradise",
+    "description": "Discover the best attractions in Sanya - a tropical paradise for travelers"
+  }
+}
+
