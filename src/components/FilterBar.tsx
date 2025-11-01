@@ -116,7 +116,7 @@ export default function FilterBar({
                 isCompact ? 'bg-red-600 text-lg' : 'bg-blue-600'
             }`}>
             </div>
-            <div  className={`max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 ${
+            <div style={{justifyContent: isCompact ? 'center' : 'flex-start', padding: isCompact ? '5px' : '5px'}} className={`max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 ${
                 isCompact ? ' justify-items-center p-[5px]' : ''
             }`}>
                 <div className={`flex flex-col transition-all duration-300 ${
