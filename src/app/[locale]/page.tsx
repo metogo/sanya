@@ -5,6 +5,7 @@ import {useTranslations} from 'next-intl';
 import Header from '@/components/Header';
 import FilterBar from '@/components/FilterBar';
 import AttractionCard from '@/components/AttractionCard';
+import ContactFloat from '@/components/ContactFloat';
 import {attractions} from '@/data/attractions';
 import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
 
@@ -58,6 +59,9 @@ export default function Home() {
                 onRatingChange={setSelectedRating}
                 onPriceChange={setSelectedPrice}
             />
+
+            {/* 浮动联系按钮 */}
+            <ContactFloat />
 
             {/* Main Content */}
             <main
