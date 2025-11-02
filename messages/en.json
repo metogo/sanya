@@ -42,6 +42,12 @@
     "copyright": "© 2025 Sanya Attractions | Made for Travelers",
     "rights": "All rights reserved"
   },
+  "loading": {
+    "title": "Sanya Attractions",
+    "subtitle": "Discover Tropical Paradise 🌴",
+    "loading": "Loading...",
+    "ready": "Ready!"
+  },
   "contact": {
     "contactUs": "Contact Us",
     "contact": "Contact",

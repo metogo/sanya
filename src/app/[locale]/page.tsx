@@ -1,20 +1,46 @@
 'use client';
 
-import {useMemo, useState} from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import {useTranslations} from 'next-intl';
 import Header from '@/components/Header';
 import FilterBar from '@/components/FilterBar';
 import AttractionCard from '@/components/AttractionCard';
 import ContactFloat from '@/components/ContactFloat';
+import LoadingScreen from '@/components/LoadingScreen';
 import {attractions} from '@/data/attractions';
 import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
 
 export default function Home() {
     const t = useTranslations();
+    const [isLoading, setIsLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
     const [selectedRating, setSelectedRating] = useState<FilterRating>('all');
     const [selectedPrice, setSelectedPrice] = useState<FilterPrice>('all');
+
+    // 真实加载时间 + 最小显示时间
+    useEffect(() => {
+        const startTime = Date.now();
+        const minDisplayTime = 800; // 最小显示 800ms，确保用户能看到 loading
+
+        // 等待组件和数据准备就绪
+        const handleLoad = () => {
+            const elapsedTime = Date.now() - startTime;
+            const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
+
+            setTimeout(() => {
+                setIsLoading(false);
+            }, remainingTime);
+        };
+
+        // 检查 document 是否已经加载完成
+        if (document.readyState === 'complete') {
+            handleLoad();
+        } else {
+            window.addEventListener('load', handleLoad);
+            return () => window.removeEventListener('load', handleLoad);
+        }
+    }, []);
 
     // Filter attractions based on search and filters
     const filteredAttractions = useMemo(() => {
@@ -44,6 +70,11 @@ export default function Home() {
             return matchesSearch && matchesCategory && matchesRating && matchesPrice;
         });
     }, [searchQuery, selectedCategory, selectedRating, selectedPrice]);
+
+    // 加载状态显示Loading过场
+    if (isLoading) {
+        return <LoadingScreen />;
+    }
 
     return (
         <div className="min-h-screen bg-white">
