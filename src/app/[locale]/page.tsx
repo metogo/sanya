@@ -3,6 +3,7 @@
 import {useEffect, useMemo, useState} from 'react';
 import {useTranslations} from 'next-intl';
 import Header from '@/components/Header';
+import HeroBanner from '@/components/HeroBanner';
 import FilterBar from '@/components/FilterBar';
 import AttractionCard from '@/components/AttractionCard';
 import ContactFloat from '@/components/ContactFloat';
@@ -12,35 +13,66 @@ import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
 
 export default function Home() {
     const t = useTranslations();
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(() => {
+        // 只在首次访问时显示loading，使用sessionStorage记录
+        if (typeof window !== 'undefined') {
+            const hasVisited = sessionStorage.getItem('hasVisitedHome');
+            return !hasVisited;
+        }
+        return true;
+    });
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
     const [selectedRating, setSelectedRating] = useState<FilterRating>('all');
     const [selectedPrice, setSelectedPrice] = useState<FilterPrice>('all');
 
-    // 真实加载时间 + 最小显示时间
+    // 真实加载时间 + 最小显示时间（仅首次访问）
     useEffect(() => {
-        const startTime = Date.now();
-        const minDisplayTime = 800; // 最小显示 800ms，确保用户能看到 loading
+        const hasVisited = sessionStorage.getItem('hasVisitedHome');
+        
+        if (!hasVisited) {
+            const startTime = Date.now();
+            const minDisplayTime = 800; // 最小显示 800ms
 
-        // 等待组件和数据准备就绪
-        const handleLoad = () => {
-            const elapsedTime = Date.now() - startTime;
-            const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
+            const handleLoad = () => {
+                const elapsedTime = Date.now() - startTime;
+                const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
 
-            setTimeout(() => {
-                setIsLoading(false);
-            }, remainingTime);
-        };
+                setTimeout(() => {
+                    setIsLoading(false);
+                    sessionStorage.setItem('hasVisitedHome', 'true');
+                }, remainingTime);
+            };
 
-        // 检查 document 是否已经加载完成
-        if (document.readyState === 'complete') {
-            handleLoad();
+            if (document.readyState === 'complete') {
+                handleLoad();
+            } else {
+                window.addEventListener('load', handleLoad);
+                return () => window.removeEventListener('load', handleLoad);
+            }
         } else {
-            window.addEventListener('load', handleLoad);
-            return () => window.removeEventListener('load', handleLoad);
+            // 已访问过，直接跳过loading
+            setIsLoading(false);
         }
     }, []);
+
+    // 恢复滚动位置（从详情页返回时）
+    useEffect(() => {
+        if (!isLoading) {
+            const savedPosition = sessionStorage.getItem('scrollPosition');
+            if (savedPosition) {
+                // 使用setTimeout确保DOM已渲染
+                setTimeout(() => {
+                    window.scrollTo({
+                        top: parseInt(savedPosition),
+                        behavior: 'smooth'
+                    });
+                    // 清除保存的位置
+                    sessionStorage.removeItem('scrollPosition');
+                }, 100);
+            }
+        }
+    }, [isLoading]);
 
     // Filter attractions based on search and filters
     const filteredAttractions = useMemo(() => {
@@ -80,6 +112,9 @@ export default function Home() {
         <div className="min-h-screen bg-white">
             {/* Header */}
             <Header onSearch={setSearchQuery}/>
+
+            {/* Hero Banner - 使用Vercel CDN自动优化 */}
+            <HeroBanner />
 
             {/* Filter Bar */}
             <FilterBar

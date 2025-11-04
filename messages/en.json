@@ -1,4 +1,8 @@
 {
+  "banner": {
+    "title": "Explore the Beauty of Sanya",
+    "subtitle": "Discover the Charm of Tropical Paradise"
+  },
   "header": {
     "title": "Sanya Attractions",
     "subtitle": "Discover China's Tropical Paradise 🌴",
@@ -59,6 +63,26 @@
   "meta": {
     "title": "Sanya Attractions | China's Tropical Paradise",
     "description": "Discover the best attractions in Sanya - a tropical paradise for travelers"
+  },
+  "detail": {
+    "notFound": "Attraction Not Found",
+    "backToHome": "Back to Home",
+    "loading": "Loading...",
+    "backToList": "Back to List",
+    "price": "Ticket Price",
+    "free": "Free",
+    "openingHours": "Opening Hours",
+    "bestTime": "Best Time to Visit",
+    "introduction": "Introduction",
+    "highlights": "Highlights",
+    "facilities": "Facilities",
+    "transportation": "Transportation",
+    "tips": "Tips",
+    "bookNow": "Book Now",
+    "beach": "🏖️ Beach",
+    "culture": "🏛️ Culture",
+    "nature": "🌴 Nature",
+    "entertainment": "🎢 Entertainment"
   }
 }
 

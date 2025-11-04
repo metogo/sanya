@@ -4,6 +4,7 @@ import {Attraction} from '@/types/attraction';
 import Image from 'next/image';
 import {useState} from 'react';
 import {useTranslations, useLocale} from 'next-intl';
+import {useRouter} from 'next/navigation';
 
 interface AttractionCardProps {
     attraction: Attraction;
@@ -12,6 +13,7 @@ interface AttractionCardProps {
 export default function AttractionCard({attraction}: AttractionCardProps) {
     const t = useTranslations('card');
     const locale = useLocale();
+    const router = useRouter();
     const [imageError, setImageError] = useState(false);
 
     // Get localized content based on current locale
@@ -47,10 +49,18 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
                 {!imageError ? (
                     <Image
                         src={attraction.image}
-                        alt={attraction.nameRu}
+                        alt={getName()}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        quality={85}
+                        className="object-cover transition-transform duration-700 ease-out"
+                        style={{
+                            transform: 'scale(1.15)',
+                            transformOrigin: 'center center'
+                        }}
                         onError={() => setImageError(true)}
+                        placeholder="blur"
+                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                     />
                 ) : (
                     <div
@@ -59,9 +69,18 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
                     </div>
                 )}
 
-                {/* Overlay gradient */}
+                {/* Overlay gradient - 悬停时额外放大 */}
                 <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
+                    className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    onMouseEnter={(e) => {
+                        const img = e.currentTarget.previousElementSibling as HTMLElement;
+                        if (img) img.style.transform = 'scale(1.25)';
+                    }}
+                    onMouseLeave={(e) => {
+                        const img = e.currentTarget.previousElementSibling as HTMLElement;
+                        if (img) img.style.transform = 'scale(1.15)';
+                    }}
+                />
 
                 {/* Rating Badge */}
                 <div
@@ -127,6 +146,11 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
 
                 {/* Button */}
                 <button
+                    onClick={() => {
+                        // 保存当前滚动位置
+                        sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+                        router.push(`/${locale}/attractions/${attraction.id}`);
+                    }}
                     className="w-full py-3.5 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group-hover:from-[#C41E3A] group-hover:to-[#002D80]">
           <span className="flex items-center justify-center gap-2">
             {t('details')}

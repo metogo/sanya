@@ -19,6 +19,29 @@ export interface Attraction {
   price: number;
   isFree: boolean;
   tags: string[];
+  
+  // 详情页扩展字段
+  detailedDescription?: string;
+  detailedDescriptionRu?: string;
+  detailedDescriptionZh?: string;
+  highlights?: string[];
+  highlightsRu?: string[];
+  highlightsZh?: string[];
+  openingHours?: string;
+  openingHoursRu?: string;
+  openingHoursZh?: string;
+  bestTime?: string;
+  bestTimeRu?: string;
+  bestTimeZh?: string;
+  tips?: string[];
+  tipsRu?: string[];
+  tipsZh?: string[];
+  facilities?: string[];
+  facilitiesRu?: string[];
+  facilitiesZh?: string[];
+  transportation?: string;
+  transportationRu?: string;
+  transportationZh?: string;
 }
 
 export type FilterCategory = 'all' | 'beach' | 'culture' | 'nature' | 'entertainment';
