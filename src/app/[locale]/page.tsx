@@ -61,15 +61,15 @@ export default function Home() {
         if (!isLoading) {
             const savedPosition = sessionStorage.getItem('scrollPosition');
             if (savedPosition) {
-                // 使用setTimeout确保DOM已渲染
-                setTimeout(() => {
+                // 立即恢复位置，使用instant而非smooth以获得最快速度
+                requestAnimationFrame(() => {
                     window.scrollTo({
                         top: parseInt(savedPosition),
-                        behavior: 'smooth'
+                        behavior: 'instant'
                     });
                     // 清除保存的位置
                     sessionStorage.removeItem('scrollPosition');
-                }, 100);
+                });
             }
         }
     }, [isLoading]);

@@ -11,15 +11,9 @@ export default function AttractionDetailPage() {
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const attraction = attractions.find(a => a.id === params.id);
-
-  useEffect(() => {
-    // 模拟加载效果
-    const timer = setTimeout(() => setIsLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
 
   if (!attraction) {
     return (
