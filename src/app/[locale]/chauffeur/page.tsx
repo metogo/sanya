@@ -354,41 +354,7 @@ export default function ChauffeurPage() {
       </div>
 
       {/* Bottom Navigation Menu */}
-      <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 via-slate-900 to-slate-900/95 backdrop-blur-xl border-t border-slate-700 shadow-2xl z-50">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="flex justify-around items-center py-4">
-            <button
-              onClick={() => router.push(`/${locale}`)}
-              className="relative flex flex-col items-center gap-2 px-8 py-3 group cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg group-hover:shadow-blue-500/50"></div>
-              <div className="relative flex flex-col items-center gap-1">
-                <svg className="w-7 h-7 text-slate-300 group-hover:text-white transform group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span className="text-sm font-bold text-slate-300 group-hover:text-white transition-colors duration-300">
-                  {menuT('home')}
-                </span>
-              </div>
-            </button>
-            
-            <button
-              onClick={() => router.push(`/${locale}/chauffeur`)}
-              className="relative flex flex-col items-center gap-2 px-8 py-3 group cursor-pointer"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-100 transition-opacity duration-300 shadow-lg shadow-purple-500/50"></div>
-              <div className="relative flex flex-col items-center gap-1">
-                <svg className="w-7 h-7 text-white transform group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-                <span className="text-sm font-bold text-white">
-                  {menuT('chauffeur')}
-                </span>
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
+      <BottomMenuDark locale={locale} router={router} currentPage="chauffeur" menuT={menuT} />
 
       {/* Footer */}
       <footer className="mt-24 mb-20 border-t border-slate-800 bg-slate-950">
@@ -398,4 +364,61 @@ export default function ChauffeurPage() {
       </footer>
     </div>
   );
+}
+
+function BottomMenuDark({ locale, router, currentPage, menuT }: { locale: string; router: any; currentPage: 'home' | 'chauffeur'; menuT: any }) {
+    const homeActive = currentPage === 'home';
+    const chauffeurActive = currentPage === 'chauffeur';
+
+    const homeSpring = useSpring({
+        scale: homeActive ? 1 : 0.95,
+        opacity: homeActive ? 1 : 0.7,
+        config: { tension: 300, friction: 20 }
+    });
+
+    const chauffeurSpring = useSpring({
+        scale: chauffeurActive ? 1 : 0.95,
+        opacity: chauffeurActive ? 1 : 0.7,
+        config: { tension: 300, friction: 20 }
+    });
+
+    return (
+        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 via-slate-900 to-slate-900/95 backdrop-blur-xl border-t border-slate-700 shadow-2xl z-50">
+            <div className="max-w-[1400px] mx-auto px-4">
+                <div className="flex justify-around items-center py-2">
+                    <animated.button
+                        onClick={() => router.push(`/${locale}`)}
+                        style={homeSpring}
+                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer"
+                    >
+                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl transition-all duration-300 shadow-lg ${homeActive ? 'opacity-100 shadow-blue-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-blue-500/50'}`}></div>
+                        <div className="relative flex flex-col items-center gap-0.5">
+                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-transform duration-300 ${homeActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span className={`text-xs font-bold transition-colors duration-300 ${homeActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
+                                {menuT('home')}
+                            </span>
+                        </div>
+                    </animated.button>
+                    
+                    <animated.button
+                        onClick={() => router.push(`/${locale}/chauffeur`)}
+                        style={chauffeurSpring}
+                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer"
+                    >
+                        <div className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl transition-all duration-300 shadow-lg ${chauffeurActive ? 'opacity-100 shadow-purple-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-purple-500/50'}`}></div>
+                        <div className="relative flex flex-col items-center gap-0.5">
+                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-all duration-300 ${chauffeurActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                            </svg>
+                            <span className={`text-xs font-bold transition-colors duration-300 ${chauffeurActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
+                                {menuT('chauffeur')}
+                            </span>
+                        </div>
+                    </animated.button>
+                </div>
+            </div>
+        </div>
+    );
 }
