@@ -442,12 +442,16 @@ function BottomMenuDark({ locale, router, currentPage, menuT }: { locale: string
         config: { tension: 300, friction: 20 }
     });
 
-    const handleHomeClick = () => {
-        router.push(`/${locale}`);
+    const handleHomeClick = (e: any) => {
+        setTimeout(() => {
+            router.push(`/${locale}`);
+        }, 0);
     };
 
-    const handleChauffeurClick = () => {
-        router.push(`/${locale}/chauffeur`);
+    const handleChauffeurClick = (e: any) => {
+        setTimeout(() => {
+            router.push(`/${locale}/chauffeur`);
+        }, 0);
     };
 
     return (
@@ -456,7 +460,13 @@ function BottomMenuDark({ locale, router, currentPage, menuT }: { locale: string
                 <div className="flex items-center py-2">
                     <animated.button
                         onClick={handleHomeClick}
-                        onTouchEnd={handleHomeClick}
+                        onTouchStart={(e) => {
+                            e.currentTarget.style.transform = 'scale(0.95)';
+                        }}
+                        onTouchEnd={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            handleHomeClick(e);
+                        }}
                         style={homeSpring}
                         className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
                     >
@@ -473,7 +483,13 @@ function BottomMenuDark({ locale, router, currentPage, menuT }: { locale: string
                     
                     <animated.button
                         onClick={handleChauffeurClick}
-                        onTouchEnd={handleChauffeurClick}
+                        onTouchStart={(e) => {
+                            e.currentTarget.style.transform = 'scale(0.95)';
+                        }}
+                        onTouchEnd={(e) => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            handleChauffeurClick(e);
+                        }}
                         style={chauffeurSpring}
                         className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
                     >

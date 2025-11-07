@@ -151,11 +151,16 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
                         sessionStorage.setItem('scrollPosition', window.scrollY.toString());
                         router.push(`/${locale}/attractions/${attraction.id}`);
                     }}
+                    onTouchStart={(e) => {
+                        e.currentTarget.style.transform = 'scale(0.98)';
+                    }}
                     onTouchEnd={(e) => {
-                        e.preventDefault();
+                        e.currentTarget.style.transform = 'scale(1)';
                         // 保存当前滚动位置
                         sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-                        router.push(`/${locale}/attractions/${attraction.id}`);
+                        setTimeout(() => {
+                            router.push(`/${locale}/attractions/${attraction.id}`);
+                        }, 0);
                     }}
                     className="w-full py-3.5 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group-hover:from-[#C41E3A] group-hover:to-[#002D80] touch-manipulation">
           <span className="flex items-center justify-center gap-2">
