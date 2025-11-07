@@ -39,7 +39,7 @@ export default function ChauffeurPage() {
       image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80',
       gradient: 'from-slate-900 via-blue-900 to-slate-900',
       accentColor: 'from-blue-400 to-cyan-400',
-      features: ['自动驾驶辅助', '超长续航里程', '超级充电网络']
+      features: [t('teslaFeature1'), t('teslaFeature2'), t('teslaFeature3')]
     },
     {
       id: 'lixiang',
@@ -48,7 +48,7 @@ export default function ChauffeurPage() {
       image: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80',
       gradient: 'from-slate-900 via-purple-900 to-slate-900',
       accentColor: 'from-purple-400 to-pink-400',
-      features: ['豪华六座布局', '智能座舱系统', '增程式动力']
+      features: [t('lixiangFeature1'), t('lixiangFeature2'), t('lixiangFeature3')]
     }
   ];
 
@@ -152,7 +152,7 @@ export default function ChauffeurPage() {
             <div className="inline-block mb-6">
               <div className="flex items-center gap-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-500/20 rounded-full px-6 py-2">
                 <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-blue-200">专业豪华出行服务</span>
+                <span className="text-sm text-blue-200">{t('badge')}</span>
               </div>
             </div>
             <h1 className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
@@ -191,7 +191,7 @@ export default function ChauffeurPage() {
           <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
             {t('brands')}
           </h2>
-          <p className="text-slate-400 text-lg">顶级新能源车型，为您提供尊贵出行体验</p>
+          <p className="text-slate-400 text-lg">{t('brandsSubtitle')}</p>
         </div>
         
         <div className="grid lg:grid-cols-2 gap-8 mb-24">
@@ -262,7 +262,7 @@ export default function ChauffeurPage() {
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
               {t('features')}
             </h2>
-            <p className="text-slate-400 text-lg">专业服务，尽在细节之中</p>
+            <p className="text-slate-400 text-lg">{t('featuresSubtitle')}</p>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -301,7 +301,7 @@ export default function ChauffeurPage() {
             <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
               {t('services')}
             </h2>
-            <p className="text-slate-400 text-lg">全方位出行解决方案</p>
+            <p className="text-slate-400 text-lg">{t('servicesSubtitle')}</p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-6">
@@ -339,9 +339,9 @@ export default function ChauffeurPage() {
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900/50 via-purple-900/50 to-pink-900/50 backdrop-blur-xl border border-slate-700/50 p-16 text-center">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold text-white mb-6">准备开启尊贵之旅？</h2>
+            <h2 className="text-4xl font-bold text-white mb-6">{t('ctaTitle')}</h2>
             <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
-              立即预订专车服务，让我们为您打造难忘的三亚之行
+              {t('ctaDescription')}
             </p>
             <div className="flex gap-4 justify-center flex-wrap">
               <button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105">
@@ -359,7 +359,7 @@ export default function ChauffeurPage() {
       {/* Footer */}
       <footer className="mt-24 mb-20 border-t border-slate-800 bg-slate-950">
         <div className="max-w-7xl mx-auto px-6 py-12 text-center">
-          <p className="text-slate-400">© 2025 {t('title')} | 专业 · 豪华 · 安全</p>
+          <p className="text-slate-400">© 2025 {t('title')} | {t('footerSlogan')}</p>
         </div>
       </footer>
     </div>

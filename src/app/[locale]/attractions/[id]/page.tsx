@@ -103,7 +103,11 @@ export default function AttractionDetailPage() {
       {/* Fixed Back Button - 固定在左上角，直接返回首页 */}
       <button
         onClick={() => router.push(`/${locale}`)}
-        className="fixed top-6 left-6 z-50 bg-white/95 backdrop-blur-md px-5 py-3 rounded-full shadow-2xl hover:bg-white hover:shadow-3xl transition-all flex items-center gap-2 group border-2 border-gray-200 hover:border-[#DC143C]"
+        onTouchEnd={(e) => {
+          e.preventDefault();
+          router.push(`/${locale}`);
+        }}
+        className="fixed top-6 left-6 z-50 bg-white/95 backdrop-blur-md px-5 py-3 rounded-full shadow-2xl hover:bg-white hover:shadow-3xl transition-all flex items-center gap-2 group border-2 border-gray-200 hover:border-[#DC143C] touch-manipulation active:scale-95"
       >
         <span className="text-xl group-hover:-translate-x-1 transition-transform">←</span>
         <span className="font-semibold text-gray-900">{t('detail.backToList')}</span>
