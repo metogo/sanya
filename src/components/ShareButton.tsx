@@ -13,7 +13,7 @@ export default function ShareButton() {
     };
 
     return (
-        <div className="fixed bottom-28 right-6 z-50">
+        <div className="fixed bottom-[162px] right-6 z-50">
             {/* 分享按钮 */}
             <button
                 onClick={handleShare}

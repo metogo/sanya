@@ -20,10 +20,10 @@ export default function ContactFloat() {
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
+        <div className={`fixed bottom-20 right-6 ${isOpen ? 'z-[60]' : 'z-50'} transition-all duration-300`}>
             {/* 展开的选项 */}
             {isOpen && (
-                <div className="mb-4 space-y-3 animate-fade-in">
+                <div className="mb-4 flex flex-col gap-[5px] animate-fade-in relative z-[60]">
                     {/* WhatsApp 按钮 */}
                     <button
                         onClick={handleWhatsApp}
