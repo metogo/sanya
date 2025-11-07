@@ -9,6 +9,7 @@ export default function ContactFloat() {
 
     const phoneNumber = '+86 13903643352'; // 替换为实际电话号码
     const whatsappNumber = '8613903643352'; // WhatsApp 号码（去掉+和空格）
+    const contactName = 'Ваня'; // 联系人姓名
 
     const handleCall = () => {
         window.location.href = `tel:${phoneNumber}`;
@@ -41,7 +42,7 @@ export default function ContactFloat() {
                         aria-label={t('callNow')}
                     >
                         <span className="text-2xl">📞</span>
-                        <span className="font-semibold whitespace-nowrap">{t('phone')}</span>
+                        <span className="font-semibold whitespace-nowrap">{t('phone')} {contactName}</span>
                         <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping"></div>
                     </button>
                 </div>

@@ -9,6 +9,7 @@
     "generate:attractions": "node scripts/generate-attractions.js"
   },
   "dependencies": {
+    "@react-spring/web": "^10.0.3",
     "next": "15.5.5",
     "next-intl": "^4.3.12",
     "react": "19.1.0",

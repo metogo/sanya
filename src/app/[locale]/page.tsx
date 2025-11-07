@@ -2,32 +2,32 @@
 
 import {useEffect, useMemo, useState} from 'react';
 import {useTranslations} from 'next-intl';
+import {useParams} from 'next/navigation';
+import Link from 'next/link';
 import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
 import FilterBar from '@/components/FilterBar';
 import AttractionCard from '@/components/AttractionCard';
 import ContactFloat from '@/components/ContactFloat';
+import ShareButton from '@/components/ShareButton';
 import LoadingScreen from '@/components/LoadingScreen';
 import {attractions} from '@/data/attractions';
 import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
 
 export default function Home() {
     const t = useTranslations();
-    const [isLoading, setIsLoading] = useState(() => {
-        // 只在首次访问时显示loading，使用sessionStorage记录
-        if (typeof window !== 'undefined') {
-            const hasVisited = sessionStorage.getItem('hasVisitedHome');
-            return !hasVisited;
-        }
-        return true;
-    });
+    const params = useParams();
+    const locale = params.locale as string;
+    const [isLoading, setIsLoading] = useState(true); // 始终从true开始，避免hydration错误
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
     const [selectedRating, setSelectedRating] = useState<FilterRating>('all');
     const [selectedPrice, setSelectedPrice] = useState<FilterPrice>('all');
+    const [isMounted, setIsMounted] = useState(false);
 
-    // 真实加载时间 + 最小显示时间（仅首次访问）
+    // 挂载后检查是否需要显示loading
     useEffect(() => {
+        setIsMounted(true);
         const hasVisited = sessionStorage.getItem('hasVisitedHome');
         
         if (!hasVisited) {
@@ -128,6 +128,9 @@ export default function Home() {
 
             {/* 浮动联系按钮 */}
             <ContactFloat />
+            
+            {/* 浮动分享按钮 */}
+            <ShareButton />
 
             {/* Main Content */}
             <main
@@ -197,8 +200,45 @@ export default function Home() {
                 )}
             </main>
 
+            {/* Bottom Navigation Menu */}
+            <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-white/95 backdrop-blur-xl border-t border-gray-200 shadow-2xl z-50">
+                <div className="max-w-[1400px] mx-auto px-6">
+                    <div className="flex justify-around items-center py-4">
+                        <Link
+                            href={`/${locale}`}
+                            className="relative flex flex-col items-center gap-2 px-8 py-3 group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl opacity-100 group-hover:opacity-100 transition-opacity duration-300 shadow-lg shadow-blue-500/50"></div>
+                            <div className="relative flex flex-col items-center gap-1">
+                                <svg className="w-7 h-7 text-white transform group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                                <span className="text-sm font-bold text-white">
+                                    {t('menu.home')}
+                                </span>
+                            </div>
+                        </Link>
+                        
+                        <Link
+                            href={`/${locale}/chauffeur`}
+                            className="relative flex flex-col items-center gap-2 px-8 py-3 group"
+                        >
+                            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg group-hover:shadow-purple-500/50"></div>
+                            <div className="relative flex flex-col items-center gap-1">
+                                <svg className="w-7 h-7 text-gray-600 group-hover:text-white transform group-hover:scale-110 transition-all duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                                <span className="text-sm font-bold text-gray-600 group-hover:text-white transition-colors duration-300">
+                                    {t('menu.chauffeur')}
+                                </span>
+                            </div>
+                        </Link>
+                    </div>
+                </div>
+            </div>
+
             {/* Footer */}
-            <footer className="mt-16 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-12">
+            <footer className="mt-16 mb-20 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-12">
                 <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
                     <div className="text-center">
                         <h3 className="text-2xl md:text-3xl font-bold mb-4"

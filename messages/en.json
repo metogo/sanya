@@ -6,7 +6,9 @@
   "header": {
     "title": "Sanya Attractions",
     "subtitle": "Discover China's Tropical Paradise 🌴",
-    "searchPlaceholder": "Search by name, description, tags..."
+    "searchPlaceholder": "Search by name, description, tags...",
+    "share": "Share",
+    "shareOnWhatsApp": "Share on WhatsApp"
   },
   "filters": {
     "categories": "Categories",
@@ -58,7 +60,10 @@
     "phone": "Call Us",
     "whatsapp": "WhatsApp",
     "callNow": "Call Now",
-    "close": "Close"
+    "close": "Close",
+    "share": "Share",
+    "shareOnWhatsApp": "Share on WhatsApp",
+    "shareText": "Sanya Attractions - Discover China's Tropical Paradise"
   },
   "meta": {
     "title": "Sanya Attractions | China's Tropical Paradise",
@@ -83,6 +88,40 @@
     "culture": "🏛️ Culture",
     "nature": "🌴 Nature",
     "entertainment": "🎢 Entertainment"
+  },
+  "chauffeur": {
+    "title": "Private Chauffeur Service",
+    "subtitle": "Luxury Travel Experience",
+    "description": "Premium chauffeur service for a comfortable and convenient Sanya journey",
+    "brands": "Vehicle Brands",
+    "tesla": "Tesla",
+    "lixiang": "Li Auto",
+    "teslaModel": "Tesla Model 3/S/X",
+    "lixiangModel": "Li Auto L7/L8/L9",
+    "features": "Service Features",
+    "feature1": "Professional Drivers",
+    "feature1Desc": "Experienced drivers familiar with Sanya roads",
+    "feature2": "Luxury Vehicles",
+    "feature2Desc": "Premium electric vehicles from Tesla and Li Auto",
+    "feature3": "Flexible Customization",
+    "feature3Desc": "Tailored itineraries to meet your needs",
+    "feature4": "24/7 Service",
+    "feature4Desc": "Available around the clock for your convenience",
+    "services": "Our Services",
+    "airport": "Airport Transfer",
+    "airportDesc": "Round-trip airport chauffeur service",
+    "daily": "Daily Transportation",
+    "dailyDesc": "Sightseeing, shopping, and business trips",
+    "wedding": "Wedding Service",
+    "weddingDesc": "Wedding cars and luxury fleet service",
+    "custom": "Custom Charter",
+    "customDesc": "Daily charters and multi-day itineraries",
+    "bookNow": "Book Now",
+    "contactUs": "Contact Us"
+  },
+  "menu": {
+    "home": "Home",
+    "chauffeur": "Chauffeur"
   }
 }
 
