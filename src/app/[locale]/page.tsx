@@ -246,14 +246,23 @@ function BottomMenu({ locale, router, currentPage, t }: { locale: string; router
         config: { tension: 300, friction: 20 }
     });
 
+    const handleHomeClick = () => {
+        router.push(`/${locale}`);
+    };
+
+    const handleChauffeurClick = () => {
+        router.push(`/${locale}/chauffeur`);
+    };
+
     return (
         <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-white/95 backdrop-blur-xl border-t border-gray-200 shadow-2xl z-50">
             <div className="max-w-[1400px] mx-auto px-4">
                 <div className="flex justify-around items-center py-2">
                     <animated.button
-                        onClick={() => router.push(`/${locale}`)}
+                        onClick={handleHomeClick}
+                        onTouchEnd={handleHomeClick}
                         style={homeSpring}
-                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer"
+                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer touch-manipulation active:scale-95"
                     >
                         <div className={`absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl transition-all duration-300 shadow-lg ${homeActive ? 'opacity-100 shadow-blue-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-blue-500/50'}`}></div>
                         <div className="relative flex flex-col items-center gap-0.5">
@@ -267,9 +276,10 @@ function BottomMenu({ locale, router, currentPage, t }: { locale: string; router
                     </animated.button>
                     
                     <animated.button
-                        onClick={() => router.push(`/${locale}/chauffeur`)}
+                        onClick={handleChauffeurClick}
+                        onTouchEnd={handleChauffeurClick}
                         style={chauffeurSpring}
-                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer"
+                        className="relative flex flex-col items-center gap-1 px-6 py-2 group cursor-pointer touch-manipulation active:scale-95"
                     >
                         <div className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl transition-all duration-300 shadow-lg ${chauffeurActive ? 'opacity-100 shadow-purple-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-purple-500/50'}`}></div>
                         <div className="relative flex flex-col items-center gap-0.5">
