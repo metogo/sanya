@@ -2,10 +2,11 @@
 
 import { useTranslations } from 'next-intl';
 import { useSpring, animated, useTrail } from '@react-spring/web';
-import { useState } from 'react';
+import { useState, ReactElement } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Header from '@/components/Header';
 import ContactFloat from '@/components/ContactFloat';
+import ShareButton from '@/components/ShareButton';
 
 export default function ChauffeurPage() {
   const t = useTranslations('chauffeur');
@@ -36,7 +37,7 @@ export default function ChauffeurPage() {
       id: 'tesla',
       brand: t('tesla'),
       model: t('teslaModel'),
-      image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=60&auto=format&fit=crop',
       gradient: 'from-slate-900 via-blue-900 to-slate-900',
       accentColor: 'from-blue-400 to-cyan-400',
       features: [t('teslaFeature1'), t('teslaFeature2'), t('teslaFeature3')]
@@ -45,72 +46,125 @@ export default function ChauffeurPage() {
       id: 'lixiang',
       brand: t('lixiang'),
       model: t('lixiangModel'),
-      image: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=800&q=80',
+      image: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&q=60&auto=format&fit=crop',
       gradient: 'from-slate-900 via-purple-900 to-slate-900',
       accentColor: 'from-purple-400 to-pink-400',
       features: [t('lixiangFeature1'), t('lixiangFeature2'), t('lixiangFeature3')]
     }
   ];
 
-  // 特色服务数据
+  // 特色服务数据 - 使用SVG图标
   const features = [
     {
       title: t('feature1'),
       description: t('feature1Desc'),
-      icon: '👨‍✈️',
+      iconType: 'driver',
       gradient: 'from-blue-500/20 to-cyan-500/20',
-      borderGradient: 'from-blue-500 to-cyan-500'
+      borderGradient: 'from-blue-500 to-cyan-500',
+      iconColor: 'text-blue-400'
     },
     {
       title: t('feature2'),
       description: t('feature2Desc'),
-      icon: '🚗',
+      iconType: 'car',
       gradient: 'from-purple-500/20 to-pink-500/20',
-      borderGradient: 'from-purple-500 to-pink-500'
+      borderGradient: 'from-purple-500 to-pink-500',
+      iconColor: 'text-purple-400'
     },
     {
       title: t('feature3'),
       description: t('feature3Desc'),
-      icon: '⚙️',
+      iconType: 'settings',
       gradient: 'from-orange-500/20 to-yellow-500/20',
-      borderGradient: 'from-orange-500 to-yellow-500'
+      borderGradient: 'from-orange-500 to-yellow-500',
+      iconColor: 'text-orange-400'
     },
     {
       title: t('feature4'),
       description: t('feature4Desc'),
-      icon: '🕐',
+      iconType: 'clock',
       gradient: 'from-green-500/20 to-emerald-500/20',
-      borderGradient: 'from-green-500 to-emerald-500'
+      borderGradient: 'from-green-500 to-emerald-500',
+      iconColor: 'text-green-400'
     }
   ];
 
-  // 服务项目数据
+  // 服务项目数据 - 使用SVG图标
   const services = [
     {
       title: t('airport'),
       description: t('airportDesc'),
-      icon: '✈️',
-      color: 'blue'
+      iconType: 'plane',
+      iconColor: 'text-blue-400'
     },
     {
       title: t('daily'),
       description: t('dailyDesc'),
-      icon: '🌴',
-      color: 'green'
+      iconType: 'location',
+      iconColor: 'text-green-400'
     },
     {
       title: t('wedding'),
       description: t('weddingDesc'),
-      icon: '💒',
-      color: 'pink'
+      iconType: 'heart',
+      iconColor: 'text-pink-400'
     },
     {
       title: t('custom'),
       description: t('customDesc'),
-      icon: '📅',
-      color: 'purple'
+      iconType: 'calendar',
+      iconColor: 'text-purple-400'
     }
   ];
+
+  // SVG图标渲染函数
+  const renderIcon = (iconType: string, className: string = 'w-12 h-12'): ReactElement | null => {
+    const icons: { [key: string]: ReactElement } = {
+      driver: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+      ),
+      car: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+      ),
+      settings: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      clock: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      ),
+      plane: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 3l18 9-18 9V3z" />
+        </svg>
+      ),
+      location: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      ),
+      heart: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      ),
+      calendar: (
+        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      )
+    };
+    return icons[iconType] || null;
+  };
 
   // 特色服务卡片动画
   const featureTrail = useTrail(features.length, {
@@ -132,6 +186,7 @@ export default function ChauffeurPage() {
     <div className="min-h-screen bg-slate-950">
       <Header onSearch={() => {}} />
       <ContactFloat />
+      <ShareButton />
 
       {/* Hero Section with Parallax Effect */}
       <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white pt-32 pb-24">
@@ -215,12 +270,17 @@ export default function ChauffeurPage() {
                 <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
                 
                 {/* Car Image */}
-                <div className="relative h-80 overflow-hidden rounded-t-3xl">
+                <div className="relative h-80 overflow-hidden rounded-t-3xl bg-slate-800">
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10"></div>
-                  <img 
+                  <img
                     src={car.image}
                     alt={car.brand}
+                    loading="lazy"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    onLoad={(e) => {
+                      e.currentTarget.style.opacity = '1';
+                    }}
+                    style={{ opacity: 0, transition: 'opacity 0.3s ease-in' }}
                   />
                   
                   {/* Accent Gradient */}
@@ -280,9 +340,9 @@ export default function ChauffeurPage() {
                   {/* Border Gradient on Hover */}
                   <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${feature.borderGradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`}></div>
                   
-                  <div className="relative z-10 text-center">
-                    <div className="text-6xl mb-4 transform group-hover:scale-110 group-hover:rotate-6 transition-all duration-300">
-                      {feature.icon}
+                  <div className="relative z-10 text-center my-[3px]">
+                    <div className={`mb-4 transform group-hover:scale-110 transition-all duration-300 ${feature.iconColor} flex justify-center`}>
+                      {renderIcon(feature.iconType, 'w-10 h-10')}
                     </div>
                     <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
                     <p className="text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
@@ -315,8 +375,8 @@ export default function ChauffeurPage() {
                 >
                   <div className="flex items-start gap-6">
                     <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center text-4xl group-hover:scale-110 group-hover:rotate-12 transition-all duration-300">
-                        {service.icon}
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center group-hover:scale-110 transition-all duration-300 ${service.iconColor}`}>
+                        {renderIcon(service.iconType, 'w-6 h-6')}
                       </div>
                     </div>
                     <div className="flex-1">
@@ -338,7 +398,7 @@ export default function ChauffeurPage() {
         {/* Final CTA */}
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900/50 via-purple-900/50 to-pink-900/50 backdrop-blur-xl border border-slate-700/50 p-16 text-center">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
-          <div className="relative z-10">
+          <div className="m-5 relative z-10">
             <h2 className="text-4xl font-bold text-white mb-6">{t('ctaTitle')}</h2>
             <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
               {t('ctaDescription')}
