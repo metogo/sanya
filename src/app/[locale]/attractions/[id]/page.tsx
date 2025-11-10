@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { attractions } from '@/data/attractions';
 import { useEffect, useState } from 'react';
+import ShareButton from '@/components/ShareButton';
 
 export default function AttractionDetailPage() {
   const params = useParams();
@@ -85,6 +86,27 @@ export default function AttractionDetailPage() {
     if (locale === 'en') return attraction.transportation || '公共交通可达';
     if (locale === 'zh') return attraction.transportationZh || '公共交通可达';
     return attraction.transportationRu || 'Доступен общественным транспортом';
+  };
+
+  // 生成包含折扣信息的分享文案
+  const getShareText = () => {
+    const name = getName();
+    if (attraction.isFree) {
+      if (locale === 'zh') return `🎉 ${name} - 免费开放！三亚必游景点，不容错过！`;
+      if (locale === 'en') return `🎉 ${name} - FREE Entry! Must-visit attraction in Sanya!`;
+      return `🎉 ${name} - БЕСПЛАТНО! Обязательно посетите в Санье!`;
+    }
+    
+    if (attraction.originalPrice) {
+      const discount = Math.round((1 - attraction.price / attraction.originalPrice) * 100);
+      if (locale === 'zh') return `🔥 限时优惠！${name} - 现在只需¥${attraction.price}（原价¥${attraction.originalPrice}，省${discount}%）！快来抢购！`;
+      if (locale === 'en') return `🔥 Limited Offer! ${name} - Only ¥${attraction.price} (was ¥${attraction.originalPrice}, save ${discount}%)! Book now!`;
+      return `🔥 Акция! ${name} - Всего ¥${attraction.price} (было ¥${attraction.originalPrice}, скидка ${discount}%)! Бронируйте сейчас!`;
+    }
+    
+    if (locale === 'zh') return `✨ ${name} - 仅需¥${attraction.price}！三亚热门景点推荐！`;
+    if (locale === 'en') return `✨ ${name} - Only ¥${attraction.price}! Popular attraction in Sanya!`;
+    return `✨ ${name} - Всего ¥${attraction.price}! Популярная достопримечательность Саньи!`;
   };
 
   if (isLoading) {
@@ -307,6 +329,9 @@ export default function AttractionDetailPage() {
           </button> */}
         </div>
       </div>
+
+      {/* Share Button */}
+      <ShareButton customText={getShareText()} />
     </div>
   );
 }

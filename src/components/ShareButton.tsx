@@ -2,12 +2,16 @@
 
 import { useTranslations } from 'next-intl';
 
-export default function ShareButton() {
+interface ShareButtonProps {
+    customText?: string;
+}
+
+export default function ShareButton({ customText }: ShareButtonProps = {}) {
     const t = useTranslations('contact');
 
     const handleShare = () => {
         const url = window.location.href;
-        const text = t('shareText') || '三亚景点 - 探索中国的热带天堂';
+        const text = customText || t('shareText') || '三亚景点 - 探索中国的热带天堂';
         const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}`;
         window.open(whatsappUrl, '_blank');
     };
