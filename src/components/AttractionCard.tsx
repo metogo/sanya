@@ -134,11 +134,35 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
               </span>
                         ) : (
                             <div className="text-right">
-                                <div className="text-xs text-gray-500">{t('from')}</div>
-                                <div
-                                    className="text-xl font-bold bg-gradient-to-r from-[#DC143C] to-[#0039A6] bg-clip-text text-transparent">
-                                    {attraction.price}¥
-                                </div>
+                                {/* 如果有原价，显示折扣信息 */}
+                                {attraction.originalPrice ? (
+                                    <div className="space-y-1">
+                                        {/* 折扣百分比标签 */}
+                                        <div className="flex items-center justify-end gap-2">
+                                            <span className="text-[10px] text-gray-400 line-through">
+                                                ¥{attraction.originalPrice}
+                                            </span>
+                                            <div className="bg-gradient-to-r from-red-500 to-orange-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md animate-pulse">
+                                                {Math.round((1 - attraction.price / attraction.originalPrice) * 100)}% {t('off')}
+                                            </div>
+                                        </div>
+                                        {/* 折扣价 */}
+                                        <div className="flex items-baseline justify-end gap-1">
+                                            <span className="text-xs text-gray-500">{t('now')}</span>
+                                            <span className="text-2xl font-black bg-gradient-to-r from-[#DC143C] to-[#FF6B6B] bg-clip-text text-transparent">
+                                                ¥{attraction.price}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    // 没有原价时的显示
+                                    <div>
+                                        <div className="text-xs text-gray-500">{t('from')}</div>
+                                        <div className="text-xl font-bold bg-gradient-to-r from-[#DC143C] to-[#0039A6] bg-clip-text text-transparent">
+                                            {attraction.price}¥
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>

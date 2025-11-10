@@ -124,6 +124,7 @@ The underwater world is rich with coral reefs, tropical fish, and precious shell
     categoryEn: '🏛️ Culture',
     categoryZh: '🏛️ 文化',
     price: 300,
+    originalPrice: 360,
     isFree: false,
     tags: ['寺庙', '文化', '佛教', '雕像'],
     
@@ -228,6 +229,7 @@ The area also features Nanshan Temple, Golden Guanyin, Non-Duality Gate, and Sou
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 144,
+    originalPrice: 180,
     isFree: false,
     tags: ['岛屿', '潜水', '自然', '水上运动'],
     
@@ -286,6 +288,7 @@ The island has rich tropical vegetation with over 2,700 plant species. The under
     categoryEn: '🏛️ Culture',
     categoryZh: '🏛️ 文化',
     price: 300,
+    originalPrice: 360,
     isFree: false,
     tags: ['表演', '公园', '历史', '演出'],
     
@@ -344,6 +347,7 @@ The park has performance and entertainment zones. Features ancient Yazhou street
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 170,
+    originalPrice: 200,
     isFree: false,
     tags: ['公园', '自然', '桥', '全景'],
     
@@ -402,6 +406,7 @@ The most famous attraction is the Dragon Crossing Bridge, spanning 168 meters. F
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 80,
+    originalPrice: 100,
     isFree: false,
     tags: ['自然', '岩石', '浪漫', '传说'],
     
@@ -576,6 +581,7 @@ Nightlife is vibrant with many bars and restaurants. Water sports are diverse.`,
     categoryEn: '🏛️ Culture',
     categoryZh: '🏛️ 文化',
     price: 260,
+    originalPrice: 320,
     isFree: false,
     tags: ['文化', '民俗', '村落', '少数民族'],
     
@@ -634,6 +640,7 @@ You can observe the making of Li brocade and Miao embroidery.`,
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 35,
+    originalPrice: 45,
     isFree: false,
     tags: ['公园', '传说', '全景', '日落'],
     
@@ -692,6 +699,7 @@ From the 275m summit, enjoy 360° panoramic views of the city and bays. Especial
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 350,
+    originalPrice: 420,
     isFree: false,
     tags: ['漂流', '探险', '自然', '峡谷'],
     
@@ -750,6 +758,7 @@ Winding river with rapids. Red canyon walls. Pure mountain spring water.`,
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 180,
+    originalPrice: 220,
     isFree: false,
     tags: ['温泉', '放松', '健康', '度假村'],
     
@@ -808,6 +817,7 @@ The resort has 60+ pools: herbal, flower, rainforest themes. Fish therapy, salt 
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 388,
+    originalPrice: 468,
     isFree: false,
     tags: ['水上乐园', '亚特兰蒂斯', '刺激', '家庭'],
     
@@ -866,6 +876,7 @@ The resort has 60+ pools: herbal, flower, rainforest themes. Fish therapy, salt 
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 198,
+    originalPrice: 238,
     isFree: false,
     tags: ['水族馆', '海洋生物', '亚特兰蒂斯', '家庭'],
     
@@ -924,6 +935,7 @@ Impressive 10.5m tank with 13,500 tons water. 360° views.`,
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 220,
+    originalPrice: 268,
     isFree: false,
     tags: ['猴子', '自然', '岛屿', '动物'],
     
@@ -982,6 +994,7 @@ Impressive 10.5m tank with 13,500 tons water. 360° views.`,
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 350,
+    originalPrice: 420,
     isFree: false,
     tags: ['主题乐园', '海洋', '水上乐园', '家庭'],
     
@@ -1040,6 +1053,7 @@ Dolphin shows. Hundreds of species: sharks, turtles. Water park. Beach park.`,
     categoryEn: '🌴 Nature',
     categoryZh: '🌴 自然',
     price: 370,
+    originalPrice: 448,
     isFree: false,
     tags: ['热带雨林', '自然', '文化', '徒步'],
     

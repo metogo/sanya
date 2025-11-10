@@ -17,6 +17,7 @@ export interface Attraction {
   categoryEn?: string;
   categoryZh?: string;
   price: number;
+  originalPrice?: number; // 原价
   isFree: boolean;
   tags: string[];
   

@@ -40,7 +40,9 @@
     "reviews": "reviews",
     "from": "from",
     "free": "Free",
-    "details": "Learn More"
+    "details": "Learn More",
+    "off": "OFF",
+    "now": "Now"
   },
   "footer": {
     "title": "🏛️ Sanya Attractions",
