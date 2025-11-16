@@ -223,7 +223,7 @@ export default function AttractionDetailPage() {
 
         {/* Description Section */}
         <div style={{margin:10,padding: 10}} className="bg-white rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-gray-200">
-          <h2 
+          <h2
             className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
@@ -234,6 +234,34 @@ export default function AttractionDetailPage() {
             {getDescription()}
           </p>
         </div>
+
+        {/* Video Section - 如果有视频则显示 */}
+        {attraction.video && (
+          <div style={{margin:10,padding: 10}} className="bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-purple-200">
+            <h2
+              className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              <span className="text-4xl">🎬</span>
+              {t('detail.video')}
+            </h2>
+            <p className="text-gray-600 mb-6 text-lg">
+              {t('detail.watchVideo')}
+            </p>
+            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+              <video
+                controls
+                className="w-full h-auto"
+                poster={attraction.image}
+                preload="metadata"
+                style={{ maxHeight: '600px' }}
+              >
+                <source src={attraction.video} type="video/mp4" />
+                您的浏览器不支持视频播放
+              </video>
+            </div>
+          </div>
+        )}
 
         {/* Highlights Section */}
         {getHighlights().length > 0 && (

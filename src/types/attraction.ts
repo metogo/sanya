@@ -20,6 +20,7 @@ export interface Attraction {
   originalPrice?: number; // 原价
   isFree: boolean;
   tags: string[];
+  video?: string; // 景点视频路径
   
   // 详情页扩展字段
   detailedDescription?: string;

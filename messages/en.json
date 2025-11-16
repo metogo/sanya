@@ -89,7 +89,9 @@
     "beach": "🏖️ Beach",
     "culture": "🏛️ Culture",
     "nature": "🌴 Nature",
-    "entertainment": "🎢 Entertainment"
+    "entertainment": "🎢 Entertainment",
+    "video": "Attraction Video",
+    "watchVideo": "Watch video to learn more"
   },
   "chauffeur": {
     "title": "Private Chauffeur Service",

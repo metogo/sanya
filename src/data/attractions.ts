@@ -291,6 +291,7 @@ The island has rich tropical vegetation with over 2,700 plant species. The under
     originalPrice: 360,
     isFree: false,
     tags: ['表演', '公园', '历史', '演出'],
+    video: '/video/三亚千古情景区.mp4',
     
     detailedDescriptionZh: `三亚千古情景区是宋城演艺打造的大型文化主题公园，以大型歌舞《三亚千古情》为核心。演出运用声、光、电等现代舞台科技，再现了三亚万年历史文化与传说，包括落笔洞文化、鉴真东渡、鹿回头传说、海上丝绸之路等篇章。
 
@@ -584,6 +585,7 @@ Nightlife is vibrant with many bars and restaurants. Water sports are diverse.`,
     originalPrice: 320,
     isFree: false,
     tags: ['文化', '民俗', '村落', '少数民族'],
+    video: '/video/槟榔谷黎苗文化旅游区.mp4',
     
     detailedDescriptionZh: `槟榔谷黎苗文化旅游区是海南省最具民族特色的文化景区，被誉为海南民族文化的"活化石"。景区由非遗村、甘什黎村、谷银苗家、田野黎家、《槟榔·古韵》大型实景演出等组成，全面展示了黎族和苗族的传统文化。
 
@@ -702,6 +704,7 @@ From the 275m summit, enjoy 360° panoramic views of the city and bays. Especial
     originalPrice: 420,
     isFree: false,
     tags: ['漂流', '探险', '自然', '峡谷'],
+    video: '/video/五指山红峡谷漂流.mp4',
     
     detailedDescriptionZh: `五指山红峡谷漂流位于海南省五指山市，是海南最刺激的漂流项目之一。漂流河段全长3.8公里，落差高达80余米，漂流时间约2小时。峡谷两岸是保存完好的热带原始雨林，植被茂密，空气清新，负氧离子含量极高。
 
@@ -997,6 +1000,7 @@ Impressive 10.5m tank with 13,500 tons water. 360° views.`,
     originalPrice: 420,
     isFree: false,
     tags: ['主题乐园', '海洋', '水上乐园', '家庭'],
+    video: '/video/海南富力海洋欢乐世界.mp4',
     
     detailedDescriptionZh: `海南富力海洋欢乐世界是集海洋文化、娱乐休闲、科普教育于一体的大型海洋主题公园。包含海洋公园、水上乐园、海洋世界、沙滩乐园等多个主题区域。
 
@@ -1092,5 +1096,123 @@ Rainforest and Dream Valleys. Pristine forest with oxygen. Thousands of plants. 
     transportationZh: '乘三亚至保亭班车，在呀诺达站下；打车约90-110元；距三亚约40公里。',
     transportationRu: 'Автобус Санья-Баотин; такси ¥90-110.',
     transportation: 'Bus Sanya-Baoting; taxi ¥90-110.'
+  },
+  {
+    id: '18',
+    name: '海口野生动物园',
+    nameRu: 'Зоопарк Хайкоу',
+    nameZh: '海口野生动物园',
+    description: '海南最大的野生动物园，拥有200多种珍稀动物，是集动物观赏、科普教育、休闲娱乐为一体的综合性动物园。',
+    descriptionRu: 'Крупнейший зоопарк Хайнаня с более чем 200 видами редких животных, объединяющий наблюдение за животными, образование и развлечения.',
+    descriptionZh: '海南最大的野生动物园，拥有200多种珍稀动物，是集动物观赏、科普教育、休闲娱乐为一体的综合性动物园。',
+    image: '/images/banners/海口野生动物园.jpeg',
+    rating: 4.5,
+    reviewCount: 3200,
+    location: '海口市',
+    locationRu: 'Город Хайкоу',
+    locationZh: '海口市',
+    category: 'nature',
+    categoryRu: '🌴 Природа',
+    categoryEn: '🌴 Nature',
+    categoryZh: '🌴 自然',
+    price: 350,
+    originalPrice: 420,
+    isFree: false,
+    tags: ['动物园', '野生动物', '亲子', '科普'],
+    
+    detailedDescriptionZh: `海口野生动物园位于海南省海口市，是海南省唯一一家集珍稀野生动植物科普博览、保护繁殖、观光旅游、休闲度假为主题的AAAA国家级旅游景区。园区占地2000余亩，拥有来自世界各地的200多种珍稀动物，数量超过4000只。
+
+园区分为车行观赏区和步行观赏区。车行区可以近距离观察狮子、老虎、熊等大型猛兽在半开放环境中的生活状态。步行区有长颈鹿馆、大熊猫馆、灵长类动物馆、鸟类天堂等主题展区。特别推荐大熊猫"贡贡"和"舜舜"，是海南唯一的大熊猫。园区还有精彩的动物表演，包括大象表演、鹦鹉表演等，寓教于乐。`,
+    
+    detailedDescriptionRu: `Зоопарк Хайкоу расположен в городе Хайкоу, это единственный в провинции Хайнань национальный туристический район уровня AAAA, объединяющий науку о редких диких животных и растениях, защиту, разведение и туризм. Площадь парка более 2000 му, здесь обитает более 200 видов редких животных со всего мира, более 4000 особей.
+
+Парк разделен на зоны для наблюдения из автомобиля и пешеходные зоны. В автомобильной зоне можно наблюдать львов, тигров, медведей в полуоткрытой среде. В пешеходной зоне есть павильоны жирафов, больших панд, приматов, птичий рай. Особенно рекомендуются большие панды "Гунгун" и "Шуньшунь" - единственные на Хайнане.`,
+    
+    detailedDescription: `Haikou Wildlife Park is located in Haikou City, the only AAAA national tourist area in Hainan Province that combines rare wildlife science, conservation, breeding and tourism. The park covers over 2,000 mu, housing more than 200 species of rare animals from around the world, with over 4,000 individuals.
+
+The park is divided into drive-through and walking zones. In the drive-through area, you can observe lions, tigers, bears in semi-open environments. The walking area has giraffe pavilion, giant panda pavilion, primate house, bird paradise. Highly recommended are giant pandas "Gong Gong" and "Shun Shun" - the only ones in Hainan.`,
+    
+    highlightsZh: ['海南唯一的大型野生动物园', '200多种珍稀动物，4000多只', '海南唯一的大熊猫"贡贡"和"舜舜"', '车行观赏区，近距离观察猛兽', '步行区有长颈鹿、大象等温顺动物', '精彩的动物表演和互动体验'],
+    highlightsRu: ['Единственный крупный зоопарк Хайнаня', '200+ видов, 4000+ животных', 'Единственные панды на Хайнане', 'Зона наблюдения из авто', 'Жирафы, слоны в пешеходной зоне', 'Шоу животных и интерактив'],
+    highlights: ['Only large zoo in Hainan', '200+ species, 4000+ animals', 'Only giant pandas in Hainan', 'Drive-through observation zone', 'Giraffes, elephants in walking area', 'Animal shows and interaction'],
+    
+    openingHoursZh: '8:30-17:30（全年开放）',
+    openingHoursRu: '8:30-17:30 (круглый год)',
+    openingHours: '8:30-17:30 (year-round)',
+    
+    bestTimeZh: '全年适宜，10月-次年4月天气最佳',
+    bestTimeRu: 'Круглый год, октябрь - апрель лучше',
+    bestTime: 'Year-round, Oct-Apr best weather',
+    
+    tipsZh: ['建议游览时间4-5小时，穿舒适的鞋', '自驾可进入车行区，也可乘坐园区观光车', '携带防晒用品和饮用水', '大熊猫馆人气很旺，建议早点前往', '动物表演时间请关注园区公告', '可以购买动物饲料喂食温顺动物', '适合带小朋友，寓教于乐'],
+    tipsRu: ['Планируйте 4-5 часов, удобная обувь', 'Можно на своем авто или туристическом автобусе', 'Возьмите солнцезащиту и воду', 'Павильон панд популярен, идите рано', 'Следите за расписанием шоу', 'Можно купить корм для кормления', 'Отлично для детей'],
+    tips: ['Allow 4-5 hours, comfortable shoes', 'Drive your car or take park bus', 'Bring sunscreen and water', 'Panda pavilion popular, go early', 'Check show schedule', 'Can buy feed for gentle animals', 'Great for kids'],
+    
+    facilitiesZh: ['停车场', '观光车', '餐饮区', '商店', '卫生间', '婴儿车租赁', '轮椅通道', '医疗点'],
+    facilitiesRu: ['Парковка', 'Туристический автобус', 'Рестораны', 'Магазины', 'Туалеты', 'Аренда колясок', 'Доступ для инвалидов', 'Медпункт'],
+    facilities: ['Parking', 'Sightseeing Bus', 'Dining', 'Shops', 'Restrooms', 'Stroller Rental', 'Wheelchair Access', 'Medical'],
+    
+    transportationZh: '从海口市区乘坐57路、28路公交车；打车约40-50元；距美兰机场约35公里；建议自驾前往。',
+    transportationRu: 'Автобусы №57, 28 из Хайкоу; такси ¥40-50; 35км от аэропорта Мэйлань; рекомендуется авто.',
+    transportation: 'Bus 57, 28 from Haikou; taxi ¥40-50; 35km from Meilan Airport; car recommended.'
+  },
+  {
+    id: '19',
+    name: '凤凰岭',
+    nameRu: 'Гора Фэнхуанлин (Phoenix Ridge)',
+    nameZh: '凤凰岭',
+    description: '三亚市区内的最高峰，海拔394米，可360度俯瞰三亚全景，是观赏日出日落和城市夜景的绝佳地点。',
+    descriptionRu: 'Высочайшая вершина в центре Саньи, 394 метра над уровнем моря, с панорамным видом 360° на весь город, идеальное место для восходов, закатов и ночных видов.',
+    descriptionZh: '三亚市区内的最高峰，海拔394米，可360度俯瞰三亚全景，是观赏日出日落和城市夜景的绝佳地点。',
+    image: '/images/banners/凤凰岭.jpeg',
+    rating: 4.3,
+    reviewCount: 1680,
+    location: '三亚市区',
+    locationRu: 'Центр Саньи',
+    locationZh: '三亚市区',
+    category: 'nature',
+    categoryRu: '🌴 Природа',
+    categoryEn: '🌴 Nature',
+    categoryZh: '🌴 自然',
+    price: 150,
+    originalPrice: 180,
+    isFree: false,
+    tags: ['山峰', '观景', '日出', '夜景'],
+    
+    detailedDescriptionZh: `凤凰岭海拔394米，是三亚市区的最高峰，因形似凤凰展翅而得名。这里是三亚观赏城市全景的最佳位置，可以360度俯瞰整个三亚市区、三亚湾、大东海、小东海以及远处的南山。天气晴朗时，甚至可以看到海天一线的壮丽景象。
+
+山顶建有观景平台和玻璃栈道，其中玻璃栈道悬空而建，站在上面向下俯瞰，脚下是苍翠的热带雨林和蜿蜒的盘山公路，刺激又震撼。凤凰岭日出日落景色尤为壮观，许多摄影爱好者专程前来拍摄。夜晚时分，三亚万家灯火尽收眼底，别有一番浪漫意境。上山有缆车，也可选择步行登山，沿途风光优美，空气清新。`,
+    
+    detailedDescriptionRu: `Гора Фэнхуанлин высотой 394 метра - самая высокая точка в центре Саньи, названная так из-за сходства с расправленными крыльями феникса. Это лучшее место для панорамного обзора города, откуда открывается вид 360° на весь Санья, заливы Саньявань, Дадунхай, Сяодунхай и дальний Наньшань.
+
+На вершине находятся смотровая площадка и стеклянный мостик. Стеклянный мостик подвешен над пропастью, внизу тропические леса и извилистые горные дороги. Восходы и закаты на Фэнхуанлин особенно величественны. Ночью открывается вид на огни города. Можно подняться по канатной дороге или пешком.`,
+    
+    detailedDescription: `Phoenix Ridge at 394 meters is the highest peak in downtown Sanya, named for its resemblance to a phoenix spreading its wings. This is the best spot for city panoramas, offering 360° views of all Sanya, Sanya Bay, Dadonghai, Xiaodonghai and distant Nanshan.
+
+The summit has observation deck and glass walkway. The suspended glass walkway overlooks tropical forests and winding mountain roads below. Sunrises and sunsets are especially spectacular. At night, city lights create romantic atmosphere. Can take cable car or hike up.`,
+    
+    highlightsZh: ['三亚市区最高峰，394米海拔', '360度俯瞰三亚全景和四个海湾', '惊险刺激的悬空玻璃栈道', '观赏日出日落的绝佳位置', '夜景极美，万家灯火璀璨', '缆车观光，沿途风光秀丽'],
+    highlightsRu: ['Высочайшая точка центра Саньи, 394м', 'Панорама 360° на город и 4 залива', 'Захватывающий стеклянный мостик', 'Лучшее место для восходов и закатов', 'Прекрасный ночной вид', 'Канатная дорога с видами'],
+    highlights: ['Highest peak in downtown, 394m', '360° panorama of city and 4 bays', 'Thrilling glass walkway', 'Best spot for sunrise/sunset', 'Beautiful night views', 'Cable car with scenic views'],
+    
+    openingHoursZh: '7:00-22:00（缆车末班21:30）',
+    openingHoursRu: '7:00-22:00 (последний подъемник 21:30)',
+    openingHours: '7:00-22:00 (last cable car 21:30)',
+    
+    bestTimeZh: '清晨6:00-7:00（观日出）或傍晚17:00-19:00（观日落、夜景）',
+    bestTimeRu: 'Утро 6:00-7:00 (восход) или вечер 17:00-19:00 (закат, ночные виды)',
+    bestTime: 'Morning 6:00-7:00 (sunrise) or evening 17:00-19:00 (sunset, night views)',
+    
+    tipsZh: ['建议乘坐缆车上山，步行较累约1-2小时', '玻璃栈道恐高者慎行', '带好相机，是拍摄三亚全景的最佳位置', '傍晚前往可以同时看日落和夜景', '周末和节假日缆车排队较长', '山顶温度比山下低2-3度，可带件外套', '夜晚蚊虫较多，建议带防蚊液'],
+    tipsRu: ['Рекомендуется канатная дорога, пешком 1-2 часа', 'Стеклянный мостик - осторожно для боящихся высоты', 'Возьмите камеру для панорамных фото', 'Вечером - закат и ночной вид одновременно', 'Выходные - очередь на подъемник', 'На вершине на 2-3° холоднее', 'Вечером комары, возьмите репеллент'],
+    tips: ['Cable car recommended, hiking 1-2hrs', 'Glass walkway - caution if acrophobic', 'Bring camera for panoramas', 'Evening - sunset and night views together', 'Weekends - cable car queues', 'Summit 2-3°C cooler', 'Evening mosquitoes, bring repellent'],
+    
+    facilitiesZh: ['缆车', '观景平台', '玻璃栈道', '餐饮区', '商店', '卫生间', '停车场'],
+    facilitiesRu: ['Канатная дорога', 'Смотровая площадка', 'Стеклянный мостик', 'Рестораны', 'Магазины', 'Туалеты', 'Парковка'],
+    facilities: ['Cable Car', 'Observation Deck', 'Glass Walkway', 'Dining', 'Shops', 'Restrooms', 'Parking'],
+    
+    transportationZh: '从三亚市区乘坐1路、2路、4路公交车到凤凰岭公园站；打车约10-15元；距市中心约3公里，步行可达。',
+    transportationRu: 'Автобусы №1, 2, 4 до парка Фэнхуанлин; такси ¥10-15; 3км от центра, можно пешком.',
+    transportation: 'Bus 1, 2, 4 to Phoenix Ridge Park; taxi ¥10-15; 3km from downtown, walkable.'
   }
 ];
