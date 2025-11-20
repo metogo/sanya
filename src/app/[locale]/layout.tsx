@@ -13,9 +13,66 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
   const {locale} = await params;
   const messages = await getMessages({locale}) as any;
   
+  const title = messages.meta?.title || 'Sanya Attractions - Discover the Best of Sanya';
+  const description = messages.meta?.description || 'Explore top attractions in Sanya, China. From Yalong Bay to Nanshan Temple, find the best places to visit, travel tips, and local guides.';
+  const url = `https://rossiysanya.com/${locale}`;
+
   return {
-    title: messages.meta?.title || 'Sanya Attractions',
-    description: messages.meta?.description || 'Discover the best attractions in Sanya',
+    title: {
+      default: title,
+      template: `%s | ${title}`,
+    },
+    description: description,
+    keywords: ['Sanya', 'Sanya Travel', 'Hainan', 'Yalong Bay', 'Nanshan Temple', 'China Tourism', 'Sanya Guide', 'Санья', 'Хайнань', 'Путешествие в Санью', '三亚', '海南', '三亚旅游'],
+    authors: [{ name: 'RossiySanya' }],
+    creator: 'RossiySanya',
+    publisher: 'RossiySanya',
+    metadataBase: new URL('https://rossiysanya.com'),
+    alternates: {
+      canonical: url,
+      languages: {
+        'en': 'https://rossiysanya.com/en',
+        'ru': 'https://rossiysanya.com/ru',
+        'zh': 'https://rossiysanya.com/zh',
+      },
+    },
+    openGraph: {
+      title: title,
+      description: description,
+      url: url,
+      siteName: 'RossiySanya',
+      locale: locale,
+      type: 'website',
+      images: [
+        {
+          url: '/images/banners/sanya-hero.jpg', // 确保有一张默认的 OG 图片
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: ['/images/banners/sanya-hero.jpg'],
+    },
+    verification: {
+      // google: 'google-site-verification-code', // 已通过 DNS 验证
+      yandex: 'fa86733ddb6976cd',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 

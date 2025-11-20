@@ -120,8 +120,40 @@ export default function AttractionDetailPage() {
     );
   }
 
+  // JSON-LD 结构化数据 - 旅游景点
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: getName(),
+    description: getDescription(),
+    image: attraction.image,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Sanya',
+      addressRegion: 'Hainan',
+      addressCountry: 'CN',
+      streetAddress: getLocation(),
+    },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: '18.2528', // 示例坐标，实际项目中应从数据中获取
+      longitude: '109.5119',
+    },
+    url: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
+    aggregateRating: {
+      '@type': 'AggregateRating',
+      ratingValue: attraction.rating,
+      reviewCount: attraction.reviewCount,
+    },
+    priceRange: attraction.isFree ? '0' : `¥${attraction.price}`,
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Fixed Back Button - 固定在左上角，直接返回首页 */}
       <button
         onClick={() => router.push(`/${locale}`)}

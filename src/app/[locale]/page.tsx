@@ -133,8 +133,25 @@ export default function Home() {
         return <LoadingScreen />;
     }
 
+    // JSON-LD 结构化数据
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: 'RossiySanya',
+        url: 'https://rossiysanya.com',
+        potentialAction: {
+            '@type': 'SearchAction',
+            target: 'https://rossiysanya.com/search?q={search_term_string}',
+            'query-input': 'required name=search_term_string',
+        },
+    };
+
     return (
         <div className="min-h-screen bg-white">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             {/* Header */}
             <Header onSearch={handleSearch}/>
 
