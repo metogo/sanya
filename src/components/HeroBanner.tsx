@@ -25,7 +25,7 @@ export default function HeroBanner({
     //     alt={alt}
     //     fill
     //     priority // 优先加载banner
-    //     quality={90} // 高质量
+    //     quality={85} // 稍微降低质量以提升加载速度，90 -> 85 肉眼几乎无差别
     //     sizes="100vw" // 全宽响应式
     //     className="object-cover"
     //     placeholder="blur" // 模糊占位符
@@ -37,7 +37,7 @@ export default function HeroBanner({
       
     //   {/* Banner内容 */}
     //   <div className="absolute inset-0 flex flex-col items-center justify-center text-white px-4">
-    //     <h1 
+    //     <h1
     //       className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-center drop-shadow-2xl animate-fade-in"
     //       style={{ fontFamily: "'Playfair Display', serif" }}
     //     >
@@ -47,21 +47,6 @@ export default function HeroBanner({
     //       {t('banner.subtitle', { default: '发现热带天堂的魅力景点' })}
     //     </p>
     //   </div>
-
-    //   {/* 滚动提示 */}
-    //   {/* <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-    //     <svg 
-    //       className="w-6 h-6 text-white opacity-75" 
-    //       fill="none" 
-    //       strokeLinecap="round" 
-    //       strokeLinejoin="round" 
-    //       strokeWidth="2" 
-    //       viewBox="0 0 24 24" 
-    //       stroke="currentColor"
-    //     >
-    //       <path d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
-    //     </svg>
-    //   </div> */}
     // </div>
   );
 }

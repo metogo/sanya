@@ -2,18 +2,17 @@
 
 import {Attraction} from '@/types/attraction';
 import Image from 'next/image';
-import {useState} from 'react';
+import {useState, memo} from 'react';
 import {useTranslations, useLocale} from 'next-intl';
-import {useRouter} from 'next/navigation';
+import {Link} from '@/i18n/routing';
 
 interface AttractionCardProps {
     attraction: Attraction;
 }
 
-export default function AttractionCard({attraction}: AttractionCardProps) {
+function AttractionCard({attraction}: AttractionCardProps) {
     const t = useTranslations('card');
     const locale = useLocale();
-    const router = useRouter();
     const [imageError, setImageError] = useState(false);
 
     // Get localized content based on current locale
@@ -169,31 +168,22 @@ export default function AttractionCard({attraction}: AttractionCardProps) {
                 </div>
 
                 {/* Button */}
-                <button
+                <Link
+                    href={`/attractions/${attraction.id}`}
                     onClick={() => {
                         // 保存当前滚动位置
                         sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-                        router.push(`/${locale}/attractions/${attraction.id}`);
                     }}
-                    onTouchStart={(e) => {
-                        e.currentTarget.style.transform = 'scale(0.98)';
-                    }}
-                    onTouchEnd={(e) => {
-                        e.currentTarget.style.transform = 'scale(1)';
-                        // 保存当前滚动位置
-                        sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-                        setTimeout(() => {
-                            router.push(`/${locale}/attractions/${attraction.id}`);
-                        }, 0);
-                    }}
-                    className="w-full py-3.5 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group-hover:from-[#C41E3A] group-hover:to-[#002D80] touch-manipulation">
-          <span className="flex items-center justify-center gap-2">
-            {t('details')}
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </span>
-                </button>
+                    className="block w-full py-3.5 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 group-hover:from-[#C41E3A] group-hover:to-[#002D80] touch-manipulation text-center">
+                    <span className="flex items-center justify-center gap-2">
+                        {t('details')}
+                        <span className="group-hover:translate-x-1 transition-transform">→</span>
+                    </span>
+                </Link>
             </div>
         </div>
     );
 }
+
+export default memo(AttractionCard);
 

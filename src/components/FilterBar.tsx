@@ -81,7 +81,6 @@ export default function FilterBar({
                     const shouldBeCompact = scrollY > SCROLL_THRESHOLD;
 
                     if (shouldBeCompact !== isCompactRef.current) {
-                        console.log(`🔄 [FilterBar] ${isCompactRef.current ? '紧凑' : '宽松'} -> ${shouldBeCompact ? '紧凑' : '宽松'} (滚动: ${scrollY}px)`);
                         isCompactRef.current = shouldBeCompact;
                         setIsCompact(shouldBeCompact);
                     }
@@ -92,8 +91,6 @@ export default function FilterBar({
             }
         };
 
-        const initialScrollY = window.scrollY || window.pageYOffset;
-        console.log(`✅ [FilterBar] 初始化 - 滚动: ${initialScrollY}px, 阈值: 300px`);
         handleScroll();
 
         window.addEventListener('scroll', handleScroll, { passive: true });

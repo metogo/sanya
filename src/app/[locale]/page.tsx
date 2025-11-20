@@ -1,8 +1,9 @@
 'use client';
 
-import {useEffect, useMemo, useState} from 'react';
+import {useEffect, useMemo, useState, useCallback} from 'react';
 import {useTranslations} from 'next-intl';
-import {useParams, useRouter} from 'next/navigation';
+import {useParams} from 'next/navigation';
+import {Link} from '@/i18n/routing';
 import {useSpring, animated} from '@react-spring/web';
 import Header from '@/components/Header';
 import HeroBanner from '@/components/HeroBanner';
@@ -17,7 +18,6 @@ import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
 export default function Home() {
     const t = useTranslations();
     const params = useParams();
-    const router = useRouter();
     const locale = params.locale as string;
     const [isLoading, setIsLoading] = useState(true); // 始终从true开始，避免hydration错误
     const [searchQuery, setSearchQuery] = useState('');
@@ -104,6 +104,30 @@ export default function Home() {
         });
     }, [searchQuery, selectedCategory, selectedRating, selectedPrice]);
 
+    // 使用 useCallback 优化事件处理函数
+    const handleSearch = useCallback((query: string) => {
+        setSearchQuery(query);
+    }, []);
+
+    const handleCategoryChange = useCallback((category: FilterCategory) => {
+        setSelectedCategory(category);
+    }, []);
+
+    const handleRatingChange = useCallback((rating: FilterRating) => {
+        setSelectedRating(rating);
+    }, []);
+
+    const handlePriceChange = useCallback((price: FilterPrice) => {
+        setSelectedPrice(price);
+    }, []);
+
+    const handleResetFilters = useCallback(() => {
+        setSearchQuery('');
+        setSelectedCategory('all');
+        setSelectedRating('all');
+        setSelectedPrice('all');
+    }, []);
+
     // 加载状态显示Loading过场
     if (isLoading) {
         return <LoadingScreen />;
@@ -112,7 +136,7 @@ export default function Home() {
     return (
         <div className="min-h-screen bg-white">
             {/* Header */}
-            <Header onSearch={setSearchQuery}/>
+            <Header onSearch={handleSearch}/>
 
             {/* Hero Banner - 使用Vercel CDN自动优化 */}
             <HeroBanner />
@@ -122,9 +146,9 @@ export default function Home() {
                 selectedCategory={selectedCategory}
                 selectedRating={selectedRating}
                 selectedPrice={selectedPrice}
-                onCategoryChange={setSelectedCategory}
-                onRatingChange={setSelectedRating}
-                onPriceChange={setSelectedPrice}
+                onCategoryChange={handleCategoryChange}
+                onRatingChange={handleRatingChange}
+                onPriceChange={handlePriceChange}
             />
 
             {/* 浮动联系按钮 */}
@@ -187,12 +211,7 @@ export default function Home() {
                             {t('main.noResultsDescription')}
                         </p>
                         <button
-                            onClick={() => {
-                                setSearchQuery('');
-                                setSelectedCategory('all');
-                                setSelectedRating('all');
-                                setSelectedPrice('all');
-                            }}
+                            onClick={handleResetFilters}
                             className="px-8 py-3 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200"
                         >
                             {t('main.resetFilters')}
@@ -202,7 +221,7 @@ export default function Home() {
             </main>
 
             {/* Bottom Navigation Menu */}
-            <BottomMenu locale={locale} router={router} currentPage="home" t={t} />
+            <BottomMenu locale={locale} currentPage="home" t={t} />
 
             {/* Footer */}
             <footer className="mt-16 mb-20 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-12">
@@ -230,7 +249,7 @@ export default function Home() {
     );
 }
 
-function BottomMenu({ locale, router, currentPage, t }: { locale: string; router: any; currentPage: 'home' | 'chauffeur'; t: any }) {
+function BottomMenu({ locale, currentPage, t }: { locale: string; currentPage: 'home' | 'chauffeur'; t: any }) {
     const homeActive = currentPage === 'home';
     const chauffeurActive = currentPage === 'chauffeur';
 
@@ -246,67 +265,35 @@ function BottomMenu({ locale, router, currentPage, t }: { locale: string; router
         config: { tension: 300, friction: 20 }
     });
 
-    const handleHomeClick = (e: any) => {
-        setTimeout(() => {
-            router.push(`/${locale}`);
-        }, 0);
-    };
-
-    const handleChauffeurClick = (e: any) => {
-        setTimeout(() => {
-            router.push(`/${locale}/chauffeur`);
-        }, 0);
-    };
-
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-white via-white to-white/95 backdrop-blur-xl border-t border-gray-200 shadow-2xl z-50">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-[9999] pb-safe">
             <div className="max-w-[1400px] mx-auto px-4">
-                <div className="flex items-center py-2">
-                    <animated.button
-                        onClick={handleHomeClick}
-                        onTouchStart={(e) => {
-                            e.currentTarget.style.transform = 'scale(0.95)';
-                        }}
-                        onTouchEnd={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)';
-                            handleHomeClick(e);
-                        }}
-                        style={homeSpring}
-                        className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
-                    >
-                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 shadow-lg ${homeActive ? 'opacity-100 shadow-blue-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-blue-500/50'}`}></div>
-                        <div className="relative flex flex-col items-center gap-0.5">
-                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-transform duration-300 ${homeActive ? 'text-white' : 'text-gray-600 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span className={`text-xs font-bold transition-colors duration-300 ${homeActive ? 'text-white' : 'text-gray-600 group-hover:text-white'}`}>
+                <div className="flex items-center justify-around py-2">
+                    <Link href="/" className="flex-1 max-w-[120px]">
+                        <div className="flex flex-col items-center gap-1 py-2 cursor-pointer">
+                            <div className={`p-1.5 rounded-full transition-colors duration-300 ${homeActive ? 'bg-blue-50 text-blue-600' : 'text-gray-500'}`}>
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                </svg>
+                            </div>
+                            <span className={`text-xs font-medium transition-colors duration-300 ${homeActive ? 'text-blue-600' : 'text-gray-500'}`}>
                                 {t('menu.home')}
                             </span>
                         </div>
-                    </animated.button>
+                    </Link>
                     
-                    <animated.button
-                        onClick={handleChauffeurClick}
-                        onTouchStart={(e) => {
-                            e.currentTarget.style.transform = 'scale(0.95)';
-                        }}
-                        onTouchEnd={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)';
-                            handleChauffeurClick(e);
-                        }}
-                        style={chauffeurSpring}
-                        className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
-                    >
-                        <div className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 shadow-lg ${chauffeurActive ? 'opacity-100 shadow-purple-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-purple-500/50'}`}></div>
-                        <div className="relative flex flex-col items-center gap-0.5">
-                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-all duration-300 ${chauffeurActive ? 'text-white' : 'text-gray-600 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                            </svg>
-                            <span className={`text-xs font-bold transition-colors duration-300 ${chauffeurActive ? 'text-white' : 'text-gray-600 group-hover:text-white'}`}>
+                    <Link href="/chauffeur" className="flex-1 max-w-[120px]">
+                        <div className="flex flex-col items-center gap-1 py-2 cursor-pointer">
+                            <div className={`p-1.5 rounded-full transition-colors duration-300 ${chauffeurActive ? 'bg-purple-50 text-purple-600' : 'text-gray-500'}`}>
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                </svg>
+                            </div>
+                            <span className={`text-xs font-medium transition-colors duration-300 ${chauffeurActive ? 'text-purple-600' : 'text-gray-500'}`}>
                                 {t('menu.chauffeur')}
                             </span>
                         </div>
-                    </animated.button>
+                    </Link>
                 </div>
             </div>
         </div>
