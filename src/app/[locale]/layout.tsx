@@ -60,7 +60,7 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
     },
     verification: {
       // google: 'google-site-verification-code', // 已通过 DNS 验证
-      yandex: 'fa86733ddb6976cd',
+      yandex: '1f7dbb461066674d',
     },
     robots: {
       index: true,
