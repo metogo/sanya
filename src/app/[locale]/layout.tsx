@@ -23,7 +23,7 @@ export async function generateMetadata({params}: {params: Promise<{locale: strin
       template: `%s | ${title}`,
     },
     description: description,
-    keywords: ['Sanya', 'Sanya Travel', 'Hainan', 'Yalong Bay', 'Nanshan Temple', 'China Tourism', 'Sanya Guide', 'Санья', 'Хайнань', 'Путешествие в Санью', '三亚', '海南', '三亚旅游'],
+    keywords: ['Санья Экскурсии', 'Sanya Excursions', 'Sanya', 'Sanya Travel', 'Hainan', 'Yalong Bay', 'Nanshan Temple', 'China Tourism', 'Sanya Guide', 'Санья', 'Хайнань', 'Путешествие в Санью', '三亚', '海南', '三亚旅游', 'Экскурсии в Санье', 'Гиды в Санье', 'Достопримечательности Санья'],
     authors: [{ name: 'RossiySanya' }],
     creator: 'RossiySanya',
     publisher: 'RossiySanya',

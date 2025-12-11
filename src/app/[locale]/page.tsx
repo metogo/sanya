@@ -138,7 +138,9 @@ export default function Home() {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: 'RossiySanya',
+        alternateName: ['Санья Экскурсии', 'Sanya Excursions'],
         url: 'https://rossiysanya.com',
+        description: 'Лучшие экскурсии и достопримечательности в Санье, Хайнань.',
         potentialAction: {
             '@type': 'SearchAction',
             target: 'https://rossiysanya.com/search?q={search_term_string}',
