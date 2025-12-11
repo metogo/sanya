@@ -153,13 +153,8 @@ export default function Home() {
                 dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
             />
             {/* Header */}
-            <Header onSearch={handleSearch}/>
-
-            {/* Hero Banner - 使用Vercel CDN自动优化 */}
-            <HeroBanner />
-
-            {/* Filter Bar */}
-            <FilterBar
+            <Header
+                onSearch={handleSearch}
                 selectedCategory={selectedCategory}
                 selectedRating={selectedRating}
                 selectedPrice={selectedPrice}
@@ -168,49 +163,53 @@ export default function Home() {
                 onPriceChange={handlePriceChange}
             />
 
-            {/* 浮动联系按钮 */}
-            <ContactFloat />
+            {/* Hero Banner - 使用Vercel CDN自动优化 */}
+            <HeroBanner />
+
+            {/* Filter Bar - 仅在移动端显示 */}
+            <div className="lg:hidden">
+                <FilterBar
+                    selectedCategory={selectedCategory}
+                    selectedRating={selectedRating}
+                    selectedPrice={selectedPrice}
+                    onCategoryChange={handleCategoryChange}
+                    onRatingChange={handleRatingChange}
+                    onPriceChange={handlePriceChange}
+                />
+            </div>
+
+            {/* 浮动联系按钮 - 仅在移动端显示 */}
+            <div className="lg:hidden">
+                <ContactFloat />
+            </div>
             
-            {/* 浮动分享按钮 */}
-            <ShareButton />
+            {/* 浮动分享按钮 - 仅在移动端显示 */}
+            <div className="lg:hidden">
+                <ShareButton />
+            </div>
 
             {/* Main Content */}
             <main
-                className="max-w-[1400px] mx-auto py-12 md:py-16"
-                style={{paddingLeft: '10px', paddingRight: '10px'}}>
+                style={{margin: '0 auto'}}
+                className="max-w-[1440px] mx-auto py-8 md:py-12 px-6 sm:px-8 lg:px-12 xl:px-16">
                 {/* Results Count */}
-                <div className="mb-10" style={{marginTop: 10, marginBottom: 10}}>
-                    <div
-                        style={{padding: 10}}
-                        className="flex items-center justify-between flex-wrap gap-4 bg-gradient-to-r from-blue-50 via-red-50 to-blue-50 p-6 md:p-8 rounded-2xl border-4 border-gray-300 shadow-lg">
-                        <div>
-                            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2"
-                                style={{fontFamily: "'Playfair Display', serif"}}>
-                                {t('main.popularPlaces')}
-                            </h2>
-                            <p className="text-gray-600 text-sm md:text-base">
-                                {t('main.foundAttractions')} <span
-                                className="font-bold text-[#DC143C] text-lg">{filteredAttractions.length}</span>
-                            </p>
-                        </div>
-
-                        {/* Quick Stats */}
-                        {filteredAttractions.length > 0 && (
-                            <div className="flex gap-4 text-sm">
-                                <div className="bg-white px-5 py-3 rounded-xl shadow-md border-2 border-gray-300">
-                                    <span className="text-gray-600 font-semibold">{t('main.averageRating')}</span>
-                                    <span className="ml-2 font-bold text-[#DC143C] text-lg">
-                    {(filteredAttractions.reduce((acc, a) => acc + a.rating, 0) / filteredAttractions.length).toFixed(1)} ⭐
-                  </span>
-                                </div>
-                            </div>
-                        )}
+                <div className="mb-8">
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900"
+                            style={{fontFamily: "'Playfair Display', serif"}}>
+                            {t('main.popularPlaces')}
+                        </h2>
+                        <p className="text-gray-600 text-sm md:text-base">
+                            {t('main.foundAttractions')} <span
+                            className="font-bold text-[#DC143C] text-lg">{filteredAttractions.length}</span>
+                        </p>
                     </div>
+                    <div className="h-px bg-gray-200 mt-4"></div>
                 </div>
 
                 {/* Attractions Grid */}
                 {filteredAttractions.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 min-[1440px]:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
                         {filteredAttractions.map((attraction) => (
                             <div key={attraction.id} className="p-2">
                                 <AttractionCard attraction={attraction}/>
@@ -237,18 +236,20 @@ export default function Home() {
                 )}
             </main>
 
-            {/* Bottom Navigation Menu */}
-            <BottomMenu locale={locale} currentPage="home" t={t} />
+            {/* Bottom Navigation Menu - 仅在移动端显示 */}
+            <div className="lg:hidden">
+                <BottomMenu locale={locale} currentPage="home" t={t} />
+            </div>
 
             {/* Footer */}
             <footer className="mt-16 mb-20 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-12">
-                <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
-                    <div className="text-center">
+                <div style={{margin: '0 auto'}} className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
+                    <div  className="text-center">
                         <h3 className="text-2xl md:text-3xl font-bold mb-4"
                             style={{fontFamily: "'Playfair Display', serif"}}>
                             {t('footer.title')}
                         </h3>
-                        <p className="text-white/90 text-base md:text-lg mb-6 max-w-2xl mx-auto">
+                        <p style={{margin: '0 auto'}} className="text-white/90 text-base md:text-lg mb-6 max-w-2xl mx-auto">
                             {t('footer.subtitle')}
                         </p>
                         <div className="border-t border-white/20 pt-6 mt-6">

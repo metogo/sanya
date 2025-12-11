@@ -116,11 +116,11 @@ export default function FilterBar({
             <div style={{justifyContent: isCompact ? 'center' : 'flex-start', padding: isCompact ? '5px' : '5px'}} className={`max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 ${
                 isCompact ? ' justify-items-center p-[5px]' : ''
             }`}>
-                <div className={`flex flex-col transition-all duration-300 ${
+                <div className={`flex flex-col lg:flex-row lg:items-end lg:justify-between transition-all duration-300 ${
                     isCompact ? 'gap-2 md:gap-3 py-[5px]' : 'gap-6 md:gap-8'
                 }`}>
                     {/* Category Filter */}
-                    <div>
+                    <div className="flex-1">
                         {!isCompact && (
                             <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
                                 {t('categories')}
@@ -150,8 +150,8 @@ export default function FilterBar({
                     </div>
 
                     {/* Rating and Price Filters */}
-                    <div className={`flex flex-wrap gap-4 md:gap-6 ${isCompact ? 'hidden md:flex' : ''}`}>
-                        <div className="flex-1 min-w-[180px]">
+                    <div className={`flex flex-wrap gap-4 md:gap-6 lg:min-w-[400px] ${isCompact ? 'hidden md:flex' : ''}`}>
+                        <div className="flex-1 min-w-[140px]">
                             {!isCompact && (
                                 <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
                                     {t('ratings')}
@@ -172,7 +172,7 @@ export default function FilterBar({
                             </select>
                         </div>
 
-                        <div className="flex-1 min-w-[180px]">
+                        <div className="flex-1 min-w-[140px]">
                             {!isCompact && (
                                 <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
                                     {t('prices')}

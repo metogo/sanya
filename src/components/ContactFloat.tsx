@@ -20,7 +20,7 @@ export default function ContactFloat() {
     };
 
     return (
-        <div className={`fixed bottom-20 right-6 ${isOpen ? 'z-[60]' : 'z-50'} transition-all duration-300`}>
+        <div className={`fixed bottom-20 right-6 lg:bottom-10 lg:right-10 ${isOpen ? 'z-[60]' : 'z-50'} transition-all duration-300`}>
             {/* 展开的选项 */}
             {isOpen && (
                 <div className="mb-4 flex flex-col gap-[5px] animate-fade-in relative z-[60]">

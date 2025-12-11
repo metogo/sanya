@@ -99,14 +99,14 @@ export default function AttractionDetailPage() {
     
     if (attraction.originalPrice) {
       const discount = Math.round((1 - attraction.price / attraction.originalPrice) * 100);
-      if (locale === 'zh') return `🔥 限时优惠！${name} - 现在只需¥${attraction.price}（原价¥${attraction.originalPrice}，省${discount}%）！快来抢购！`;
-      if (locale === 'en') return `🔥 Limited Offer! ${name} - Only ¥${attraction.price} (was ¥${attraction.originalPrice}, save ${discount}%)! Book now!`;
-      return `🔥 Акция! ${name} - Всего ¥${attraction.price} (было ¥${attraction.originalPrice}, скидка ${discount}%)! Бронируйте сейчас!`;
+      if (locale === 'zh') return `🔥 限时优惠！${name} - 现在只需$${attraction.price}（原价$${attraction.originalPrice}，省${discount}%）！快来抢购！`;
+      if (locale === 'en') return `🔥 Limited Offer! ${name} - Only $${attraction.price} (was $${attraction.originalPrice}, save ${discount}%)! Book now!`;
+      return `🔥 Акция! ${name} - Всего $${attraction.price} (было $${attraction.originalPrice}, скидка ${discount}%)! Бронируйте сейчас!`;
     }
     
-    if (locale === 'zh') return `✨ ${name} - 仅需¥${attraction.price}！三亚热门景点推荐！`;
-    if (locale === 'en') return `✨ ${name} - Only ¥${attraction.price}! Popular attraction in Sanya!`;
-    return `✨ ${name} - Всего ¥${attraction.price}! Популярная достопримечательность Саньи!`;
+    if (locale === 'zh') return `✨ ${name} - 仅需$${attraction.price}！三亚热门景点推荐！`;
+    if (locale === 'en') return `✨ ${name} - Only $${attraction.price}! Popular attraction in Sanya!`;
+    return `✨ ${name} - Всего $${attraction.price}! Популярная достопримечательность Саньи!`;
   };
 
   if (isLoading) {
@@ -145,7 +145,7 @@ export default function AttractionDetailPage() {
       ratingValue: attraction.rating,
       reviewCount: attraction.reviewCount,
     },
-    priceRange: attraction.isFree ? '0' : `¥${attraction.price}`,
+    priceRange: attraction.isFree ? '0' : `$${attraction.price}`,
   };
 
   return (
@@ -210,7 +210,7 @@ export default function AttractionDetailPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-6 md:px-8 py-12">
+      <div style={{margin: '0 auto'}} className="max-w-6xl mx-auto px-6 md:px-8 py-12">
         {/* Key Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 -mt-20 relative z-10">
           {/* Price Card */}
@@ -224,7 +224,7 @@ export default function AttractionDetailPage() {
                 </div>
               ) : (
                 <div className="text-2xl font-bold text-[#DC143C]">
-                  ¥{attraction.price}
+                  ${attraction.price}
                 </div>
               )}
             </div>
