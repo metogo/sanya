@@ -41,7 +41,7 @@ function AttractionCard({attraction}: AttractionCardProps) {
     };
 
     return (
-        <div
+        <article
             className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1 flex flex-col h-full">
             {/* Image Container */}
             <div className="relative h-[200px] sm:h-[220px] lg:h-[240px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shrink-0">
@@ -176,7 +176,7 @@ function AttractionCard({attraction}: AttractionCardProps) {
                     </div>
                 </div>
             </div>
-        </div>
+        </article>
     );
 }
 

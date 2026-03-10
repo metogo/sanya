@@ -98,12 +98,18 @@ export default function AttractionDetailPage() {
     );
   }
 
-  const jsonLd = {
+  const attractionJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'TouristAttraction',
     name: getName(),
     description: getDescription(),
-    image: attraction.image,
+    image: `https://rossiysanya.com${attraction.image}`,
+    photo: {
+      '@type': 'ImageObject',
+      url: `https://rossiysanya.com${attraction.image}`,
+      width: 1200,
+      height: 630,
+    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Sanya',
@@ -111,20 +117,59 @@ export default function AttractionDetailPage() {
       addressCountry: 'CN',
       streetAddress: getLocation(),
     },
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 18.25,
+      longitude: 109.5,
+    },
     url: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: attraction.rating,
+      bestRating: 5,
+      worstRating: 1,
       reviewCount: attraction.reviewCount,
     },
-    priceRange: attraction.isFree ? '0' : `¥${attraction.price}`,
+    priceRange: attraction.isFree ? 'Free' : `¥${attraction.price}`,
+    isAccessibleForFree: attraction.isFree,
+    touristType: locale === 'ru' ? 'Русскоговорящие туристы' : locale === 'zh' ? '游客' : 'International tourists',
+    availableLanguage: ['Russian', 'Chinese', 'English'],
+  };
+
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: locale === 'ru' ? 'Главная' : locale === 'zh' ? '首页' : 'Home',
+        item: `https://rossiysanya.com/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: locale === 'ru' ? 'Достопримечательности' : locale === 'zh' ? '景点' : 'Attractions',
+        item: `https://rossiysanya.com/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: getName(),
+        item: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
+      },
+    ],
   };
 
   return (
     <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       {/* Back Button */}

@@ -133,26 +133,72 @@ export default function Home() {
         return <LoadingScreen />;
     }
 
-    // JSON-LD 结构化数据
-    const jsonLd = {
+    const websiteJsonLd = {
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: 'RossiySanya',
-        alternateName: ['Санья Экскурсии', 'Sanya Excursions'],
+        alternateName: ['Санья Экскурсии', 'Sanya Excursions', '三亚旅游'],
         url: 'https://rossiysanya.com',
-        description: 'Лучшие экскурсии и достопримечательности в Санье, Хайнань.',
-        potentialAction: {
-            '@type': 'SearchAction',
-            target: 'https://rossiysanya.com/search?q={search_term_string}',
-            'query-input': 'required name=search_term_string',
+        description: locale === 'ru'
+            ? 'Лучшие экскурсии и достопримечательности в Санье, Хайнань. Организация туров, билеты, трансферы.'
+            : locale === 'zh'
+            ? '三亚最佳旅游景点攻略，海南岛热带天堂，景点门票、专车接送、旅游指南。'
+            : 'Best tours and attractions in Sanya, Hainan. Tour organization, tickets, transfers and travel guides.',
+        inLanguage: locale === 'ru' ? 'ru-RU' : locale === 'zh' ? 'zh-CN' : 'en-US',
+    };
+
+    const organizationJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'TravelAgency',
+        name: 'RossiySanya',
+        url: 'https://rossiysanya.com',
+        logo: 'https://rossiysanya.com/images/banners/亚龙湾.jpeg',
+        description: locale === 'ru'
+            ? 'Организация экскурсий и туров по Санье для русскоговорящих туристов'
+            : locale === 'zh'
+            ? '三亚旅游服务，为游客提供专业的景点导览和专车接送'
+            : 'Tour organization and travel services in Sanya for international tourists',
+        address: {
+            '@type': 'PostalAddress',
+            addressLocality: 'Sanya',
+            addressRegion: 'Hainan',
+            addressCountry: 'CN',
         },
+        areaServed: {
+            '@type': 'City',
+            name: 'Sanya',
+        },
+        sameAs: [
+            'https://t.me/saborovivan',
+        ],
+    };
+
+    const itemListJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        name: locale === 'ru' ? 'Достопримечательности Санья' : locale === 'zh' ? '三亚景点列表' : 'Sanya Attractions',
+        numberOfItems: filteredAttractions.length,
+        itemListElement: filteredAttractions.slice(0, 10).map((attraction, index) => ({
+            '@type': 'ListItem',
+            position: index + 1,
+            url: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
+            name: locale === 'ru' ? attraction.nameRu : locale === 'zh' ? (attraction.nameZh || attraction.name) : attraction.name,
+        })),
     };
 
     return (
         <div className="min-h-screen bg-white">
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+            />
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
             />
             {/* Header */}
             <Header
