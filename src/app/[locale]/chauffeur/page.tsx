@@ -1,510 +1,258 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useSpring, animated, useTrail } from '@react-spring/web';
-import { useState, ReactElement } from 'react';
-import { useParams, useRouter } from 'next/navigation';
-import Header from '@/components/Header';
+import { useParams } from 'next/navigation';
+import { Link } from '@/i18n/routing';
 import ContactFloat from '@/components/ContactFloat';
 import ShareButton from '@/components/ShareButton';
 
 export default function ChauffeurPage() {
   const t = useTranslations('chauffeur');
   const menuT = useTranslations('menu');
+  const footerT = useTranslations('footer');
   const params = useParams();
-  const router = useRouter();
   const locale = params.locale as string;
-  const [hoveredCar, setHoveredCar] = useState<string | null>(null);
 
-  // 标题动画
-  const titleSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(-50px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
-    config: { tension: 280, friction: 60 }
-  });
-
-  // 副标题动画
-  const subtitleSpring = useSpring({
-    from: { opacity: 0, transform: 'translateY(30px)' },
-    to: { opacity: 1, transform: 'translateY(0px)' },
-    delay: 200,
-    config: { tension: 280, friction: 60 }
-  });
-
-  // 车型卡片数据
   const cars = [
     {
       id: 'tesla',
       brand: t('tesla'),
       model: t('teslaModel'),
-      image: 'https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=60&auto=format&fit=crop',
-      gradient: 'from-slate-900 via-blue-900 to-slate-900',
-      accentColor: 'from-blue-400 to-cyan-400',
-      features: [t('teslaFeature1'), t('teslaFeature2'), t('teslaFeature3')]
+      features: [t('teslaFeature1'), t('teslaFeature2'), t('teslaFeature3')],
+      color: 'bg-sky-50/70 border-sky-100',
+      accent: 'text-sky-600',
+      dot: 'bg-sky-500',
     },
     {
       id: 'lixiang',
       brand: t('lixiang'),
       model: t('lixiangModel'),
-      image: 'https://images.unsplash.com/photo-1619767886558-efdc259cde1a?w=600&q=60&auto=format&fit=crop',
-      gradient: 'from-slate-900 via-purple-900 to-slate-900',
-      accentColor: 'from-purple-400 to-pink-400',
-      features: [t('lixiangFeature1'), t('lixiangFeature2'), t('lixiangFeature3')]
-    }
+      features: [t('lixiangFeature1'), t('lixiangFeature2'), t('lixiangFeature3')],
+      color: 'bg-violet-50/70 border-violet-100',
+      accent: 'text-violet-600',
+      dot: 'bg-violet-500',
+    },
   ];
 
-  // 特色服务数据 - 使用SVG图标
   const features = [
-    {
-      title: t('feature1'),
-      description: t('feature1Desc'),
-      iconType: 'driver',
-      gradient: 'from-blue-500/20 to-cyan-500/20',
-      borderGradient: 'from-blue-500 to-cyan-500',
-      iconColor: 'text-blue-400'
-    },
-    {
-      title: t('feature2'),
-      description: t('feature2Desc'),
-      iconType: 'car',
-      gradient: 'from-purple-500/20 to-pink-500/20',
-      borderGradient: 'from-purple-500 to-pink-500',
-      iconColor: 'text-purple-400'
-    },
-    {
-      title: t('feature3'),
-      description: t('feature3Desc'),
-      iconType: 'settings',
-      gradient: 'from-orange-500/20 to-yellow-500/20',
-      borderGradient: 'from-orange-500 to-yellow-500',
-      iconColor: 'text-orange-400'
-    },
-    {
-      title: t('feature4'),
-      description: t('feature4Desc'),
-      iconType: 'clock',
-      gradient: 'from-green-500/20 to-emerald-500/20',
-      borderGradient: 'from-green-500 to-emerald-500',
-      iconColor: 'text-green-400'
-    }
+    { title: t('feature1'), desc: t('feature1Desc'), icon: '👨‍✈️' },
+    { title: t('feature2'), desc: t('feature2Desc'), icon: '🚗' },
+    { title: t('feature3'), desc: t('feature3Desc'), icon: '✨' },
+    { title: t('feature4'), desc: t('feature4Desc'), icon: '🕐' },
   ];
 
-  // 服务项目数据 - 使用SVG图标
   const services = [
-    {
-      title: t('airport'),
-      description: t('airportDesc'),
-      iconType: 'plane',
-      iconColor: 'text-blue-400'
-    },
-    {
-      title: t('daily'),
-      description: t('dailyDesc'),
-      iconType: 'location',
-      iconColor: 'text-green-400'
-    },
-    {
-      title: t('wedding'),
-      description: t('weddingDesc'),
-      iconType: 'heart',
-      iconColor: 'text-pink-400'
-    },
-    {
-      title: t('custom'),
-      description: t('customDesc'),
-      iconType: 'calendar',
-      iconColor: 'text-purple-400'
-    }
+    { title: t('airport'), desc: t('airportDesc'), icon: '✈️', accent: 'border-l-sky-400' },
+    { title: t('daily'), desc: t('dailyDesc'), icon: '🗺️', accent: 'border-l-emerald-400' },
+    { title: t('wedding'), desc: t('weddingDesc'), icon: '💍', accent: 'border-l-rose-400' },
+    { title: t('custom'), desc: t('customDesc'), icon: '📋', accent: 'border-l-amber-400' },
   ];
 
-  // SVG图标渲染函数
-  const renderIcon = (iconType: string, className: string = 'w-12 h-12'): ReactElement | null => {
-    const icons: { [key: string]: ReactElement } = {
-      driver: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-        </svg>
-      ),
-      car: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-        </svg>
-      ),
-      settings: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      clock: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      plane: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M3 3l18 9-18 9V3z" />
-        </svg>
-      ),
-      location: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      heart: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-        </svg>
-      ),
-      calendar: (
-        <svg className={className} fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-        </svg>
-      )
-    };
-    return icons[iconType] || null;
+  const handleContact = () => {
+    window.open('https://t.me/saborovivan', '_blank');
   };
 
-  // 特色服务卡片动画
-  const featureTrail = useTrail(features.length, {
-    from: { opacity: 0, transform: 'scale(0.9) translateY(20px)' },
-    to: { opacity: 1, transform: 'scale(1) translateY(0px)' },
-    delay: 400,
-    config: { tension: 280, friction: 60 }
-  });
-
-  // 服务项目卡片动画
-  const serviceTrail = useTrail(services.length, {
-    from: { opacity: 0, transform: 'translateX(-30px)' },
-    to: { opacity: 1, transform: 'translateX(0px)' },
-    delay: 600,
-    config: { tension: 280, friction: 60 }
-  });
-
   return (
-    <div className="min-h-screen bg-slate-950">
-      <Header onSearch={() => {}} />
-      <ContactFloat />
-      <ShareButton />
-
-      {/* Hero Section with Parallax Effect */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 text-white pt-32 pb-24">
-        {/* Animated Background Grid */}
-        <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0" style={{
-            backgroundImage: 'linear-gradient(to right, rgba(59, 130, 246, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(59, 130, 246, 0.1) 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
-          }}></div>
+    <div className="min-h-screen bg-gray-50/50">
+      {/* Top Bar */}
+      <div className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-3xl mx-auto px-5 h-12 flex items-center gap-3">
+          <Link
+            href="/"
+            className="w-8 h-8 rounded-full bg-gray-50 hover:bg-gray-100 flex items-center justify-center transition-colors"
+          >
+            <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </Link>
+          <span className="text-sm font-medium text-gray-800">{t('title')}</span>
         </div>
+      </div>
 
-        {/* Floating Orbs */}
-        <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full blur-3xl opacity-20 animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
-        <div className="relative max-w-7xl mx-auto px-6 text-center">
-          <animated.div style={titleSpring}>
-            <div className="inline-block mb-6">
-              <div className="flex items-center gap-3 bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-blue-500/20 rounded-full px-6 py-2">
-                <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-blue-200">{t('badge')}</span>
-              </div>
-            </div>
-            <h1 className="text-6xl md:text-8xl font-black mb-6 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 bg-clip-text text-transparent">
-              {t('title')}
-            </h1>
-          </animated.div>
-          
-          <animated.div style={subtitleSpring}>
-            <p className="text-2xl md:text-3xl text-blue-100 mb-4 font-light">
-              {t('subtitle')}
-            </p>
-            <p className="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
-              {t('description')}
-            </p>
-          </animated.div>
-
-          {/* CTA Buttons */}
-          <animated.div style={subtitleSpring} className="mt-12 flex gap-4 justify-center flex-wrap">
-            <button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 rounded-2xl font-bold shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105">
-              <span className="relative z-10 flex items-center gap-2">
-                <span>{t('bookNow')}</span>
-                <span className="group-hover:translate-x-1 transition-transform">→</span>
-              </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      {/* Hero */}
+      <section className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+        <div className="max-w-3xl mx-auto px-5 py-10 md:py-20 text-center">
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/10 rounded-full px-3.5 py-1 mb-5">
+            <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
+            <span className="text-[11px] text-white/70">{t('badge')}</span>
+          </div>
+          <h2
+            className="text-xl md:text-3xl lg:text-4xl font-bold mb-3 leading-snug"
+            style={{ fontFamily: "'Playfair Display', serif" }}
+          >
+            {t('title')}
+          </h2>
+          <p className="text-white/60 text-[13px] md:text-sm max-w-md mx-auto mb-7 leading-relaxed">
+            {t('description')}
+          </p>
+          <div className="flex gap-2.5 justify-center">
+            <button
+              onClick={handleContact}
+              className="px-5 py-2.5 bg-white text-gray-900 font-semibold text-[13px] rounded-lg hover:bg-gray-100 active:scale-[0.98] transition-all"
+            >
+              {t('bookNow')} →
             </button>
-            <button className="px-8 py-4 rounded-2xl font-bold border-2 border-blue-500/50 hover:border-blue-400 hover:bg-blue-500/10 transition-all duration-300 backdrop-blur-sm">
+            <button
+              onClick={handleContact}
+              className="px-5 py-2.5 border border-white/25 text-white/90 font-medium text-[13px] rounded-lg hover:bg-white/10 transition-all"
+            >
               {t('contactUs')}
             </button>
-          </animated.div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Car Showcase Section */}
-      <div className="max-w-7xl mx-auto px-6 py-24">
-        <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+      <div className="max-w-3xl mx-auto px-5">
+
+        {/* Vehicle Section */}
+        <section className="pt-8 pb-8 md:pt-14 md:pb-12">
+          <h2 className="text-base font-bold text-gray-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
             {t('brands')}
           </h2>
-          <p className="text-slate-400 text-lg">{t('brandsSubtitle')}</p>
-        </div>
-        
-        <div className="grid lg:grid-cols-2 gap-8 mb-24">
-          {cars.map((car, index) => {
-            const carSpring = useSpring({
-              transform: hoveredCar === car.id 
-                ? 'scale(1.02) translateY(-10px)' 
-                : 'scale(1) translateY(0px)',
-              config: { tension: 300, friction: 20 }
-            });
+          <p className="text-gray-400 text-[12px] mb-6">{t('brandsSubtitle')}</p>
 
-            return (
-              <animated.div
+          <div className="space-y-8">
+            {cars.map((car) => (
+              <div
                 key={car.id}
-                style={carSpring}
-                onMouseEnter={() => setHoveredCar(car.id)}
-                onMouseLeave={() => setHoveredCar(null)}
-                className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900/50 to-slate-800/50 backdrop-blur-xl border border-slate-700/50 hover:border-slate-600 transition-all duration-500"
+                className={`rounded-xl border p-5 ${car.color}`}
               >
-                {/* Glass Effect Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-                
-                {/* Car Image */}
-                <div className="relative h-80 overflow-hidden rounded-t-3xl bg-slate-800">
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 to-transparent z-10"></div>
-                  <img
-                    src={car.image}
-                    alt={car.brand}
-                    loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                    onLoad={(e) => {
-                      e.currentTarget.style.opacity = '1';
-                    }}
-                    style={{ opacity: 0, transition: 'opacity 0.3s ease-in' }}
-                  />
-                  
-                  {/* Accent Gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${car.accentColor} opacity-0 group-hover:opacity-20 transition-opacity duration-500`}></div>
+                <div className="flex items-center gap-1.5 mb-2">
+                  <span className={`w-1.5 h-1.5 rounded-full ${car.dot}`} />
+                  <span className={`text-[10px] font-bold uppercase tracking-widest ${car.accent}`}>{car.brand}</span>
                 </div>
-
-                <div className="relative p-8 text-center">
-                  {/* Brand Badge */}
-                  <div className={`inline-block mb-4 px-4 py-2 rounded-full bg-gradient-to-r ${car.accentColor} text-white text-sm font-bold`}>
-                    {car.brand}
-                  </div>
-                  
-                  <h3 className="text-3xl font-bold text-white mb-6">{car.model}</h3>
-                  
-                  {/* Features */}
-                  <div className="space-y-3">
-                    {car.features.map((feature, idx) => (
-                      <div 
-                        key={idx}
-                        className="flex items-center justify-center gap-3 text-slate-300 group-hover:text-white transition-colors duration-300"
-                      >
-                        <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${car.accentColor}`}></div>
-                        <span className="text-lg">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Hover Effect Line */}
-                  <div className={`mt-6 h-1 bg-gradient-to-r ${car.accentColor} rounded-full transform origin-center scale-x-0 group-hover:scale-x-100 transition-transform duration-500 mx-auto max-w-xs`}></div>
+                <h3 className="text-[15px] font-bold text-gray-900 mb-2.5">{car.model}</h3>
+                <div className="space-y-1.5">
+                  {car.features.map((f, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <svg className={`w-3.5 h-3.5 flex-shrink-0 ${car.accent}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span className="text-gray-600 text-[13px]">{f}</span>
+                    </div>
+                  ))}
                 </div>
-              </animated.div>
-            );
-          })}
-        </div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        {/* Features Grid */}
-        <div className="mb-24">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              {t('features')}
+        <div className="border-t border-gray-200/60" />
+
+        {/* Features */}
+        <section className="pt-8 pb-8 md:pt-14 md:pb-12">
+          <h2 className="text-base font-bold text-gray-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+            {t('features')}
+          </h2>
+          <p className="text-gray-400 text-[12px] mb-6">{t('featuresSubtitle')}</p>
+
+          <div className="grid grid-cols-2 gap-3">
+            {features.map((f, i) => (
+              <div key={i} className="bg-white rounded-xl p-4 text-center border border-gray-100">
+                <div className="text-2xl mb-2.5">{f.icon}</div>
+                <h3 className="text-[13px] font-bold text-gray-900 mb-1 leading-tight">{f.title}</h3>
+                <p className="text-[11px] text-gray-400 leading-snug">{f.desc}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="border-t border-gray-200/60" />
+
+        {/* Services */}
+        <section className="pt-8 pb-8 md:pt-14 md:pb-12">
+          <h2 className="text-base font-bold text-gray-900 mb-1" style={{ fontFamily: "'Playfair Display', serif" }}>
+            {t('services')}
+          </h2>
+          <p className="text-gray-400 text-[12px] mb-6">{t('servicesSubtitle')}</p>
+
+          <div className="space-y-3">
+            {services.map((s, i) => (
+              <div
+                key={i}
+                className={`flex items-center gap-3.5 bg-white rounded-xl border border-gray-100 border-l-[3px] ${s.accent} px-4 py-4`}
+              >
+                <span className="text-lg flex-shrink-0">{s.icon}</span>
+                <div className="min-w-0">
+                  <h3 className="text-[13px] font-bold text-gray-900 leading-tight">{s.title}</h3>
+                  <p className="text-[11px] text-gray-400 mt-0.5 leading-snug">{s.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <div className="border-t border-gray-200/60" />
+
+        {/* CTA */}
+        <section className="pt-8 pb-10 md:pt-14 md:pb-16 mb-10">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl px-6 py-8 text-center">
+            <h2
+              className="text-lg font-bold text-white mb-2"
+              style={{ fontFamily: "'Playfair Display', serif" }}
+            >
+              {t('ctaTitle')}
             </h2>
-            <p className="text-slate-400 text-lg">{t('featuresSubtitle')}</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featureTrail.map((style, index) => {
-              const feature = features[index];
-              return (
-                <animated.div
-                  key={index}
-                  style={style}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 p-6 hover:border-slate-600 transition-all duration-300"
-                >
-                  {/* Background Gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}></div>
-                  
-                  {/* Border Gradient on Hover */}
-                  <div className={`absolute inset-0 rounded-2xl bg-gradient-to-r ${feature.borderGradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`}></div>
-                  
-                  <div className="relative z-10 text-center my-[3px]">
-                    <div className={`mb-4 transform group-hover:scale-110 transition-all duration-300 ${feature.iconColor} flex justify-center`}>
-                      {renderIcon(feature.iconType, 'w-10 h-10')}
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                    <p className="text-slate-400 group-hover:text-slate-300 transition-colors duration-300">
-                      {feature.description}
-                    </p>
-                  </div>
-                </animated.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Services Section */}
-        <div className="mb-24">
-          <div className="text-center mb-16">
-            <h2 className="text-5xl font-bold mb-4 bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent">
-              {t('services')}
-            </h2>
-            <p className="text-slate-400 text-lg">{t('servicesSubtitle')}</p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-6">
-            {serviceTrail.map((style, index) => {
-              const service = services[index];
-              return (
-                <animated.div
-                  key={index}
-                  style={style}
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900/80 to-slate-800/80 backdrop-blur-xl border border-slate-700/50 p-8 hover:border-slate-600 transition-all duration-300"
-                >
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0">
-                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-700 flex items-center justify-center group-hover:scale-110 transition-all duration-300 ${service.iconColor}`}>
-                        {renderIcon(service.iconType, 'w-6 h-6')}
-                      </div>
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-2xl font-bold text-white mb-3">{service.title}</h3>
-                      <p className="text-slate-400 text-lg leading-relaxed group-hover:text-slate-300 transition-colors duration-300">
-                        {service.description}
-                      </p>
-                    </div>
-                  </div>
-                  
-                  {/* Hover Accent */}
-                  <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                </animated.div>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Final CTA */}
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-900/50 via-purple-900/50 to-pink-900/50 backdrop-blur-xl border border-slate-700/50 p-16 text-center">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10"></div>
-          <div className="m-5 relative z-10">
-            <h2 className="text-4xl font-bold text-white mb-6">{t('ctaTitle')}</h2>
-            <p className="text-xl text-slate-300 mb-8 max-w-2xl mx-auto">
+            <p className="text-white/50 text-[12px] mb-5 max-w-sm mx-auto leading-relaxed">
               {t('ctaDescription')}
             </p>
-            <div className="flex gap-4 justify-center flex-wrap">
-              <button className="group relative overflow-hidden bg-gradient-to-r from-blue-600 to-purple-600 px-10 py-5 rounded-2xl text-lg font-bold shadow-2xl hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105">
-                <span className="relative z-10">{t('bookNow')}</span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </button>
-            </div>
+            <button
+              onClick={handleContact}
+              className="px-6 py-2.5 bg-white text-gray-900 font-semibold text-[13px] rounded-lg hover:bg-gray-100 active:scale-[0.98] transition-all"
+            >
+              {t('bookNow')} →
+            </button>
           </div>
-        </div>
+        </section>
       </div>
 
-      {/* Bottom Navigation Menu */}
-      <BottomMenuDark locale={locale} router={router} currentPage="chauffeur" menuT={menuT} />
+      {/* Bottom Nav */}
+      <div className="lg:hidden">
+        <BottomMenu />
+      </div>
 
       {/* Footer */}
-      <footer className="mt-24 mb-20 border-t border-slate-800 bg-slate-950">
-        <div className="max-w-7xl mx-auto px-6 py-12 text-center">
-          <p className="text-slate-400">© 2025 {t('title')} | {t('footerSlogan')}</p>
+      <footer className="mb-14 lg:mb-0 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-6">
+        <div className="max-w-3xl mx-auto px-5 text-center">
+          <p className="text-[12px] text-white/80">{footerT('copyright')}</p>
+          <p className="text-[11px] text-white/50 mt-1">{footerT('rights')}</p>
         </div>
       </footer>
+
+      <ContactFloat />
+      <ShareButton />
     </div>
   );
 }
 
-function BottomMenuDark({ locale, router, currentPage, menuT }: { locale: string; router: any; currentPage: 'home' | 'chauffeur'; menuT: any }) {
-    const homeActive = currentPage === 'home';
-    const chauffeurActive = currentPage === 'chauffeur';
+function BottomMenu() {
+  const menuT = useTranslations('menu');
 
-    const homeSpring = useSpring({
-        scale: homeActive ? 1 : 0.95,
-        opacity: homeActive ? 1 : 0.7,
-        config: { tension: 300, friction: 20 }
-    });
-
-    const chauffeurSpring = useSpring({
-        scale: chauffeurActive ? 1 : 0.95,
-        opacity: chauffeurActive ? 1 : 0.7,
-        config: { tension: 300, friction: 20 }
-    });
-
-    const handleHomeClick = (e: any) => {
-        setTimeout(() => {
-            router.push(`/${locale}`);
-        }, 0);
-    };
-
-    const handleChauffeurClick = (e: any) => {
-        setTimeout(() => {
-            router.push(`/${locale}/chauffeur`);
-        }, 0);
-    };
-
-    return (
-        <div className="fixed bottom-0 left-0 right-0 bg-gradient-to-t from-slate-900 via-slate-900 to-slate-900/95 backdrop-blur-xl border-t border-slate-700 shadow-2xl z-50">
-            <div className="max-w-[1400px] mx-auto px-4">
-                <div className="flex items-center py-2">
-                    <animated.button
-                        onClick={handleHomeClick}
-                        onTouchStart={(e) => {
-                            e.currentTarget.style.transform = 'scale(0.95)';
-                        }}
-                        onTouchEnd={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)';
-                            handleHomeClick(e);
-                        }}
-                        style={homeSpring}
-                        className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
-                    >
-                        <div className={`absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 transition-all duration-300 shadow-lg ${homeActive ? 'opacity-100 shadow-blue-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-blue-500/50'}`}></div>
-                        <div className="relative flex flex-col items-center gap-0.5">
-                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-transform duration-300 ${homeActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            <span className={`text-xs font-bold transition-colors duration-300 ${homeActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
-                                {menuT('home')}
-                            </span>
-                        </div>
-                    </animated.button>
-                    
-                    <animated.button
-                        onClick={handleChauffeurClick}
-                        onTouchStart={(e) => {
-                            e.currentTarget.style.transform = 'scale(0.95)';
-                        }}
-                        onTouchEnd={(e) => {
-                            e.currentTarget.style.transform = 'scale(1)';
-                            handleChauffeurClick(e);
-                        }}
-                        style={chauffeurSpring}
-                        className="relative flex-1 flex flex-col items-center gap-1 py-2 group cursor-pointer touch-manipulation active:scale-95"
-                    >
-                        <div className={`absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300 shadow-lg ${chauffeurActive ? 'opacity-100 shadow-purple-500/50' : 'opacity-0 group-hover:opacity-100 group-hover:shadow-purple-500/50'}`}></div>
-                        <div className="relative flex flex-col items-center gap-0.5">
-                            <svg className={`w-5 h-5 transform group-hover:scale-110 transition-all duration-300 ${chauffeurActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                            </svg>
-                            <span className={`text-xs font-bold transition-colors duration-300 ${chauffeurActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
-                                {menuT('chauffeur')}
-                            </span>
-                        </div>
-                    </animated.button>
-                </div>
+  return (
+    <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-2px_8px_rgba(0,0,0,0.06)] z-[9999] pb-safe">
+      <div className="max-w-md mx-auto px-4">
+        <div className="flex items-center justify-around py-1.5">
+          <Link href="/" className="flex-1 max-w-[100px]">
+            <div className="flex flex-col items-center gap-0.5 py-1.5">
+              <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+              <span className="text-[10px] font-medium text-gray-400">{menuT('home')}</span>
             </div>
+          </Link>
+
+          <Link href="/chauffeur" className="flex-1 max-w-[100px]">
+            <div className="flex flex-col items-center gap-0.5 py-1.5">
+              <div className="p-1 rounded-full bg-purple-50">
+                <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+              </div>
+              <span className="text-[10px] font-medium text-purple-600">{menuT('chauffeur')}</span>
+            </div>
+          </Link>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
