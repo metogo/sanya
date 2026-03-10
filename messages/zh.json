@@ -26,8 +26,8 @@
     "prices": "价格",
     "allPrices": "所有价格",
     "free": "免费",
-    "budget": "100¥以下",
-    "premium": "100¥以上"
+    "budget": "200¥以下",
+    "premium": "200¥以上"
   },
   "main": {
     "popularPlaces": "热门景点",
@@ -43,7 +43,8 @@
     "free": "免费",
     "details": "了解更多",
     "off": "折",
-    "now": "现价"
+    "now": "现价",
+    "share": "分享到 WhatsApp"
   },
   "footer": {
     "title": "🏛️ 三亚景点",
@@ -62,6 +63,7 @@
     "contact": "联系我们",
     "phone": "电话咨询",
     "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
     "callNow": "立即致电",
     "close": "关闭",
     "share": "分享",

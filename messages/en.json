@@ -26,8 +26,8 @@
     "prices": "Price",
     "allPrices": "All Prices",
     "free": "Free",
-    "budget": "Under ¥100",
-    "premium": "¥100+"
+    "budget": "Under ¥200",
+    "premium": "¥200+"
   },
   "main": {
     "popularPlaces": "Popular Places",
@@ -43,7 +43,8 @@
     "free": "Free",
     "details": "Learn More",
     "off": "OFF",
-    "now": "Now"
+    "now": "Now",
+    "share": "Share on WhatsApp"
   },
   "footer": {
     "title": "🏛️ Sanya Attractions",
@@ -62,6 +63,7 @@
     "contact": "Contact",
     "phone": "Call Us",
     "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
     "callNow": "Call Now",
     "close": "Close",
     "share": "Share",

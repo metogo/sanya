@@ -4,27 +4,30 @@ import { useParams, useRouter } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { attractions } from '@/data/attractions';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ShareButton from '@/components/ShareButton';
+import ContactFloat from '@/components/ContactFloat';
 
 export default function AttractionDetailPage() {
   const params = useParams();
   const router = useRouter();
   const t = useTranslations();
   const locale = useLocale();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const attraction = attractions.find(a => a.id === params.id);
 
   if (!attraction) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">404</h1>
-          <p className="text-gray-600 mb-6">{t('detail.notFound')}</p>
+      <div className="min-h-screen flex items-center justify-center bg-white">
+        <div className="text-center px-6">
+          <div className="text-6xl mb-6">🏝️</div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-3">404</h1>
+          <p className="text-gray-500 mb-8">{t('detail.notFound')}</p>
           <button
             onClick={() => router.push(`/${locale}`)}
-            className="px-6 py-3 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white rounded-xl hover:shadow-lg transition-all"
+            className="px-6 py-3 bg-[#DC143C] text-white rounded-xl hover:bg-[#C41E3A] transition-all"
           >
             {t('detail.backToHome')}
           </button>
@@ -33,7 +36,6 @@ export default function AttractionDetailPage() {
     );
   }
 
-  // 获取本地化内容
   const getName = () => {
     if (locale === 'en') return attraction.name;
     if (locale === 'zh') return attraction.nameZh || attraction.name;
@@ -71,56 +73,31 @@ export default function AttractionDetailPage() {
   };
 
   const getOpeningHours = () => {
-    if (locale === 'en') return attraction.openingHours || '全天开放';
+    if (locale === 'en') return attraction.openingHours || 'Open 24 hours';
     if (locale === 'zh') return attraction.openingHoursZh || '全天开放';
     return attraction.openingHoursRu || 'Открыто круглосуточно';
   };
 
   const getBestTime = () => {
-    if (locale === 'en') return attraction.bestTime || '全年';
+    if (locale === 'en') return attraction.bestTime || 'Year-round';
     if (locale === 'zh') return attraction.bestTimeZh || '全年';
     return attraction.bestTimeRu || 'Круглый год';
   };
 
   const getTransportation = () => {
-    if (locale === 'en') return attraction.transportation || '公共交通可达';
+    if (locale === 'en') return attraction.transportation || 'Public transport available';
     if (locale === 'zh') return attraction.transportationZh || '公共交通可达';
     return attraction.transportationRu || 'Доступен общественным транспортом';
-  };
-
-  // 生成包含折扣信息的分享文案
-  const getShareText = () => {
-    const name = getName();
-    if (attraction.isFree) {
-      if (locale === 'zh') return `🎉 ${name} - 免费开放！三亚必游景点，不容错过！`;
-      if (locale === 'en') return `🎉 ${name} - FREE Entry! Must-visit attraction in Sanya!`;
-      return `🎉 ${name} - БЕСПЛАТНО! Обязательно посетите в Санье!`;
-    }
-    
-    if (attraction.originalPrice) {
-      const discount = Math.round((1 - attraction.price / attraction.originalPrice) * 100);
-      if (locale === 'zh') return `🔥 限时优惠！${name} - 现在只需$${attraction.price}（原价$${attraction.originalPrice}，省${discount}%）！快来抢购！`;
-      if (locale === 'en') return `🔥 Limited Offer! ${name} - Only $${attraction.price} (was $${attraction.originalPrice}, save ${discount}%)! Book now!`;
-      return `🔥 Акция! ${name} - Всего $${attraction.price} (было $${attraction.originalPrice}, скидка ${discount}%)! Бронируйте сейчас!`;
-    }
-    
-    if (locale === 'zh') return `✨ ${name} - 仅需$${attraction.price}！三亚热门景点推荐！`;
-    if (locale === 'en') return `✨ ${name} - Only $${attraction.price}! Popular attraction in Sanya!`;
-    return `✨ ${name} - Всего $${attraction.price}! Популярная достопримечательность Саньи!`;
   };
 
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-[#DC143C] mx-auto mb-4"></div>
-          <p className="text-gray-600">{t('detail.loading')}</p>
-        </div>
+        <div className="animate-spin rounded-full h-10 w-10 border-2 border-gray-200 border-t-[#DC143C]"></div>
       </div>
     );
   }
 
-  // JSON-LD 结构化数据 - 旅游景点
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'TouristAttraction',
@@ -134,264 +111,205 @@ export default function AttractionDetailPage() {
       addressCountry: 'CN',
       streetAddress: getLocation(),
     },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: '18.2528', // 示例坐标，实际项目中应从数据中获取
-      longitude: '109.5119',
-    },
     url: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
     aggregateRating: {
       '@type': 'AggregateRating',
       ratingValue: attraction.rating,
       reviewCount: attraction.reviewCount,
     },
-    priceRange: attraction.isFree ? '0' : `$${attraction.price}`,
+    priceRange: attraction.isFree ? '0' : `¥${attraction.price}`,
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-blue-50 to-white">
+    <div className="min-h-screen bg-white">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      {/* Fixed Back Button - 固定在左上角，直接返回首页 */}
+
+      {/* Back Button */}
       <button
         onClick={() => router.push(`/${locale}`)}
-        onTouchEnd={(e) => {
-          e.preventDefault();
-          router.push(`/${locale}`);
-        }}
-        className="fixed top-6 left-6 z-50 bg-white/95 backdrop-blur-md px-5 py-3 rounded-full shadow-2xl hover:bg-white hover:shadow-3xl transition-all flex items-center gap-2 group border-2 border-gray-200 hover:border-[#DC143C] touch-manipulation active:scale-95"
+        className="fixed top-4 left-4 z-50 bg-white/90 backdrop-blur-md w-10 h-10 rounded-full shadow-md flex items-center justify-center hover:bg-white transition-all active:scale-95"
       >
-        <span className="text-xl group-hover:-translate-x-1 transition-transform">←</span>
-        <span className="font-semibold text-gray-900">{t('detail.backToList')}</span>
+        <svg className="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
       </button>
 
-      {/* Hero Section with Image */}
-      <div className="relative h-[60vh] min-h-[500px] w-full">
-        <Image
-          src={attraction.image}
-          alt={getName()}
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
-        />
-        {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+      {/* Hero Image */}
+      <div className="relative h-[35vh] min-h-[240px] md:h-[45vh] md:min-h-[320px] max-h-[480px] w-full">
+        {!imageError ? (
+          <Image
+            src={attraction.image}
+            alt={getName()}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+            quality={85}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[#DC143C] to-[#0039A6] flex items-center justify-center">
+            <span className="text-8xl opacity-50">🏖️</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
 
-        {/* Title Overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="px-4 py-2 bg-white/20 backdrop-blur-md rounded-full text-white font-semibold border border-white/30">
+        {/* Title on Image */}
+        <div className="absolute bottom-0 left-0 right-0 p-4 md:p-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-[11px] font-medium border border-white/20">
                 {attraction.category === 'beach' ? t('detail.beach') :
                  attraction.category === 'culture' ? t('detail.culture') :
                  attraction.category === 'nature' ? t('detail.nature') : t('detail.entertainment')}
               </span>
-              <div className="flex items-center gap-2 bg-yellow-500/90 backdrop-blur-md px-4 py-2 rounded-full">
-                <span className="text-white text-lg">⭐</span>
-                <span className="text-white font-bold">{attraction.rating}</span>
-              </div>
+              <span className="px-2.5 py-1 bg-white/20 backdrop-blur-sm rounded-full text-white text-[11px] font-medium border border-white/20">
+                ⭐ {attraction.rating}
+              </span>
             </div>
-            <h1 
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-2xl"
+            <h1
+              className="text-xl md:text-3xl lg:text-4xl font-bold text-white mb-1.5 leading-tight"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {getName()}
             </h1>
-            <div className="flex items-center gap-2 text-white/90 text-lg">
-              <span>📍</span>
-              <span>{getLocation()}</span>
-            </div>
+            <p className="text-white/70 text-xs md:text-sm flex items-center gap-1">
+              📍 {getLocation()}
+            </p>
           </div>
         </div>
       </div>
 
-      {/* Main Content */}
-      <div style={{margin: '0 auto'}} className="max-w-6xl mx-auto px-6 md:px-8 py-12">
-        {/* Key Info Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 -mt-20 relative z-10">
-          {/* Price Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-200 hover:border-[#DC143C] transition-all">
-            <div className="text-center">
-              <div className="text-4xl mb-2">💰</div>
-              <div className="text-sm text-gray-500 mb-2">{t('detail.price')}</div>
-              {attraction.isFree ? (
-                <div className="text-2xl font-bold bg-gradient-to-r from-[#DC143C] to-[#0039A6] bg-clip-text text-transparent">
-                  {t('detail.free')}
-                </div>
-              ) : (
-                <div className="text-2xl font-bold text-[#DC143C]">
-                  ${attraction.price}
-                </div>
-              )}
-            </div>
+      {/* Content */}
+      <div className="max-w-4xl mx-auto px-4 md:px-8">
+        {/* Quick Info Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 py-4 -mt-5 relative z-10">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-2.5 text-center">
+            <div className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">{t('detail.price')}</div>
+            {attraction.isFree ? (
+              <div className="text-base font-bold text-emerald-600">{t('detail.free')}</div>
+            ) : (
+              <div className="text-base font-bold text-[#DC143C]">¥{attraction.price}</div>
+            )}
           </div>
-
-          {/* Opening Hours Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-200 hover:border-[#DC143C] transition-all">
-            <div className="text-center">
-              <div className="text-4xl mb-2">🕐</div>
-              <div className="text-sm text-gray-500 mb-2">{t('detail.openingHours')}</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {getOpeningHours()}
-              </div>
-            </div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-2.5 text-center">
+            <div className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">{t('detail.openingHours')}</div>
+            <div className="text-xs font-semibold text-gray-800 leading-snug">{getOpeningHours()}</div>
           </div>
-
-          {/* Best Time Card */}
-          <div className="bg-white rounded-2xl shadow-xl p-6 border-2 border-gray-200 hover:border-[#DC143C] transition-all">
-            <div className="text-center">
-              <div className="text-4xl mb-2">🌞</div>
-              <div className="text-sm text-gray-500 mb-2">{t('detail.bestTime')}</div>
-              <div className="text-lg font-semibold text-gray-900">
-                {getBestTime()}
-              </div>
-            </div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-2.5 text-center">
+            <div className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">{t('detail.bestTime')}</div>
+            <div className="text-xs font-semibold text-gray-800 leading-snug">{getBestTime()}</div>
+          </div>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 px-3 py-2.5 text-center">
+            <div className="text-[10px] text-gray-400 uppercase tracking-wide mb-0.5">💬</div>
+            <div className="text-xs font-semibold text-gray-800">{attraction.reviewCount.toLocaleString()}</div>
           </div>
         </div>
 
-        {/* Description Section */}
-        <div style={{margin:10,padding: 10}} className="bg-white rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-gray-200">
-          <h2
-            className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            <span className="text-4xl">📖</span>
+        {/* Description */}
+        <section className="py-5 border-b border-gray-100">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
             {t('detail.introduction')}
           </h2>
-          <p className="text-gray-700 text-lg leading-relaxed whitespace-pre-line">
+          <p className="text-gray-600 text-sm md:text-[15px] leading-[1.85] whitespace-pre-line">
             {getDescription()}
           </p>
-        </div>
+        </section>
 
-        {/* Video Section - 如果有视频则显示 */}
+        {/* Video */}
         {attraction.video && (
-          <div style={{margin:10,padding: 10}} className="bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-purple-200">
-            <h2
-              className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              <span className="text-4xl">🎬</span>
-              {t('detail.video')}
+          <section className="py-5 border-b border-gray-100">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
+              🎬 {t('detail.video')}
             </h2>
-            <p className="text-gray-600 mb-6 text-lg">
-              {t('detail.watchVideo')}
-            </p>
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+            <p className="text-gray-500 text-xs mb-3">{t('detail.watchVideo')}</p>
+            <div className="rounded-xl overflow-hidden bg-black">
               <video
                 controls
                 className="w-full h-auto"
                 poster={attraction.image}
                 preload="metadata"
-                style={{ maxHeight: '600px' }}
+                style={{ maxHeight: '400px' }}
               >
                 <source src={attraction.video} type="video/mp4" />
-                您的浏览器不支持视频播放
               </video>
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Highlights Section */}
+        {/* Highlights */}
         {getHighlights().length > 0 && (
-          <div style={{margin:10,padding: 10}} className="bg-gradient-to-br from-blue-50 to-cyan-50 rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-blue-200">
-            <h2 
-              className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              <span className="text-4xl">✨</span>
+          <section className="py-5 border-b border-gray-100">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
               {t('detail.highlights')}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
               {getHighlights().map((highlight, index) => (
-                <div key={index} className="flex items-start gap-3 bg-white/60 backdrop-blur-sm p-4 rounded-xl">
-                  <span className="text-2xl">🎯</span>
-                  <span className="text-gray-800 flex-1">{highlight}</span>
+                <div key={index} className="flex items-start gap-2.5 py-1">
+                  <span className="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0 text-[10px] font-bold mt-0.5">
+                    ✓
+                  </span>
+                  <span className="text-gray-600 text-sm leading-relaxed">{highlight}</span>
                 </div>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Facilities Section */}
+        {/* Facilities */}
         {getFacilities().length > 0 && (
-          <div style={{margin:10,padding: 10}} className="bg-white rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-gray-200">
-            <h2 
-              className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              <span className="text-4xl">🏢</span>
+          <section className="py-5 border-b border-gray-100">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
               {t('detail.facilities')}
             </h2>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-1.5">
               {getFacilities().map((facility, index) => (
-                <span 
+                <span
                   key={index}
-                  className="px-5 py-3 bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-900 rounded-full font-semibold border-2 border-blue-200"
+                  className="px-2.5 py-1 bg-gray-50 text-gray-600 rounded-lg text-xs border border-gray-100"
                 >
                   {facility}
                 </span>
               ))}
             </div>
-          </div>
+          </section>
         )}
 
-        {/* Transportation Section */}
-        <div style={{margin:10,padding: 10}} className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl shadow-xl p-8 md:p-10 mb-16 border-2 border-green-200">
-          <h2 
-            className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
-            <span className="text-4xl">🚗</span>
+        {/* Transportation */}
+        <section className="py-5 border-b border-gray-100">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
             {t('detail.transportation')}
           </h2>
-          <p className="text-gray-800 text-lg leading-relaxed">
+          <p className="text-gray-600 text-sm md:text-[15px] leading-relaxed">
             {getTransportation()}
           </p>
-        </div>
+        </section>
 
-        {/* Tips Section */}
+        {/* Tips */}
         {getTips().length > 0 && (
-          <div style={{margin:10,padding: 10}} className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-3xl shadow-xl p-8 md:p-10 border-2 border-amber-200">
-            <h2 
-              className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3"
-              style={{ fontFamily: "'Playfair Display', serif" }}
-            >
-              <span className="text-4xl">💡</span>
+          <section className="py-5 mb-20">
+            <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: "'Playfair Display', serif" }}>
               {t('detail.tips')}
             </h2>
-            <ul className="space-y-3">
-              {getTips().map((tip, index) => (
-                <li key={index} className="flex items-start gap-3 bg-white/60 backdrop-blur-sm p-4 rounded-xl">
-                  <span className="text-xl mt-0.5">💡</span>
-                  <span className="text-gray-800 flex-1">{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+            <div className="bg-amber-50/50 rounded-xl p-3.5">
+              <ul className="space-y-2.5">
+                {getTips().map((tip, index) => (
+                  <li key={index} className="flex items-start gap-2.5">
+                    <span className="text-amber-500 mt-0.5 flex-shrink-0 text-sm">•</span>
+                    <span className="text-gray-600 text-[13px] leading-relaxed">{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
         )}
       </div>
 
-      {/* Bottom Action Bar */}
-      <div className="sticky bottom-0 bg-white border-t-4 border-gray-200 shadow-2xl">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          {/* <div>
-            <div className="text-sm text-gray-500">门票价格</div>
-            <div className="text-2xl font-bold text-[#DC143C]">
-              {attraction.isFree ? '免费' : `¥${attraction.price}`}
-            </div>
-          </div> */}
-          {/* <button className="px-8 py-4 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-bold rounded-xl hover:shadow-xl hover:scale-105 transition-all">
-            立即预订
-          </button> */}
-        </div>
-      </div>
-
-      {/* Share Button */}
-      <ShareButton customText={getShareText()} />
+      <ShareButton />
+      <ContactFloat />
     </div>
   );
 }

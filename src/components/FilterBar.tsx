@@ -103,19 +103,12 @@ export default function FilterBar({
             ref={filterBarRef}
             className={`w-full transition-all duration-300 ${
                 isCompact
-                    ? 'fixed left-0 right-0 py-1 md:py-1.5 z-45 bg-red-100 border-b-4 border-red-500 shadow-2xl'
-                    : 'relative py-6 md:py-8 z-10 bg-gradient-to-b from-gray-50 to-white shadow-xl border-b-2 border-gray-200'
+                    ? 'fixed left-0 right-0 py-2 z-45 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-md'
+                    : 'relative py-4 md:py-5 z-10 bg-gray-50/80 border-b border-gray-200'
             }`}
             style={isCompact ? { top: `${headerHeight}px` } : undefined}
         >
-            {/* 临时调试面板 */}
-            <div className={`fixed top-20 right-4 px-4 py-2 rounded-lg shadow-xl z-50 text-white font-bold ${
-                isCompact ? 'bg-red-600 text-lg' : 'bg-blue-600'
-            }`}>
-            </div>
-            <div style={{justifyContent: isCompact ? 'center' : 'flex-start', padding: isCompact ? '5px' : '5px'}} className={`max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16 ${
-                isCompact ? ' justify-items-center p-[5px]' : ''
-            }`}>
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-16">
                 <div className={`flex flex-col lg:flex-row lg:items-end lg:justify-between transition-all duration-300 ${
                     isCompact ? 'gap-2 md:gap-3 py-[5px]' : 'gap-6 md:gap-8'
                 }`}>

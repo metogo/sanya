@@ -97,8 +97,8 @@ export default function Home() {
             // Price filter
             let matchesPrice = true;
             if (selectedPrice === 'free') matchesPrice = attraction.isFree;
-            else if (selectedPrice === 'budget') matchesPrice = !attraction.isFree && attraction.price < 100;
-            else if (selectedPrice === 'premium') matchesPrice = !attraction.isFree && attraction.price >= 100;
+            else if (selectedPrice === 'budget') matchesPrice = !attraction.isFree && attraction.price < 200;
+            else if (selectedPrice === 'premium') matchesPrice = !attraction.isFree && attraction.price >= 200;
 
             return matchesSearch && matchesCategory && matchesRating && matchesPrice;
         });
@@ -193,29 +193,26 @@ export default function Home() {
             {/* Main Content */}
             <main
                 style={{margin: '0 auto'}}
-                className="max-w-[1440px] mx-auto py-8 md:py-12 px-6 sm:px-8 lg:px-12 xl:px-16">
+                className="max-w-[1440px] mx-auto py-5 md:py-8 px-4 sm:px-6 lg:px-12 xl:px-16">
                 {/* Results Count */}
-                <div className="mb-8">
-                    <div className="flex items-center justify-between">
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900"
+                <div className="mb-5 md:mb-8">
+                    <div className="flex items-baseline justify-between">
+                        <h2 className="text-xl md:text-2xl font-bold text-gray-900"
                             style={{fontFamily: "'Playfair Display', serif"}}>
                             {t('main.popularPlaces')}
                         </h2>
-                        <p className="text-gray-600 text-sm md:text-base">
+                        <p className="text-gray-400 text-xs md:text-sm">
                             {t('main.foundAttractions')} <span
-                            className="font-bold text-[#DC143C] text-lg">{filteredAttractions.length}</span>
+                            className="font-semibold text-gray-600">{filteredAttractions.length}</span>
                         </p>
                     </div>
-                    <div className="h-px bg-gray-200 mt-4"></div>
                 </div>
 
                 {/* Attractions Grid */}
                 {filteredAttractions.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 min-[1440px]:grid-cols-4 gap-6 sm:gap-8 lg:gap-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
                         {filteredAttractions.map((attraction) => (
-                            <div key={attraction.id} className="p-2">
-                                <AttractionCard attraction={attraction}/>
-                            </div>
+                            <AttractionCard key={attraction.id} attraction={attraction}/>
                         ))}
                     </div>
                 ) : (
@@ -244,7 +241,7 @@ export default function Home() {
             </div>
 
             {/* Footer */}
-            <footer className="mt-16 mb-20 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-12">
+            <footer className="mt-10 mb-16 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-10">
                 <div style={{margin: '0 auto'}} className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
                     <div  className="text-center">
                         <h3 className="text-2xl md:text-3xl font-bold mb-4"

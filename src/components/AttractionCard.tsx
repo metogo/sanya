@@ -42,9 +42,9 @@ function AttractionCard({attraction}: AttractionCardProps) {
 
     return (
         <div
-            className="bg-white rounded-3xl shadow-2xl hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)] transition-all duration-300 overflow-hidden group border-4 border-gray-300 hover:border-[#DC143C] transform hover:-translate-y-2 hover:scale-[1.02] flex flex-col h-full">
+            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1 flex flex-col h-full">
             {/* Image Container */}
-            <div className="relative h-[220px] lg:h-[240px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shrink-0">
+            <div className="relative h-[200px] sm:h-[220px] lg:h-[240px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shrink-0">
                 {!imageError ? (
                     <Image
                         src={attraction.image}
@@ -52,11 +52,7 @@ function AttractionCard({attraction}: AttractionCardProps) {
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         quality={85}
-                        className="object-cover transition-transform duration-700 ease-out"
-                        style={{
-                            transform: 'scale(1.15)',
-                            transformOrigin: 'center center'
-                        }}
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                         onError={() => setImageError(true)}
                         placeholder="blur"
                         blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
@@ -68,95 +64,79 @@ function AttractionCard({attraction}: AttractionCardProps) {
                     </div>
                 )}
 
-                {/* Overlay gradient - 悬停时额外放大 */}
-                <div
-                    className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                    onMouseEnter={(e) => {
-                        const img = e.currentTarget.previousElementSibling as HTMLElement;
-                        if (img) img.style.transform = 'scale(1.25)';
-                    }}
-                    onMouseLeave={(e) => {
-                        const img = e.currentTarget.previousElementSibling as HTMLElement;
-                        if (img) img.style.transform = 'scale(1.15)';
-                    }}
-                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
 
                 {/* Rating Badge */}
-                <div
-                    className="absolute top-4 right-4 bg-gradient-to-br from-yellow-400 to-orange-500 backdrop-blur-sm px-3 py-2 rounded-xl flex items-center gap-1.5 shadow-lg">
-                    <span className="text-white text-lg">⭐</span>
-                    <span className="text-white font-bold text-base">{attraction.rating}</span>
+                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
+                    <span className="text-amber-500 text-sm">⭐</span>
+                    <span className="text-gray-800 font-bold text-sm">{attraction.rating}</span>
                 </div>
 
                 {/* Category Badge */}
-                <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg shadow-md">
-                    <span className="text-sm font-semibold text-gray-700">{getCategory()}</span>
+                <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-lg shadow-sm">
+                    <span className="text-xs font-semibold text-gray-700">{getCategory()}</span>
                 </div>
             </div>
 
             {/* Content */}
-            <div className="p-5 flex flex-col flex-1" style={{padding: 16}}>
+            <div className="p-4 flex flex-col flex-1">
                 {/* Title */}
-                <h3 className="text-lg lg:text-xl font-bold text-gray-900 mb-3 line-clamp-1 group-hover:text-[#DC143C] transition-colors"
+                <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-[#DC143C] transition-colors"
                     style={{fontFamily: "'Playfair Display', serif"}}>
                     {getName()}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm lg:text-base text-gray-600 mb-4 line-clamp-2 leading-relaxed flex-1">
+                <p className="text-sm text-gray-500 mb-3 line-clamp-2 leading-relaxed flex-1">
                     {getDescription()}
                 </p>
 
                 {/* Location */}
-                <div className="flex items-center gap-2 mb-4 text-sm lg:text-base text-gray-500">
-                    <span className="text-base">📍</span>
+                <div className="flex items-center gap-1.5 mb-3 text-xs text-gray-400">
+                    <span className="text-sm">📍</span>
                     <span className="line-clamp-1 flex-1">{getLocation()}</span>
                 </div>
 
                 {/* Divider */}
-                <div className="border-t border-gray-100 my-4"/>
+                <div className="border-t border-gray-100 my-3"/>
 
                 {/* Bottom Section: Button & Price */}
-                <div className="flex flex-col gap-4 mt-auto">
+                <div className="flex flex-col gap-3 mt-auto">
                     {/* Price & Reviews Row */}
                     <div className="flex items-end justify-between">
                         {/* Reviews Count */}
-                        <div className="flex items-center gap-1.5 text-xs text-gray-500 mb-1">
-                            <span className="text-sm">💬</span>
+                        <div className="flex items-center gap-1 text-xs text-gray-400">
+                            <span className="text-xs">💬</span>
                             <span>{attraction.reviewCount.toLocaleString(locale)} {t('reviews')}</span>
                         </div>
 
                         {/* Price */}
                         <div>
                             {attraction.isFree ? (
-                                <span className="text-2xl font-bold bg-gradient-to-r from-[#DC143C] to-[#0039A6] bg-clip-text text-transparent">
+                                <span className="text-lg font-bold text-emerald-600">
                                     {t('free')}
                                 </span>
                             ) : (
                                 <div className="text-right">
-                                    {/* 如果有原价，显示折扣信息 */}
                                     {attraction.originalPrice ? (
                                         <div className="flex flex-col items-end">
-                                            <div className="flex items-center gap-2">
+                                            <div className="flex items-center gap-1.5">
                                                 <span className="text-xs text-gray-400 line-through">
-                                                    ${attraction.originalPrice}
+                                                    ¥{attraction.originalPrice}
                                                 </span>
-                                                <div className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">
+                                                <span className="text-[10px] font-bold text-red-500">
                                                     -{Math.round((1 - attraction.price / attraction.originalPrice) * 100)}%
-                                                </div>
-                                            </div>
-                                            <div className="flex items-baseline gap-1">
-                                                <span className="text-3xl font-black text-[#DC143C]">
-                                                    ${attraction.price}
                                                 </span>
                                             </div>
+                                            <span className="text-xl font-extrabold text-[#DC143C]">
+                                                ¥{attraction.price}
+                                            </span>
                                         </div>
                                     ) : (
-                                        // 没有原价时的显示
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-xs text-gray-500">{t('from')}</span>
-                                            <span className="text-3xl font-black text-[#DC143C]">
-                                                ${attraction.price}
+                                            <span className="text-xs text-gray-400">{t('from')}</span>
+                                            <span className="text-xl font-extrabold text-[#DC143C]">
+                                                ¥{attraction.price}
                                             </span>
                                         </div>
                                     )}
@@ -165,17 +145,16 @@ function AttractionCard({attraction}: AttractionCardProps) {
                         </div>
                     </div>
 
-                    {/* Full Width Button & Share */}
+                    {/* Button & Share */}
                     <div className="flex gap-2">
                         <Link
                             href={`/attractions/${attraction.id}`}
                             onClick={() => {
-                                // 保存当前滚动位置
                                 sessionStorage.setItem('scrollPosition', window.scrollY.toString());
                             }}
-                            className="flex-1 block py-3 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-bold text-lg rounded-xl hover:shadow-xl hover:shadow-red-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 text-center"
+                            className="flex-1 block py-2.5 bg-[#DC143C] text-white font-semibold text-sm rounded-xl hover:bg-[#C41E3A] hover:shadow-lg active:scale-[0.98] transition-all duration-200 text-center"
                         >
-                            {t('details')} <span className="ml-1">→</span>
+                            {t('details')} →
                         </Link>
                         
                         {/* Inline Share Button for PC */}

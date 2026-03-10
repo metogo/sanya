@@ -26,8 +26,8 @@
     "prices": "Цена",
     "allPrices": "Все цены",
     "free": "Бесплатно",
-    "budget": "До 100¥",
-    "premium": "100¥+"
+    "budget": "До 200¥",
+    "premium": "200¥+"
   },
   "main": {
     "popularPlaces": "Популярные места",
@@ -43,7 +43,8 @@
     "free": "Бесплатно",
     "details": "Подробнее",
     "off": "СКИДКА",
-    "now": "Сейчас"
+    "now": "Сейчас",
+    "share": "Поделиться в WhatsApp"
   },
   "footer": {
     "title": "🏛️ Достопримечательности Санья",
@@ -62,6 +63,7 @@
     "contact": "Контакты",
     "phone": "Телефон",
     "whatsapp": "WhatsApp",
+    "telegram": "Telegram",
     "callNow": "Позвонить сейчас",
     "close": "Закрыть",
     "share": "Поделиться",
