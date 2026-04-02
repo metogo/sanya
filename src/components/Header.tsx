@@ -64,10 +64,10 @@ export default function Header({
         <div className="header-inner">
 
         {/* Logo */}
-        <div className="flex items-center gap-2 text-[var(--ocean)] flex-shrink-0">
+        <div className="flex items-center gap-2 text-[var(--ocean)] min-w-0 shrink">
           <PalmIcon />
           <span
-            className="text-lg font-bold tracking-tight leading-none"
+            className="text-lg font-bold tracking-tight leading-none truncate"
             style={{ fontFamily: "var(--font-serif)" }}
           >
             {t('title')}
@@ -94,7 +94,7 @@ export default function Header({
         )}
 
         {/* Right Section */}
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0 ml-auto">
           {/* Desktop Filters */}
           {onRatingChange && onPriceChange && (
             <div className="hidden lg:flex items-center gap-2">

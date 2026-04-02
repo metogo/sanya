@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { useTranslations } from 'next-intl';
 import { FilterCategory, FilterPrice, FilterRating } from '@/types/attraction';
 
@@ -54,9 +54,6 @@ export default function FilterBar({
   onPriceChange,
 }: FilterBarProps) {
   const t = useTranslations('filters');
-  const [isSticky, setIsSticky] = useState(false);
-  const [headerHeight, setHeaderHeight] = useState(56);
-  const filterRef = useRef<HTMLDivElement>(null);
 
   const categories: { value: FilterCategory; label: string }[] = [
     { value: 'all',           label: t('all') },
@@ -80,36 +77,10 @@ export default function FilterBar({
     { value: 'premium', label: t('premium') },
   ];
 
-  useEffect(() => {
-    const header = document.querySelector('header');
-    if (header) setHeaderHeight(header.offsetHeight);
-    const ro = new ResizeObserver(() => {
-      if (header) setHeaderHeight(header.offsetHeight);
-    });
-    if (header) ro.observe(header);
-    return () => ro.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const THRESHOLD = 60;
-    const handleScroll = () => {
-      setIsSticky(window.scrollY > THRESHOLD);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const hasSecondaryFilters = selectedRating !== 'all' || selectedPrice !== 'all';
-
   return (
     <div
-      ref={filterRef}
-      className={`w-full transition-all duration-200 ${
-        isSticky
-          ? 'fixed left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--mist)] shadow-[var(--shadow-xs)]'
-          : 'relative bg-white border-b border-[var(--mist)]'
-      }`}
-      style={isSticky ? { top: `${headerHeight}px` } : undefined}
+      className="w-full bg-white/95 backdrop-blur-md border-b border-[var(--mist)] shadow-[var(--shadow-xs)]"
+      style={{ position: 'sticky', top: 56, zIndex: 40 }}
     >
       <div className="max-w-[1440px] mx-auto">
         {/* Category Pills - scrollable row */}
