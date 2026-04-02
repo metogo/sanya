@@ -1,365 +1,290 @@
 'use client';
 
-import {useEffect, useMemo, useState, useCallback} from 'react';
-import {useTranslations} from 'next-intl';
-import {useParams} from 'next/navigation';
-import {Link} from '@/i18n/routing';
-import {useSpring, animated} from '@react-spring/web';
+import { useEffect, useMemo, useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
+import { Link } from '@/i18n/routing';
 import Header from '@/components/Header';
-import HeroBanner from '@/components/HeroBanner';
 import FilterBar from '@/components/FilterBar';
 import AttractionCard from '@/components/AttractionCard';
-import ContactFloat from '@/components/ContactFloat';
-import ShareButton from '@/components/ShareButton';
 import LoadingScreen from '@/components/LoadingScreen';
-import {attractions} from '@/data/attractions';
-import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
+import { attractionsList } from '@/data/attractions-list';
+import { FilterCategory, FilterPrice, FilterRating } from '@/types/attraction';
+
+// 非首屏关键组件懒加载
+const ContactFloat = dynamic(() => import('@/components/ContactFloat'), { ssr: false });
+
+const HomeIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+    <polyline points="9 22 9 12 15 12 15 22"/>
+  </svg>
+);
+
+const CarIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v9a2 2 0 0 1-2 2h-2"/>
+    <circle cx="9" cy="17" r="2"/>
+    <circle cx="17" cy="17" r="2"/>
+  </svg>
+);
+
+const SearchOffIcon = () => (
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--mist-dk)]">
+    <circle cx="11" cy="11" r="8"/>
+    <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+    <line x1="8" y1="8" x2="14" y2="14"/>
+    <line x1="14" y1="8" x2="8" y2="14"/>
+  </svg>
+);
 
 export default function Home() {
-    const t = useTranslations();
-    const params = useParams();
-    const locale = params.locale as string;
-    const [isLoading, setIsLoading] = useState(true); // 始终从true开始，避免hydration错误
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
-    const [selectedRating, setSelectedRating] = useState<FilterRating>('all');
-    const [selectedPrice, setSelectedPrice] = useState<FilterPrice>('all');
-    const [isMounted, setIsMounted] = useState(false);
+  const t = useTranslations();
+  const params = useParams();
+  const locale = params.locale as string;
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<FilterCategory>('all');
+  const [selectedRating, setSelectedRating] = useState<FilterRating>('all');
+  const [selectedPrice, setSelectedPrice] = useState<FilterPrice>('all');
 
-    // 挂载后检查是否需要显示loading
-    useEffect(() => {
-        setIsMounted(true);
-        const hasVisited = sessionStorage.getItem('hasVisitedHome');
-        
-        if (!hasVisited) {
-            const startTime = Date.now();
-            const minDisplayTime = 800; // 最小显示 800ms
-
-            const handleLoad = () => {
-                const elapsedTime = Date.now() - startTime;
-                const remainingTime = Math.max(0, minDisplayTime - elapsedTime);
-
-                setTimeout(() => {
-                    setIsLoading(false);
-                    sessionStorage.setItem('hasVisitedHome', 'true');
-                }, remainingTime);
-            };
-
-            if (document.readyState === 'complete') {
-                handleLoad();
-            } else {
-                window.addEventListener('load', handleLoad);
-                return () => window.removeEventListener('load', handleLoad);
-            }
-        } else {
-            // 已访问过，直接跳过loading
-            setIsLoading(false);
-        }
-    }, []);
-
-    // 恢复滚动位置（从详情页返回时）
-    useEffect(() => {
-        if (!isLoading) {
-            const savedPosition = sessionStorage.getItem('scrollPosition');
-            if (savedPosition) {
-                // 立即恢复位置，使用instant而非smooth以获得最快速度
-                requestAnimationFrame(() => {
-                    window.scrollTo({
-                        top: parseInt(savedPosition),
-                        behavior: 'instant'
-                    });
-                    // 清除保存的位置
-                    sessionStorage.removeItem('scrollPosition');
-                });
-            }
-        }
-    }, [isLoading]);
-
-    // Filter attractions based on search and filters
-    const filteredAttractions = useMemo(() => {
-        return attractions.filter((attraction) => {
-            // Search filter
-            const matchesSearch = searchQuery === '' ||
-                attraction.nameRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                attraction.descriptionRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                attraction.locationRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                attraction.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-
-            // Category filter
-            const matchesCategory = selectedCategory === 'all' || attraction.category === selectedCategory;
-
-            // Rating filter
-            let matchesRating = true;
-            if (selectedRating === '4+') matchesRating = attraction.rating >= 4;
-            else if (selectedRating === '4.5+') matchesRating = attraction.rating >= 4.5;
-            else if (selectedRating === '5') matchesRating = attraction.rating === 5;
-
-            // Price filter
-            let matchesPrice = true;
-            if (selectedPrice === 'free') matchesPrice = attraction.isFree;
-            else if (selectedPrice === 'budget') matchesPrice = !attraction.isFree && attraction.price < 200;
-            else if (selectedPrice === 'premium') matchesPrice = !attraction.isFree && attraction.price >= 200;
-
-            return matchesSearch && matchesCategory && matchesRating && matchesPrice;
-        });
-    }, [searchQuery, selectedCategory, selectedRating, selectedPrice]);
-
-    // 使用 useCallback 优化事件处理函数
-    const handleSearch = useCallback((query: string) => {
-        setSearchQuery(query);
-    }, []);
-
-    const handleCategoryChange = useCallback((category: FilterCategory) => {
-        setSelectedCategory(category);
-    }, []);
-
-    const handleRatingChange = useCallback((rating: FilterRating) => {
-        setSelectedRating(rating);
-    }, []);
-
-    const handlePriceChange = useCallback((price: FilterPrice) => {
-        setSelectedPrice(price);
-    }, []);
-
-    const handleResetFilters = useCallback(() => {
-        setSearchQuery('');
-        setSelectedCategory('all');
-        setSelectedRating('all');
-        setSelectedPrice('all');
-    }, []);
-
-    // 加载状态显示Loading过场
-    if (isLoading) {
-        return <LoadingScreen />;
+  useEffect(() => {
+    const hasVisited = sessionStorage.getItem('hasVisitedHome');
+    if (!hasVisited) {
+      // 首访：等页面资源加载完即显示，最多等 300ms 保留品牌感
+      const startTime = Date.now();
+      const show = () => {
+        const elapsed = Date.now() - startTime;
+        setTimeout(() => {
+          setIsLoading(false);
+          sessionStorage.setItem('hasVisitedHome', 'true');
+        }, Math.max(0, 300 - elapsed));
+      };
+      if (document.readyState === 'complete') { show(); }
+      else {
+        window.addEventListener('load', show, { once: true });
+      }
+    } else {
+      setIsLoading(false);
     }
+  }, []);
 
-    const websiteJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: 'RossiySanya',
-        alternateName: ['Санья Экскурсии', 'Sanya Excursions', '三亚旅游'],
-        url: 'https://rossiysanya.com',
-        description: locale === 'ru'
-            ? 'Лучшие экскурсии и достопримечательности в Санье, Хайнань. Организация туров, билеты, трансферы.'
-            : locale === 'zh'
-            ? '三亚最佳旅游景点攻略，海南岛热带天堂，景点门票、专车接送、旅游指南。'
-            : 'Best tours and attractions in Sanya, Hainan. Tour organization, tickets, transfers and travel guides.',
-        inLanguage: locale === 'ru' ? 'ru-RU' : locale === 'zh' ? 'zh-CN' : 'en-US',
-    };
+  useEffect(() => {
+    if (!isLoading) {
+      const saved = sessionStorage.getItem('scrollPosition');
+      if (saved) {
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: parseInt(saved), behavior: 'instant' });
+          sessionStorage.removeItem('scrollPosition');
+        });
+      }
+    }
+  }, [isLoading]);
 
-    const organizationJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'TravelAgency',
-        name: 'RossiySanya',
-        url: 'https://rossiysanya.com',
-        logo: 'https://rossiysanya.com/images/banners/亚龙湾.jpeg',
-        description: locale === 'ru'
-            ? 'Организация экскурсий и туров по Санье для русскоговорящих туристов'
-            : locale === 'zh'
-            ? '三亚旅游服务，为游客提供专业的景点导览和专车接送'
-            : 'Tour organization and travel services in Sanya for international tourists',
-        address: {
-            '@type': 'PostalAddress',
-            addressLocality: 'Sanya',
-            addressRegion: 'Hainan',
-            addressCountry: 'CN',
-        },
-        areaServed: {
-            '@type': 'City',
-            name: 'Sanya',
-        },
-        sameAs: [
-            'https://t.me/saborovivan',
-        ],
-    };
+  const filteredAttractions = useMemo(() => {
+    return attractionsList.filter((a) => {
+      const matchSearch = searchQuery === '' ||
+        a.nameRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.descriptionRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.locationRu.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        a.tags.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchCat = selectedCategory === 'all' || a.category === selectedCategory;
+      let matchRating = true;
+      if (selectedRating === '4+')   matchRating = a.rating >= 4;
+      if (selectedRating === '4.5+') matchRating = a.rating >= 4.5;
+      if (selectedRating === '5')    matchRating = a.rating === 5;
+      let matchPrice = true;
+      if (selectedPrice === 'free')    matchPrice = a.isFree;
+      if (selectedPrice === 'budget')  matchPrice = !a.isFree && a.price < 200;
+      if (selectedPrice === 'premium') matchPrice = !a.isFree && a.price >= 200;
+      return matchSearch && matchCat && matchRating && matchPrice;
+    });
+  }, [searchQuery, selectedCategory, selectedRating, selectedPrice]);
 
-    const itemListJsonLd = {
-        '@context': 'https://schema.org',
-        '@type': 'ItemList',
-        name: locale === 'ru' ? 'Достопримечательности Санья' : locale === 'zh' ? '三亚景点列表' : 'Sanya Attractions',
-        numberOfItems: filteredAttractions.length,
-        itemListElement: filteredAttractions.slice(0, 10).map((attraction, index) => ({
-            '@type': 'ListItem',
-            position: index + 1,
-            url: `https://rossiysanya.com/${locale}/attractions/${attraction.id}`,
-            name: locale === 'ru' ? attraction.nameRu : locale === 'zh' ? (attraction.nameZh || attraction.name) : attraction.name,
-        })),
-    };
+  const handleSearch          = useCallback((q: string) => setSearchQuery(q), []);
+  const handleCategoryChange  = useCallback((c: FilterCategory) => setSelectedCategory(c), []);
+  const handleRatingChange    = useCallback((r: FilterRating) => setSelectedRating(r), []);
+  const handlePriceChange     = useCallback((p: FilterPrice) => setSelectedPrice(p), []);
+  const handleResetFilters    = useCallback(() => {
+    setSearchQuery(''); setSelectedCategory('all'); setSelectedRating('all'); setSelectedPrice('all');
+  }, []);
 
-    return (
-        <div className="min-h-screen bg-white">
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
-            />
-            <script
-                type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }}
-            />
-            {/* Header */}
-            <Header
-                onSearch={handleSearch}
-                selectedCategory={selectedCategory}
-                selectedRating={selectedRating}
-                selectedPrice={selectedPrice}
-                onCategoryChange={handleCategoryChange}
-                onRatingChange={handleRatingChange}
-                onPriceChange={handlePriceChange}
-            />
+  if (isLoading) return <LoadingScreen />;
 
-            {/* Hero Banner - 使用Vercel CDN自动优化 */}
-            <HeroBanner />
+  const websiteJsonLd = {
+    '@context': 'https://schema.org', '@type': 'WebSite',
+    name: 'RossiySanya',
+    alternateName: ['Санья Экскурсии', 'Sanya Excursions', '三亚旅游'],
+    url: 'https://rossiysanya.com',
+    description: locale === 'ru'
+      ? 'Лучшие экскурсии и достопримечательности в Санье, Хайнань. Организация туров, билеты, трансферы.'
+      : locale === 'zh' ? '三亚最佳旅游景点攻略，海南岛热带天堂，景点门票、专车接送、旅游指南。'
+      : 'Best tours and attractions in Sanya, Hainan. Tour organization, tickets, transfers and travel guides.',
+    inLanguage: locale === 'ru' ? 'ru-RU' : locale === 'zh' ? 'zh-CN' : 'en-US',
+  };
 
-            {/* Filter Bar - 仅在移动端显示 */}
-            <div className="lg:hidden">
-                <FilterBar
-                    selectedCategory={selectedCategory}
-                    selectedRating={selectedRating}
-                    selectedPrice={selectedPrice}
-                    onCategoryChange={handleCategoryChange}
-                    onRatingChange={handleRatingChange}
-                    onPriceChange={handlePriceChange}
-                />
-            </div>
+  const organizationJsonLd = {
+    '@context': 'https://schema.org', '@type': 'TravelAgency',
+    name: 'RossiySanya',
+    url: 'https://rossiysanya.com',
+    description: locale === 'ru'
+      ? 'Организация экскурсий и туров по Санье для русскоговорящих туристов'
+      : locale === 'zh' ? '三亚旅游服务，为游客提供专业的景点导览和专车接送'
+      : 'Tour organization and travel services in Sanya for international tourists',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Sanya',
+      addressRegion: 'Hainan',
+      addressCountry: 'CN',
+    },
+    areaServed: { '@type': 'City', name: 'Sanya' },
+    sameAs: ['https://t.me/saborovivan'],
+  };
 
-            {/* 浮动联系按钮 - 仅在移动端显示 */}
-            <div className="lg:hidden">
-                <ContactFloat />
-            </div>
-            
-            {/* 浮动分享按钮 - 仅在移动端显示 */}
-            <div className="lg:hidden">
-                <ShareButton />
-            </div>
+  const itemListJsonLd = {
+    '@context': 'https://schema.org', '@type': 'ItemList',
+    name: locale === 'ru' ? 'Достопримечательности Санья' : locale === 'zh' ? '三亚景点列表' : 'Sanya Attractions',
+    numberOfItems: filteredAttractions.length,
+    itemListElement: filteredAttractions.slice(0, 10).map((a, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `https://rossiysanya.com/${locale}/attractions/${a.id}`,
+      name: locale === 'ru' ? a.nameRu : locale === 'zh' ? (a.nameZh || a.name) : a.name,
+    })),
+  };
 
-            {/* Main Content */}
-            <main
-                style={{margin: '0 auto'}}
-                className="max-w-[1440px] mx-auto py-5 md:py-8 px-4 sm:px-6 lg:px-12 xl:px-16">
-                {/* Results Count */}
-                <div className="mb-5 md:mb-8">
-                    <div className="flex items-baseline justify-between">
-                        <h2 className="text-xl md:text-2xl font-bold text-gray-900"
-                            style={{fontFamily: "'Playfair Display', serif"}}>
-                            {t('main.popularPlaces')}
-                        </h2>
-                        <p className="text-gray-400 text-xs md:text-sm">
-                            {t('main.foundAttractions')} <span
-                            className="font-semibold text-gray-600">{filteredAttractions.length}</span>
-                        </p>
-                    </div>
-                </div>
+  return (
+    <div className="min-h-screen bg-[var(--sand)]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListJsonLd) }} />
 
-                {/* Attractions Grid */}
-                {filteredAttractions.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
-                        {filteredAttractions.map((attraction) => (
-                            <AttractionCard key={attraction.id} attraction={attraction}/>
-                        ))}
-                    </div>
-                ) : (
-                    <div className="text-center py-24 bg-white rounded-3xl shadow-lg border border-gray-100">
-                        <div className="text-8xl mb-6 animate-bounce">🔍</div>
-                        <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3"
-                            style={{fontFamily: "'Playfair Display', serif"}}>
-                            {t('main.noResults')}
-                        </h3>
-                        <p className="text-gray-600 text-lg mb-6">
-                            {t('main.noResultsDescription')}
-                        </p>
-                        <button
-                            onClick={handleResetFilters}
-                            className="px-8 py-3 bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white font-semibold rounded-xl hover:shadow-xl hover:scale-105 transition-all duration-200"
-                        >
-                            {t('main.resetFilters')}
-                        </button>
-                    </div>
-                )}
-            </main>
+      <Header
+        onSearch={handleSearch}
+        selectedCategory={selectedCategory}
+        selectedRating={selectedRating}
+        selectedPrice={selectedPrice}
+        onCategoryChange={handleCategoryChange}
+        onRatingChange={handleRatingChange}
+        onPriceChange={handlePriceChange}
+      />
 
-            {/* Bottom Navigation Menu - 仅在移动端显示 */}
-            <div className="lg:hidden">
-                <BottomMenu locale={locale} currentPage="home" t={t} />
-            </div>
+      {/* Filter Bar - mobile only */}
+      <div className="lg:hidden">
+        <FilterBar
+          selectedCategory={selectedCategory}
+          selectedRating={selectedRating}
+          selectedPrice={selectedPrice}
+          onCategoryChange={handleCategoryChange}
+          onRatingChange={handleRatingChange}
+          onPriceChange={handlePriceChange}
+        />
+      </div>
 
-            {/* Footer */}
-            <footer className="mt-10 mb-16 bg-gradient-to-br from-[#DC143C] via-[#C41E3A] to-[#0039A6] text-white py-10">
-                <div style={{margin: '0 auto'}} className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-12 xl:px-16">
-                    <div  className="text-center">
-                        <h3 className="text-2xl md:text-3xl font-bold mb-4"
-                            style={{fontFamily: "'Playfair Display', serif"}}>
-                            {t('footer.title')}
-                        </h3>
-                        <p style={{margin: '0 auto'}} className="text-white/90 text-base md:text-lg mb-6 max-w-2xl mx-auto">
-                            {t('footer.subtitle')}
-                        </p>
-                        <div className="border-t border-white/20 pt-6 mt-6">
-                            <p className="text-sm text-white/80">
-                                {t('footer.copyright')}
-                            </p>
-                            <p className="text-xs text-white/60 mt-2">
-                                {t('footer.rights')}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+      {/* Floating buttons - mobile only */}
+      <div className="lg:hidden">
+        <ContactFloat />
+      </div>
+
+      {/* Main Content */}
+      <main className="page-main">
+        {/* Count row */}
+        <div className="flex items-center justify-between mb-5">
+          <h2
+            className="text-lg font-bold text-[var(--text-1)]"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {t('main.popularPlaces')}
+          </h2>
+          <span className="text-xs text-[var(--text-3)] font-medium">
+            {filteredAttractions.length} {t('main.foundAttractions')}
+          </span>
         </div>
-    );
+
+        {/* Grid */}
+        {filteredAttractions.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {filteredAttractions.map((attraction, index) => (
+              <AttractionCard key={attraction.id} attraction={attraction} priority={index < 2} />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center py-24 text-center">
+            <SearchOffIcon />
+            <h3
+              className="mt-5 text-xl font-bold text-[var(--text-1)]"
+              style={{ fontFamily: "var(--font-serif)" }}
+            >
+              {t('main.noResults')}
+            </h3>
+            <p className="mt-2 text-sm text-[var(--text-3)] mb-6 max-w-xs">
+              {t('main.noResultsDescription')}
+            </p>
+            <button
+              onClick={handleResetFilters}
+              className="btn-primary"
+            >
+              {t('main.resetFilters')}
+            </button>
+          </div>
+        )}
+      </main>
+
+      {/* Bottom Navigation - mobile only */}
+      <div className="lg:hidden">
+        <BottomNav locale={locale} currentPage="home" t={t} />
+      </div>
+
+      {/* Footer */}
+      <footer className="mb-16 lg:mb-0 bg-[var(--ocean)] text-white py-8">
+        <div className="max-w-[1440px] mx-auto px-6 text-center">
+          <p
+            className="text-lg font-bold mb-1.5"
+            style={{ fontFamily: "var(--font-serif)" }}
+          >
+            {t('footer.title')}
+          </p>
+          <p className="text-white/60 text-sm mb-5 max-w-md mx-auto">
+            {t('footer.subtitle')}
+          </p>
+          <div className="border-t border-white/10 pt-4">
+            <p className="text-xs text-white/50">{t('footer.copyright')}</p>
+            <p className="text-xs text-white/30 mt-1">{t('footer.rights')}</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 }
 
-function BottomMenu({ locale, currentPage, t }: { locale: string; currentPage: 'home' | 'chauffeur'; t: any }) {
-    const homeActive = currentPage === 'home';
-    const chauffeurActive = currentPage === 'chauffeur';
+function BottomNav({ locale, currentPage, t }: { locale: string; currentPage: 'home' | 'chauffeur'; t: any }) {
+  const homeActive = currentPage === 'home';
+  const carActive  = currentPage === 'chauffeur';
 
-    const homeSpring = useSpring({
-        scale: homeActive ? 1 : 0.95,
-        opacity: homeActive ? 1 : 0.7,
-        config: { tension: 300, friction: 20 }
-    });
-
-    const chauffeurSpring = useSpring({
-        scale: chauffeurActive ? 1 : 0.95,
-        opacity: chauffeurActive ? 1 : 0.7,
-        config: { tension: 300, friction: 20 }
-    });
-
-    return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-[9999] pb-safe">
-            <div className="max-w-[1400px] mx-auto px-4">
-                <div className="flex items-center justify-around py-2">
-                    <Link href="/" className="flex-1 max-w-[120px]">
-                        <div className="flex flex-col items-center gap-1 py-2 cursor-pointer">
-                            <div className={`p-1.5 rounded-full transition-colors duration-300 ${homeActive ? 'bg-blue-50 text-blue-600' : 'text-gray-500'}`}>
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg>
-                            </div>
-                            <span className={`text-xs font-medium transition-colors duration-300 ${homeActive ? 'text-blue-600' : 'text-gray-500'}`}>
-                                {t('menu.home')}
-                            </span>
-                        </div>
-                    </Link>
-                    
-                    <Link href="/chauffeur" className="flex-1 max-w-[120px]">
-                        <div className="flex flex-col items-center gap-1 py-2 cursor-pointer">
-                            <div className={`p-1.5 rounded-full transition-colors duration-300 ${chauffeurActive ? 'bg-purple-50 text-purple-600' : 'text-gray-500'}`}>
-                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                                </svg>
-                            </div>
-                            <span className={`text-xs font-medium transition-colors duration-300 ${chauffeurActive ? 'text-purple-600' : 'text-gray-500'}`}>
-                                {t('menu.chauffeur')}
-                            </span>
-                        </div>
-                    </Link>
-                </div>
+  return (
+    <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white border-t border-[var(--mist)] shadow-[0_-2px_12px_rgba(0,0,0,0.06)] pb-safe">
+      <div className="max-w-[1440px] mx-auto">
+        <div className="flex items-center h-14">
+          <Link href="/" className="flex-1">
+            <div className={`flex flex-col items-center justify-center gap-0.5 py-1.5 transition-colors ${homeActive ? 'text-[var(--ocean)]' : 'text-[var(--text-3)]'}`}>
+              <div className={`p-1 rounded-xl transition-colors ${homeActive ? 'bg-[var(--ocean-lt)]' : ''}`}>
+                <HomeIcon />
+              </div>
+              <span className="text-[10px] font-semibold">{t('menu.home')}</span>
             </div>
-        </div>
-    );
-}
+          </Link>
 
+          <Link href="/chauffeur" className="flex-1">
+            <div className={`flex flex-col items-center justify-center gap-0.5 py-1.5 transition-colors ${carActive ? 'text-[var(--ocean)]' : 'text-[var(--text-3)]'}`}>
+              <div className={`p-1 rounded-xl transition-colors ${carActive ? 'bg-[var(--ocean-lt)]' : ''}`}>
+                <CarIcon />
+              </div>
+              <span className="text-[10px] font-semibold">{t('menu.chauffeur')}</span>
+            </div>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}

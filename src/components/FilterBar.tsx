@@ -1,194 +1,177 @@
 'use client';
 
-import {useEffect, useRef, useState} from 'react';
-import {useTranslations} from 'next-intl';
-import {FilterCategory, FilterPrice, FilterRating} from '@/types/attraction';
+import React, { useEffect, useRef, useState } from 'react';
+import { useTranslations } from 'next-intl';
+import { FilterCategory, FilterPrice, FilterRating } from '@/types/attraction';
 
 interface FilterBarProps {
-    selectedCategory: FilterCategory;
-    selectedRating: FilterRating;
-    selectedPrice: FilterPrice;
-    onCategoryChange: (category: FilterCategory) => void;
-    onRatingChange: (rating: FilterRating) => void;
-    onPriceChange: (price: FilterPrice) => void;
+  selectedCategory: FilterCategory;
+  selectedRating: FilterRating;
+  selectedPrice: FilterPrice;
+  onCategoryChange: (category: FilterCategory) => void;
+  onRatingChange: (rating: FilterRating) => void;
+  onPriceChange: (price: FilterPrice) => void;
 }
+
+const categoryIcons: Record<string, React.ReactElement> = {
+  all: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+      <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+    </svg>
+  ),
+  beach: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 3L7 21"/><path d="M3 12c3-3 6-4.5 9-4.5s6 1.5 9 4.5"/>
+      <path d="M3 21h18"/>
+    </svg>
+  ),
+  culture: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 21h18"/><path d="M5 21V9l7-6 7 6v12"/>
+      <path d="M9 21v-6h6v6"/>
+    </svg>
+  ),
+  nature: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 8C8 10 5.9 16.17 3.82 22"/><path d="M9.04 13.44A7 7 0 0 0 3 21c5-1 8.5-3.5 9-8z"/>
+      <path d="M21 3c-4 3-5 8-3 12"/>
+    </svg>
+  ),
+  entertainment: (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+    </svg>
+  ),
+};
 
 export default function FilterBar({
-                                      selectedCategory,
-                                      selectedRating,
-                                      selectedPrice,
-                                      onCategoryChange,
-                                      onRatingChange,
-                                      onPriceChange,
-                                  }: FilterBarProps) {
-    const t = useTranslations('filters');
-    const [isCompact, setIsCompact] = useState(false); // 默认宽松模式
-    const [headerHeight, setHeaderHeight] = useState(86); // Header 高度，默认 86px
-    const filterBarRef = useRef<HTMLDivElement>(null);
-    const isCompactRef = useRef(false);
+  selectedCategory,
+  selectedRating,
+  selectedPrice,
+  onCategoryChange,
+  onRatingChange,
+  onPriceChange,
+}: FilterBarProps) {
+  const t = useTranslations('filters');
+  const [isSticky, setIsSticky] = useState(false);
+  const [headerHeight, setHeaderHeight] = useState(56);
+  const filterRef = useRef<HTMLDivElement>(null);
 
-    const categories: { value: FilterCategory; label: string }[] = [
-        {value: 'all', label: t('all')},
-        {value: 'beach', label: t('beach')},
-        {value: 'culture', label: t('culture')},
-        {value: 'nature', label: t('nature')}, 
-        {value: 'entertainment', label: t('entertainment')},
-    ];
+  const categories: { value: FilterCategory; label: string }[] = [
+    { value: 'all',           label: t('all') },
+    { value: 'beach',         label: t('beach') },
+    { value: 'culture',       label: t('culture') },
+    { value: 'nature',        label: t('nature') },
+    { value: 'entertainment', label: t('entertainment') },
+  ];
 
-    const ratings: { value: FilterRating; label: string }[] = [
-        {value: 'all', label: t('allRatings')},
-        {value: '4+', label: t('rating4Plus')},
-        {value: '4.5+', label: t('rating45Plus')},
-        {value: '5', label: t('rating5')},
-    ];
+  const ratings: { value: FilterRating; label: string }[] = [
+    { value: 'all',  label: t('allRatings') },
+    { value: '4+',   label: '4.0+' },
+    { value: '4.5+', label: '4.5+' },
+    { value: '5',    label: '5.0' },
+  ];
 
-    const prices: { value: FilterPrice; label: string }[] = [ 
-        {value: 'all', label: t('allPrices')},
-        {value: 'free', label: t('free')},
-        {value: 'budget', label: t('budget')},
-        {value: 'premium', label: t('premium')},
-    ];
+  const prices: { value: FilterPrice; label: string }[] = [
+    { value: 'all',     label: t('allPrices') },
+    { value: 'free',    label: t('free') },
+    { value: 'budget',  label: t('budget') },
+    { value: 'premium', label: t('premium') },
+  ];
 
-    // 计算 Header 高度
-    useEffect(() => {
-        const updateHeaderHeight = () => {
-            const header = document.querySelector('header');
-            if (header) {
-                const height = header.offsetHeight;
-                setHeaderHeight(height);
-                console.log(`📏 [FilterBar] Header 高度: ${height}px`);
-            }
-        };
+  useEffect(() => {
+    const header = document.querySelector('header');
+    if (header) setHeaderHeight(header.offsetHeight);
+    const ro = new ResizeObserver(() => {
+      if (header) setHeaderHeight(header.offsetHeight);
+    });
+    if (header) ro.observe(header);
+    return () => ro.disconnect();
+  }, []);
 
-        // 初始计算
-        updateHeaderHeight();
+  useEffect(() => {
+    const THRESHOLD = 60;
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > THRESHOLD);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-        // 监听窗口大小变化（Header 高度可能改变）
-        window.addEventListener('resize', updateHeaderHeight);
-        
-        return () => window.removeEventListener('resize', updateHeaderHeight);
-    }, []);
+  const hasSecondaryFilters = selectedRating !== 'all' || selectedPrice !== 'all';
 
-    // 监听滚动，滚动到第一个卡片时（约300px）切换为紧凑模式
-    useEffect(() => {
-        let ticking = false;
-        const SCROLL_THRESHOLD = 300; // 约一个卡片高度
+  return (
+    <div
+      ref={filterRef}
+      className={`w-full transition-all duration-200 ${
+        isSticky
+          ? 'fixed left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--mist)] shadow-[var(--shadow-xs)]'
+          : 'relative bg-white border-b border-[var(--mist)]'
+      }`}
+      style={isSticky ? { top: `${headerHeight}px` } : undefined}
+    >
+      <div className="max-w-[1440px] mx-auto">
+        {/* Category Pills - scrollable row */}
+        <div className="filter-inner">
+          {categories.map((cat) => {
+            const active = selectedCategory === cat.value;
+            return (
+              <button
+                key={cat.value}
+                onClick={() => onCategoryChange(cat.value)}
+                className={`filter-pill ${active ? 'filter-pill-active' : 'filter-pill-inactive'}`}
+              >
+                <span style={{ color: active ? 'white' : 'var(--text-3)' }}>
+                  {categoryIcons[cat.value]}
+                </span>
+                {cat.label}
+              </button>
+            );
+          })}
 
-        const handleScroll = () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const scrollY = window.scrollY || window.pageYOffset;
-                    const shouldBeCompact = scrollY > SCROLL_THRESHOLD;
+          {/* Divider */}
+          <div style={{ height: '20px', width: '1px', background: 'var(--mist)', flexShrink: 0, margin: '0 4px' }} />
 
-                    if (shouldBeCompact !== isCompactRef.current) {
-                        isCompactRef.current = shouldBeCompact;
-                        setIsCompact(shouldBeCompact);
-                    }
+          {/* Rating Filter Pill */}
+          <div className="filter-select-wrap">
+            <select
+              value={selectedRating}
+              onChange={(e) => onRatingChange(e.target.value as FilterRating)}
+              className={`filter-select ${selectedRating !== 'all' ? 'filter-select-active' : 'filter-select-inactive'}`}
+            >
+              {ratings.map((r) => (
+                <option key={r.value} value={r.value}>
+                  {r.value === 'all' ? r.label : `★ ${r.label}`}
+                </option>
+              ))}
+            </select>
+            <span className="filter-select-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </div>
 
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        };
-
-        handleScroll();
-
-        window.addEventListener('scroll', handleScroll, { passive: true });
-        
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    return (
-        <div
-            ref={filterBarRef}
-            className={`w-full transition-all duration-300 ${
-                isCompact
-                    ? 'fixed left-0 right-0 py-2 z-45 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-md'
-                    : 'relative py-4 md:py-5 z-10 bg-gray-50/80 border-b border-gray-200'
-            }`}
-            style={isCompact ? { top: `${headerHeight}px` } : undefined}
-        >
-            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 xl:px-16">
-                <div className={`flex flex-col lg:flex-row lg:items-end lg:justify-between transition-all duration-300 ${
-                    isCompact ? 'gap-2 md:gap-3 py-[5px]' : 'gap-6 md:gap-8'
-                }`}>
-                    {/* Category Filter */}
-                    <div className="flex-1">
-                        {!isCompact && (
-                            <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
-                                {t('categories')}
-                            </label>
-                        )}
-                        <div className={`flex overflow-x-auto pb-2 scrollbar-hide ${
-                            isCompact ? 'gap-1.5' : 'gap-3 md:gap-4'
-                        }`}>
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat.value}
-                                    onClick={() => onCategoryChange(cat.value)}
-                                    className={`whitespace-nowrap font-semibold transition-all ${
-                                        isCompact
-                                            ? 'px-2 py-0.5 rounded text-[10px]'
-                                            : 'px-6 py-3 rounded-xl text-sm'
-                                    } ${
-                                        selectedCategory === cat.value
-                                            ? 'bg-gradient-to-r from-[#DC143C] to-[#0039A6] text-white shadow-lg shadow-red-500/30 scale-105'
-                                            : 'bg-gray-50 text-gray-700 border-2 border-gray-300 hover:border-[#DC143C] hover:bg-gray-100 hover:scale-105'
-                                    }`}
-                                >
-                                    {cat.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Rating and Price Filters */}
-                    <div className={`flex flex-wrap gap-4 md:gap-6 lg:min-w-[400px] ${isCompact ? 'hidden md:flex' : ''}`}>
-                        <div className="flex-1 min-w-[140px]">
-                            {!isCompact && (
-                                <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
-                                    {t('ratings')}
-                                </label>
-                            )}
-                            <select
-                                value={selectedRating}
-                                onChange={(e) => onRatingChange(e.target.value as FilterRating)}
-                                className={`w-full rounded-xl font-medium bg-gray-50 text-gray-700 border-2 border-gray-300 focus:outline-none focus:border-[#DC143C] focus:ring-2 focus:ring-[#DC143C]/20 cursor-pointer hover:bg-gray-100 ${
-                                    isCompact ? 'px-2 py-1 text-[10px]' : 'px-5 py-3.5 text-sm'
-                                }`}
-                            >
-                                {ratings.map((rating) => (
-                                    <option key={rating.value} value={rating.value}>
-                                        {rating.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-
-                        <div className="flex-1 min-w-[140px]">
-                            {!isCompact && (
-                                <label className="text-sm font-bold text-gray-700 uppercase tracking-wider mb-4 block">
-                                    {t('prices')}
-                                </label>
-                            )}
-                            <select
-                                value={selectedPrice}
-                                onChange={(e) => onPriceChange(e.target.value as FilterPrice)}
-                                className={`w-full rounded-xl font-medium bg-gray-50 text-gray-700 border-2 border-gray-300 focus:outline-none focus:border-[#DC143C] focus:ring-2 focus:ring-[#DC143C]/20 cursor-pointer hover:bg-gray-100 ${
-                                    isCompact ? 'px-2 py-1 text-[10px]' : 'px-5 py-3.5 text-sm'
-                                }`}
-                            >
-                                {prices.map((price) => (
-                                    <option key={price.value} value={price.value}>
-                                        {price.label}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          {/* Price Filter Pill */}
+          <div className="filter-select-wrap">
+            <select
+              value={selectedPrice}
+              onChange={(e) => onPriceChange(e.target.value as FilterPrice)}
+              className={`filter-select ${selectedPrice !== 'all' ? 'filter-select-active' : 'filter-select-inactive'}`}
+            >
+              {prices.map((p) => (
+                <option key={p.value} value={p.value}>{p.label}</option>
+              ))}
+            </select>
+            <span className="filter-select-arrow">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </span>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
-

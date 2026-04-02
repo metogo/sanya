@@ -1,184 +1,180 @@
 'use client';
 
-import {Attraction} from '@/types/attraction';
+import { AttractionListItem } from '@/types/attraction';
 import Image from 'next/image';
-import {useState, memo} from 'react';
-import {useTranslations, useLocale} from 'next-intl';
-import {Link} from '@/i18n/routing';
+import { useState, memo } from 'react';
+import { useTranslations, useLocale } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 interface AttractionCardProps {
-    attraction: Attraction;
+  attraction: AttractionListItem;
+  priority?: boolean;
 }
 
-function AttractionCard({attraction}: AttractionCardProps) {
-    const t = useTranslations('card');
-    const locale = useLocale();
-    const [imageError, setImageError] = useState(false);
+const StarIcon = () => (
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" className="text-amber-400">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+  </svg>
+);
 
-    // Get localized content based on current locale
-    const getName = () => {
-        if (locale === 'en') return attraction.name;
-        if (locale === 'zh') return attraction.nameZh || attraction.nameRu;
-        return attraction.nameRu;
-    };
+const PinIcon = () => (
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+    <circle cx="12" cy="10" r="3"/>
+  </svg>
+);
 
-    const getDescription = () => {
-        if (locale === 'en') return attraction.description;
-        if (locale === 'zh') return attraction.descriptionZh || attraction.descriptionRu;
-        return attraction.descriptionRu;
-    };
+const ChatIcon = () => (
+  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+  </svg>
+);
 
-    const getLocation = () => {
-        if (locale === 'en') return attraction.location;
-        if (locale === 'zh') return attraction.locationZh || attraction.locationRu;
-        return attraction.locationRu;
-    };
+const ArrowRightIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="5" y1="12" x2="19" y2="12"/>
+    <polyline points="12 5 19 12 12 19"/>
+  </svg>
+);
 
-    const getCategory = () => {
-        if (locale === 'en') return attraction.categoryEn || attraction.categoryRu;
-        if (locale === 'zh') return attraction.categoryZh || attraction.categoryRu;
-        return attraction.categoryRu;
-    };
+function AttractionCard({ attraction, priority = false }: AttractionCardProps) {
+  const t = useTranslations('card');
+  const locale = useLocale();
+  const [imageError, setImageError] = useState(false);
 
-    return (
-        <article
-            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group border border-gray-200 hover:border-gray-300 transform hover:-translate-y-1 flex flex-col h-full">
-            {/* Image Container */}
-            <div className="relative h-[200px] sm:h-[220px] lg:h-[240px] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shrink-0">
-                {!imageError ? (
-                    <Image
-                        src={attraction.image}
-                        alt={getName()}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                        quality={85}
-                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                        onError={() => setImageError(true)}
-                        placeholder="blur"
-                        blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-                    />
+  const getName = () => {
+    if (locale === 'en') return attraction.name;
+    if (locale === 'zh') return attraction.nameZh || attraction.nameRu;
+    return attraction.nameRu;
+  };
+
+  const getDescription = () => {
+    if (locale === 'en') return attraction.description;
+    if (locale === 'zh') return attraction.descriptionZh || attraction.descriptionRu;
+    return attraction.descriptionRu;
+  };
+
+  const getLocation = () => {
+    if (locale === 'en') return attraction.location;
+    if (locale === 'zh') return attraction.locationZh || attraction.locationRu;
+    return attraction.locationRu;
+  };
+
+  const getCategory = () => {
+    if (locale === 'en') return attraction.categoryEn || attraction.categoryRu;
+    if (locale === 'zh') return attraction.categoryZh || attraction.categoryRu;
+    return attraction.categoryRu;
+  };
+
+  return (
+    <article className="bg-white rounded-2xl overflow-hidden border border-[var(--mist)] shadow-[0_4px_16px_rgba(0,0,0,0.10)] hover:shadow-[0_10px_36px_rgba(0,0,0,0.14)] hover:-translate-y-1 transition-all duration-300 group flex flex-col">
+      {/* Image */}
+      <div className="relative w-full aspect-[3/2] overflow-hidden bg-[var(--sand)] flex-shrink-0">
+        {!imageError ? (
+          <Image
+            src={attraction.image}
+            alt={getName()}
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={85}
+            className="object-cover transition-transform duration-500 ease-out group-hover:scale-[1.04]"
+            onError={() => setImageError(true)}
+            priority={priority}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
+          />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[var(--ocean)] to-[var(--ocean-mid)] flex items-center justify-center">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M17 3L7 21"/><path d="M3 12c3-3 6-4.5 9-4.5s6 1.5 9 4.5"/>
+              <path d="M3 21h18"/>
+            </svg>
+          </div>
+        )}
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
+
+        {/* Category badge - top left */}
+        <div className="absolute top-2.5 left-2.5">
+          <span className="card-category-badge">{getCategory()}</span>
+        </div>
+
+        {/* Rating badge - top right */}
+        <div className="absolute top-2.5 right-2.5 card-rating-badge">
+          <StarIcon />
+          <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--text-1)' }}>{attraction.rating}</span>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="card-body">
+        {/* Title */}
+        <h3
+          className="card-title group-hover:text-[var(--ocean)] transition-colors text-[var(--text-1)]"
+          style={{ fontFamily: "var(--font-serif)" }}
+        >
+          {getName()}
+        </h3>
+
+        {/* Description */}
+        <p className="card-desc text-[var(--text-3)]">
+          {getDescription()}
+        </p>
+
+        {/* Location */}
+        <div className="card-location text-[var(--text-3)]">
+          <PinIcon />
+          <span className="line-clamp-1">{getLocation()}</span>
+        </div>
+
+        {/* Divider */}
+        <div className="card-divider" />
+
+        {/* Bottom row: reviews + price + CTA */}
+        <div className="card-footer">
+          {/* Reviews */}
+          <div className="card-reviews text-[var(--text-3)]">
+            <ChatIcon />
+            <span>{attraction.reviewCount.toLocaleString(locale)}</span>
+          </div>
+
+          {/* Price + CTA */}
+          <div className="card-price-cta">
+            {attraction.isFree ? (
+              <span className="text-sm font-bold text-[var(--green)]">{t('free')}</span>
+            ) : (
+              <div className="text-right">
+                {attraction.originalPrice ? (
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-[10px] text-[var(--text-3)] line-through">¥{attraction.originalPrice}</span>
+                    <span className="text-[15px] font-extrabold text-[var(--coral)]">¥{attraction.price}</span>
+                  </div>
                 ) : (
-                    <div
-                        className="w-full h-full bg-gradient-to-br from-[#DC143C] to-[#0039A6] flex items-center justify-center">
-                        <span className="text-7xl opacity-90">🏖️</span>
-                    </div>
+                  <div className="flex items-baseline gap-0.5">
+                    <span className="text-[10px] text-[var(--text-3)]">{t('from')}</span>
+                    <span className="text-[15px] font-extrabold text-[var(--coral)]">¥{attraction.price}</span>
+                  </div>
                 )}
+              </div>
+            )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
-
-                {/* Rating Badge */}
-                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-lg flex items-center gap-1 shadow-sm">
-                    <span className="text-amber-500 text-sm">⭐</span>
-                    <span className="text-gray-800 font-bold text-sm">{attraction.rating}</span>
-                </div>
-
-                {/* Category Badge */}
-                <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1.5 rounded-lg shadow-sm">
-                    <span className="text-xs font-semibold text-gray-700">{getCategory()}</span>
-                </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-4 flex flex-col flex-1">
-                {/* Title */}
-                <h3 className="text-base lg:text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-[#DC143C] transition-colors"
-                    style={{fontFamily: "'Playfair Display', serif"}}>
-                    {getName()}
-                </h3>
-
-                {/* Description */}
-                <p className="text-sm text-gray-500 mb-3 line-clamp-2 leading-relaxed flex-1">
-                    {getDescription()}
-                </p>
-
-                {/* Location */}
-                <div className="flex items-center gap-1.5 mb-3 text-xs text-gray-400">
-                    <span className="text-sm">📍</span>
-                    <span className="line-clamp-1 flex-1">{getLocation()}</span>
-                </div>
-
-                {/* Divider */}
-                <div className="border-t border-gray-100 my-3"/>
-
-                {/* Bottom Section: Button & Price */}
-                <div className="flex flex-col gap-3 mt-auto">
-                    {/* Price & Reviews Row */}
-                    <div className="flex items-end justify-between">
-                        {/* Reviews Count */}
-                        <div className="flex items-center gap-1 text-xs text-gray-400">
-                            <span className="text-xs">💬</span>
-                            <span>{attraction.reviewCount.toLocaleString(locale)} {t('reviews')}</span>
-                        </div>
-
-                        {/* Price */}
-                        <div>
-                            {attraction.isFree ? (
-                                <span className="text-lg font-bold text-emerald-600">
-                                    {t('free')}
-                                </span>
-                            ) : (
-                                <div className="text-right">
-                                    {attraction.originalPrice ? (
-                                        <div className="flex flex-col items-end">
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-xs text-gray-400 line-through">
-                                                    ¥{attraction.originalPrice}
-                                                </span>
-                                                <span className="text-[10px] font-bold text-red-500">
-                                                    -{Math.round((1 - attraction.price / attraction.originalPrice) * 100)}%
-                                                </span>
-                                            </div>
-                                            <span className="text-xl font-extrabold text-[#DC143C]">
-                                                ¥{attraction.price}
-                                            </span>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-baseline gap-1">
-                                            <span className="text-xs text-gray-400">{t('from')}</span>
-                                            <span className="text-xl font-extrabold text-[#DC143C]">
-                                                ¥{attraction.price}
-                                            </span>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Button & Share */}
-                    <div className="flex gap-2">
-                        <Link
-                            href={`/attractions/${attraction.id}`}
-                            onClick={() => {
-                                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
-                            }}
-                            className="flex-1 block py-2.5 bg-[#DC143C] text-white font-semibold text-sm rounded-xl hover:bg-[#C41E3A] hover:shadow-lg active:scale-[0.98] transition-all duration-200 text-center"
-                        >
-                            {t('details')} →
-                        </Link>
-                        
-                        {/* Inline Share Button for PC */}
-                        <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                const url = `${window.location.origin}/attractions/${attraction.id}`;
-                                const text = `${getName()} - ${getDescription()}`;
-                                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text + '\n' + url)}`;
-                                window.open(whatsappUrl, '_blank');
-                            }}
-                            className="hidden lg:flex items-center justify-center w-14 bg-green-500 text-white rounded-xl hover:bg-green-600 hover:shadow-lg hover:scale-105 active:scale-95 transition-all duration-200"
-                            title={t('share')}
-                        >
-                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </article>
-    );
+            {/* CTA Button */}
+            <Link
+              href={`/attractions/${attraction.id}`}
+              onClick={() => {
+                sessionStorage.setItem('scrollPosition', window.scrollY.toString());
+              }}
+              className="card-cta-btn bg-[var(--ocean)] hover:bg-[var(--ocean-mid)] text-white active:scale-95"
+            >
+              {t('details')}
+              <ArrowRightIcon />
+            </Link>
+          </div>
+        </div>
+      </div>
+    </article>
+  );
 }
 
 export default memo(AttractionCard);
-

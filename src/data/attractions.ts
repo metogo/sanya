@@ -2,110 +2,6 @@ import { Attraction } from '@/types/attraction';
 
 export const attractions: Attraction[] = [
   {
-    id: '1',
-    name: '亚龙湾',
-    nameRu: 'Залив Ялунвань',
-    nameZh: '亚龙湾',
-    description: '三亚最美的海滩，海水清澈见底，被誉为"天下第一湾"。',
-    descriptionRu: 'Самый красивый пляж в Санье с кристально чистой водой, известен как "Первый залив Поднебесной".',
-    descriptionZh: '三亚最美的海滩，海水清澈见底，被誉为"天下第一湾"。',
-    image: '/images/banners/亚龙湾.jpeg',
-    rating: 5,
-    reviewCount: 4850,
-    location: '亚龙湾区域',
-    locationRu: 'Район залива Ялунвань',
-    locationZh: '亚龙湾区域',
-    category: 'beach',
-    categoryRu: '🏖️ Пляж',
-    categoryEn: '🏖️ Beach',
-    categoryZh: '🏖️ 海滩',
-    price: 0,
-    isFree: true,
-    tags: ['海滩', '大海', '度假', '奢华'],
-    
-    detailedDescriptionZh: `亚龙湾是三亚最负盛名的优质海滩，被誉为"天下第一湾"。这里拥有7公里长的银白色沙滩，沙质细腻柔软，海水清澈透明，能见度达7-9米。海湾呈月牙形，三面青山相拥，南面月牙形的海湾向大海敞开，形成了绝佳的天然海滨浴场。
-
-亚龙湾海底世界丰富多彩，拥有珊瑚礁、各种热带鱼及名贵贝类等海洋生物。海水温度适宜，全年可游泳，即使在冬季，水温也在20°C以上。这里集中了三亚最高端的度假酒店，包括丽思卡尔顿、希尔顿、万豪等国际五星级品牌，是度假休闲的绝佳选择。`,
-    
-    detailedDescriptionRu: `Залив Ялунвань — самый престижный пляж Саньи, известный как "Первый залив Поднебесной". Здесь находится 7-километровая полоса серебристого песка с мелкими и мягкими частицами. Вода кристально чистая, видимость достигает 7-9 метров. Залив имеет форму полумесяца, окружен горами с трех сторон, а с южной стороны открывается к морю.
-
-Подводный мир Ялунваня богат и разнообразен: коралловые рифы, тропические рыбы и ценные моллюски. Температура воды подходит для купания круглый год, даже зимой она не опускается ниже 20°C. Здесь сосредоточены самые роскошные курортные отели Саньи, включая Ritz-Carlton, Hilton, Marriott и другие пятизвездочные бренды.`,
-    
-    detailedDescription: `Yalong Bay is Sanya's most prestigious beach, known as "The First Bay Under Heaven". It features a 7-kilometer stretch of silvery white sand with fine and soft particles. The water is crystal clear with visibility reaching 7-9 meters. The bay is crescent-shaped, embraced by mountains on three sides and opening to the sea on the south.
-
-The underwater world is rich with coral reefs, tropical fish, and precious shellfish. The water temperature is suitable for swimming year-round, staying above 20°C even in winter. This area hosts Sanya's most luxurious resort hotels, including Ritz-Carlton, Hilton, Marriott, and other five-star international brands.`,
-    
-    highlightsZh: [
-      '7公里长的银白色细沙海滩，沙质极其细腻',
-      '海水清澈透明，能见度达7-9米，适合浮潜',
-      '丰富的海底珊瑚礁和热带鱼类资源',
-      '世界级豪华度假酒店群，五星级服务',
-      '全年适宜游泳，即使冬季水温也在20°C以上',
-      '水上运动项目丰富：冲浪、帆船、摩托艇等'
-    ],
-    
-    highlightsRu: [
-      '7-километровый пляж с мелким серебристым песком',
-      'Кристально чистая вода с видимостью 7-9 метров',
-      'Богатые коралловые рифы и тропические рыбы',
-      'Мировые класса роскошные курорты',
-      'Купание круглый год, зимой температура выше 20°C',
-      'Разнообразные водные виды спорта'
-    ],
-    
-    highlights: [
-      '7km of fine silvery white sand beach',
-      'Crystal clear water with 7-9m visibility',
-      'Rich coral reefs and tropical fish',
-      'World-class luxury resort hotels',
-      'Year-round swimming, winter temp above 20°C',
-      'Various water sports activities'
-    ],
-    
-    openingHoursZh: '全天开放，24小时',
-    openingHoursRu: 'Открыто круглосуточно',
-    openingHours: 'Open 24 hours',
-    
-    bestTimeZh: '11月-次年4月（避开台风季节）',
-    bestTimeRu: 'Ноябрь - апрель (избегайте сезона тайфунов)',
-    bestTime: 'November to April (avoid typhoon season)',
-    
-    tipsZh: [
-      '建议早上6-8点或下午4-6点前往，避开烈日',
-      '节假日人多拥挤，建议工作日前往',
-      '带好防晒霜、遮阳伞和泳衣',
-      '可以租用沙滩椅和遮阳伞，约50-100元/天',
-      '水上项目需提前预约，价格在200-500元不等',
-      '海滩有免费淋浴设施，建议冲洗后再离开'
-    ],
-    
-    tipsRu: [
-      'Лучшее время: 6-8 утра или 16-18 вечера',
-      'Избегайте праздников из-за толпы',
-      'Возьмите солнцезащитный крем и купальник',
-      'Аренда шезлонга: 50-100 юаней/день',
-      'Водные активности: 200-500 юаней',
-      'Бесплатный душ на пляже'
-    ],
-    
-    tips: [
-      'Best times: 6-8am or 4-6pm to avoid heat',
-      'Avoid holidays due to crowds',
-      'Bring sunscreen and swimwear',
-      'Beach chair rental: ¥50-100/day',
-      'Water activities: ¥200-500',
-      'Free shower facilities available'
-    ],
-    
-    facilitiesZh: ['免费停车场', '淋浴设施', '更衣室', '卫生间', '餐饮区', '商店', '医疗点', 'WiFi'],
-    facilitiesRu: ['Парковка', 'Душевые', 'Раздевалки', 'Туалеты', 'Рестораны', 'Магазины', 'Медпункт', 'WiFi'],
-    facilities: ['Parking', 'Showers', 'Changing Rooms', 'Restrooms', 'Dining', 'Shops', 'Medical Point', 'WiFi'],
-    
-    transportationZh: '从三亚市区乘坐27路、29路公交车直达；打车约30-40元；建议自驾或包车前往。',
-    transportationRu: 'Автобусы №27, 29 из центра; такси ¥30-40; рекомендуется аренда авто.',
-    transportation: 'Bus 27, 29 from downtown; taxi ¥30-40; car rental recommended.'
-  },
-  {
     id: '2',
     name: '南山文化旅游区',
     nameRu: 'Культурно-туристическая зона Наньшань',
@@ -330,65 +226,6 @@ The park has performance and entertainment zones. Features ancient Yazhou street
     transportation: 'Bus 24, 25 from downtown; taxi ¥20-30; free shuttle service.'
   },
   {
-    id: '5',
-    name: '亚龙湾热带天堂森林公园',
-    nameRu: 'Тропический лесной парк "Райский уголок" в заливе Ялунвань',
-    nameZh: '亚龙湾热带天堂森林公园',
-    description: '一座山地公园，可将亚龙湾全景尽收眼底，以其玻璃栈道和过江龙索桥而闻名。',
-    descriptionRu: 'Горный парк с панорамным видом на залив Ялунвань, известный своим стеклянным мостом и подвесным мостом "Переправа через реку Дракона".',
-    descriptionZh: '一座山地公园，可将亚龙湾全景尽收眼底，以其玻璃栈道和过江龙索桥而闻名。',
-    image: '/images/banners/亚龙湾热带天堂森林公园.jpeg',
-    rating: 4,
-    reviewCount: 3580,
-    location: '亚龙湾区域',
-    locationRu: 'Район залива Ялунвань',
-    locationZh: '亚龙湾区域',
-    category: 'nature',
-    categoryRu: '🌴 Природа',
-    categoryEn: '🌴 Nature',
-    categoryZh: '🌴 自然',
-    price: 168,
-    originalPrice: 198,
-    isFree: false,
-    tags: ['公园', '自然', '桥', '全景'],
-    
-    detailedDescriptionZh: `亚龙湾热带天堂森林公园是电影《非诚勿扰2》的主要取景地，位于亚龙湾国家旅游度假区内。公园总面积1506公顷，是离市区最近的天然森林氧吧。这里保存着中国最完整的热带雨林生态系统，生长着1400多种热带植物和600多种珍稀动植物。
-
-园内最著名的景点是过江龙索桥，跨度168米，是海南跨度最长的铁索桥，站在桥上可以将亚龙湾全景尽收眼底。还有兰花谷、飞龙潭、热带雨林栈道等景观。山顶有观景平台，是拍摄亚龙湾最佳位置。`,
-    
-    detailedDescriptionRu: `Тропический лесной парк "Райский уголок" — место съемок фильма "If You Are the One 2", расположен в национальной туристической зоне залива Ялунвань. Площадь парка 1506 га, это ближайший к городу природный лесной массив. Здесь сохранена самая полная экосистема тропического леса Китая с более чем 1400 видами растений.
-
-Самая известная достопримечательность — подвесной мост "Переправа через реку Дракона" длиной 168 метров. С моста открывается панорамный вид на залив Ялунвань.`,
-    
-    detailedDescription: `Yalong Bay Tropical Paradise Forest Park was the main filming location for "If You Are the One 2". The park covers 1,506 hectares. It preserves China's most complete tropical rainforest ecosystem with over 1,400 plant species.
-
-The most famous attraction is the Dragon Crossing Bridge, spanning 168 meters. From the bridge, you can enjoy a panoramic view of Yalong Bay.`,
-    
-    highlightsZh: ['《非诚勿扰2》拍摄地，网红打卡点', '过江龙索桥，168米跨度，刺激体验', '山顶观景台，亚龙湾全景最佳观赏点', '热带雨林栈道，天然氧吧', '兰花谷，种植有上千种兰花', '鸟巢度假村，独特的树屋酒店'],
-    highlightsRu: ['Место съемки "If You Are the One 2"', 'Подвесной мост 168м', 'Смотровая площадка с панорамным видом', 'Тропинки тропического леса', 'Долина орхидей', 'Уникальный отель на деревьях'],
-    highlights: ['"If You Are the One 2" filming location', '168m suspension bridge', 'Observatory with panoramic views', 'Tropical rainforest trails', 'Orchid Valley', 'Unique treehouse resort'],
-    
-    openingHoursZh: '7:30-17:30（旺季延长至18:00）',
-    openingHoursRu: '7:30-17:30 (высокий сезон до 18:00)',
-    openingHours: '7:30-17:30 (peak season to 18:00)',
-    
-    bestTimeZh: '10月-次年3月，天气凉爽舒适',
-    bestTimeRu: 'Октябрь - март, прохладная погода',
-    bestTime: 'October to March, cool weather',
-    
-    tipsZh: ['建议穿运动鞋，有一定爬坡路段', '包含电瓶车，建议乘坐，步行太累', '过江龙索桥有一定晃动，恐高者慎行', '建议游览时间3-4小时', '带好防晒和防蚊用品', '早上或傍晚光线最佳，适合拍照', '可以在鸟巢酒店喝下午茶，景观一流'],
-    tipsRu: ['Носите спортивную обувь', 'Воспользуйтесь электромобилем', 'Мост качается, осторожно', 'Планируйте 3-4 часа', 'Возьмите защиту от солнца и комаров', 'Лучшее освещение утром и вечером', 'Попробуйте чай в отеле Bird\'s Nest'],
-    tips: ['Wear sports shoes', 'Use shuttle bus', 'Bridge sways, caution', 'Allow 3-4 hours', 'Bring sunscreen, repellent', 'Best light morning/evening', 'Try tea at Bird\'s Nest'],
-    
-    facilitiesZh: ['停车场', '电瓶车', '餐饮区', '商店', '卫生间', '观景台', '休息区'],
-    facilitiesRu: ['Парковка', 'Электромобили', 'Рестораны', 'Магазины', 'Туалеты', 'Смотровые площадки', 'Зоны отдыха'],
-    facilities: ['Parking', 'Shuttle', 'Dining', 'Shops', 'Restrooms', 'Viewpoints', 'Rest Areas'],
-    
-    transportationZh: '从三亚市区乘坐27路、29路公交车至亚龙湾；打车约40-50元；景区门口有停车场。',
-    transportationRu: 'Автобусы №27, 29 до Ялунвань; такси ¥40-50; парковка у входа.',
-    transportation: 'Bus 27, 29 to Yalong Bay; taxi ¥40-50; parking at entrance.'
-  },
-  {
     id: '6',
     name: '天涯海角',
     nameRu: 'Край света (Тянья Хайцзяо)',
@@ -446,64 +283,6 @@ Since ancient times, "Tianya Haijiao" has been a symbol of faithful love, and ma
     transportationZh: '从三亚市区乘坐16路、6路、25路公交车；打车约50-60元；距凤凰机场约30公里。',
     transportationRu: 'Автобусы №16, 6, 25; такси ¥50-60; 30км от аэропорта.',
     transportation: 'Bus 16, 6, 25; taxi ¥50-60; 30km from airport.'
-  },
-  {
-    id: '7',
-    name: '三亚湾',
-    nameRu: 'Залив Саньявань',
-    nameZh: '三亚湾',
-    description: '三亚最长的海岸线，被誉为"椰梦长廊"，是观赏日落的绝佳地点。',
-    descriptionRu: 'Самая длинная береговая линия в Санье, известная как "Кокосовый променад мечты", идеальное место для наблюдения за закатом.',
-    descriptionZh: '三亚最长的海岸线，被誉为"椰梦长廊"，是观赏日落的绝佳地点。',
-    image: '/images/banners/三亚湾.jpeg',
-    rating: 4,
-    reviewCount: 2830,
-    location: '三亚湾',
-    locationRu: 'Залив Саньявань',
-    locationZh: '三亚湾',
-    category: 'beach',
-    categoryRu: '🏖️ Пляж',
-    categoryEn: '🏖️ Beach',
-    categoryZh: '🏖️ 海滩',
-    price: 0,
-    isFree: true,
-    tags: ['海滩', '日落', '漫步', '椰树'],
-    
-    detailedDescriptionZh: `三亚湾是三亚最大的海湾，绵延22公里，是三亚最长的海岸线。这里最著名的景观是"椰梦长廊"——沿着海岸线种植的数万株椰子树，形成了一道独特的热带风光。漫步在椰林海岸，吹着海风，听着涛声，是最惬意不过的体验。
-
-三亚湾最美的时刻是日落时分，每天傍晚都有成千上万的游客和市民聚集在海滩上，欣赏壮观的落日美景。夕阳西下，天空被染成金黄和橙红色，椰树的剪影倒映在沙滩上，构成一幅绝美的画面。`,
-    
-    detailedDescriptionRu: `Залив Саньявань — самый большой залив в Санье, протяженностью 22 км. Самая известная достопримечательность — "Кокосовый променад мечты" — десятки тысяч кокосовых пальм вдоль береговой линии.
-
-Самое красивое время — закат. Каждый вечер тысячи туристов собираются на пляже.`,
-    
-    detailedDescription: `Sanya Bay is the largest bay in Sanya, stretching 22 kilometers. The most famous feature is the "Coconut Dream Corridor" — tens of thousands of coconut palms along the coastline.
-
-The most beautiful moment is sunset. Every evening, thousands gather on the beach.`,
-    
-    highlightsZh: ['22公里椰梦长廊，最美海滨大道', '观赏日落最佳地点', '免费开放的公共海滩', '椰林海岸，热带风情', '适合跑步、骑行', '周边餐饮、酒吧众多'],
-    highlightsRu: ['22км Кокосовый променад', 'Лучшее место для заката', 'Бесплатный пляж', 'Пальмовое побережье', 'Для бега, велосипеда', 'Рестораны и бары'],
-    highlights: ['22km Coconut Corridor', 'Best sunset spot', 'Free public beach', 'Palm-lined coast', 'For running, cycling', 'Many restaurants, bars'],
-    
-    openingHoursZh: '全天开放，24小时',
-    openingHoursRu: 'Круглосуточно',
-    openingHours: 'Open 24 hours',
-    
-    bestTimeZh: '全年适宜，傍晚5-7点看日落最佳',
-    bestTimeRu: 'Круглый год, закат 17:00-19:00',
-    bestTime: 'Year-round, sunset 5-7pm',
-    
-    tipsZh: ['建议傍晚前往，可以欣赏日落', '海滩免费，但水质不如亚龙湾', '适合散步、跑步', '周边有很多海鲜餐厅', '可以租自行车骑行', '夜晚海滩较暗，注意安全', '防晒必备'],
-    tipsRu: ['Лучше вечером', 'Бесплатный пляж', 'Для прогулок', 'Рестораны морепродуктов', 'Аренда велосипедов', 'Вечером темно', 'Солнцезащита'],
-    tips: ['Best in evening', 'Free beach', 'For walks', 'Seafood restaurants', 'Bike rental', 'Dark at night', 'Sunscreen needed'],
-    
-    facilitiesZh: ['公共卫生间', '淋浴设施', '餐饮区', '自行车租赁', '停车区', '便利店'],
-    facilitiesRu: ['Туалеты', 'Душевые', 'Рестораны', 'Аренда велосипедов', 'Парковка', 'Магазины'],
-    facilities: ['Restrooms', 'Showers', 'Dining', 'Bike Rental', 'Parking', 'Stores'],
-    
-    transportationZh: '市内多条公交线路：8路、15路、24路、25路等；打车10-20元。',
-    transportationRu: 'Автобусы №8, 15, 24, 25; такси ¥10-20.',
-    transportation: 'Buses 8, 15, 24, 25; taxi ¥10-20.'
   },
   {
     id: '8',
@@ -1214,5 +993,5 @@ The summit has observation deck and glass walkway. The suspended glass walkway o
     transportationZh: '从三亚市区乘坐1路、2路、4路公交车到凤凰岭公园站；打车约10-15元；距市中心约3公里，步行可达。',
     transportationRu: 'Автобусы №1, 2, 4 до парка Фэнхуанлин; такси ¥10-15; 3км от центра, можно пешком.',
     transportation: 'Bus 1, 2, 4 to Phoenix Ridge Park; taxi ¥10-15; 3km from downtown, walkable.'
-  }
+  },
 ];

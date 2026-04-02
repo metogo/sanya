@@ -1,87 +1,124 @@
 'use client';
 
-import {useParams} from 'next/navigation';
-import {usePathname, useRouter} from '@/i18n/routing';
-import {useEffect, useRef, useState} from 'react';
+import { useParams } from 'next/navigation';
+import { usePathname, useRouter } from '@/i18n/routing';
+import { useEffect, useRef, useState } from 'react';
 
 const languages = [
-    {code: 'ru', name: 'Русский', flag: '🇷🇺'},
-    {code: 'en', name: 'English', flag: '🇬🇧'},
-    {code: 'zh', name: '中文', flag: '🇨🇳'},
+  { code: 'ru', name: 'Рус', flag: 'RU' },
+  { code: 'en', name: 'Eng', flag: 'EN' },
+  { code: 'zh', name: '中文', flag: 'ZH' },
 ];
 
+const GlobeIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </svg>
+);
+
+const ChevronDownIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"/>
+  </svg>
+);
+
+const CheckIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"/>
+  </svg>
+);
+
 export default function LanguageSwitcher() {
-    const router = useRouter();
-    const pathname = usePathname();
-    const params = useParams();
-    const [isOpen, setIsOpen] = useState(false);
-    const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const pathname = usePathname();
+  const params = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-    const currentLocale = params.locale as string;
-    const currentLanguage = languages.find(lang => lang.code === currentLocale) || languages[0];
+  const currentLocale = params.locale as string;
+  const current = languages.find((l) => l.code === currentLocale) || languages[0];
 
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-                setIsOpen(false);
-            }
-        };
-
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, []);
-
-    const handleLanguageChange = (locale: string) => {
-        router.replace(pathname, {locale});
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setIsOpen(false);
-    }
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-    return (
-        <div className="relative top-1" ref={dropdownRef}>
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-200 backdrop-blur-sm border border-white/20"
-                aria-label="Select language"
-            >
-                <span className="text-xl">{currentLanguage.flag}</span>
-                <span className="text-sm font-medium hidden sm:inline">{currentLanguage.name}</span>
-                <svg
-                    className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                </svg>
-            </button>
+  const handleChange = (locale: string) => {
+    router.replace(pathname, { locale });
+    setIsOpen(false);
+  };
 
-            {isOpen && (
-                <div
-                    className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-gray-200 overflow-hidden z-50">
-                    {languages.map((language) => (
-                        <button
-                            key={language.code}
-                            onClick={() => handleLanguageChange(language.code)}
-                            className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-50 transition-colors ${
-                                currentLocale === language.code ? 'bg-blue-50 text-[#DC143C] font-semibold' : 'text-gray-700'
-                            }`}
-                        >
-                            <span className="text-xl">{language.flag}</span>
-                            <span className="text-sm">{language.name}</span>
-                            {currentLocale === language.code && (
-                                <svg className="w-4 h-4 ml-auto" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        fillRule="evenodd"
-                                        d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                                        clipRule="evenodd"
-                                    />
-                                </svg>
-                            )}
-                        </button>
-                    ))}
-                </div>
-            )}
+  return (
+    <div style={{ position: 'relative' }} ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        aria-label="Select language"
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          height: 32, paddingLeft: 12, paddingRight: 12,
+          borderRadius: 999, border: '1px solid var(--mist-dk)',
+          background: 'transparent', color: 'var(--text-2)',
+          fontSize: 12, fontWeight: 500, cursor: 'pointer',
+          transition: 'all 0.15s ease',
+        }}
+        onMouseEnter={e => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--ocean)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'var(--ocean-lt)';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--ocean)';
+        }}
+        onMouseLeave={e => {
+          (e.currentTarget as HTMLButtonElement).style.borderColor = 'var(--mist-dk)';
+          (e.currentTarget as HTMLButtonElement).style.background = 'transparent';
+          (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-2)';
+        }}
+      >
+        <GlobeIcon />
+        <span>{current.flag}</span>
+        <ChevronDownIcon />
+      </button>
+
+      {isOpen && (
+        <div style={{
+          position: 'absolute', right: 0, top: '100%', marginTop: 6,
+          width: 144, background: 'white', borderRadius: 12,
+          boxShadow: 'var(--shadow-lg)', border: '1px solid var(--mist)',
+          overflow: 'hidden', zIndex: 50,
+          animation: 'scaleIn 0.2s ease-out forwards',
+          transformOrigin: 'top right',
+        }}>
+          {languages.map((lang) => {
+            const active = currentLocale === lang.code;
+            return (
+              <button
+                key={lang.code}
+                onClick={() => handleChange(lang.code)}
+                style={{
+                  width: '100%', display: 'flex', alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '10px 16px',
+                  fontSize: 14, cursor: 'pointer', border: 'none',
+                  background: active ? 'var(--ocean-lt)' : 'transparent',
+                  color: active ? 'var(--ocean)' : 'var(--text-2)',
+                  fontWeight: active ? 600 : 400,
+                  transition: 'background 0.15s ease',
+                }}
+                onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'var(--sand)'; }}
+                onMouseLeave={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'transparent'; }}
+              >
+                <span>{lang.name}</span>
+                {active && <CheckIcon />}
+              </button>
+            );
+          })}
         </div>
-    );
+      )}
+    </div>
+  );
 }
-

@@ -3,7 +3,23 @@ import {getMessages, setRequestLocale} from 'next-intl/server';
 import {notFound} from 'next/navigation';
 import {routing} from '@/i18n/routing';
 import {Analytics} from '@vercel/analytics/react';
+import { Playfair_Display, Inter } from 'next/font/google';
 import '../globals.css';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '600', '700', '800'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-inter',
+  display: 'swap',
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({locale}));
@@ -125,7 +141,7 @@ export default async function LocaleLayout({
   const messages = await getMessages({locale});
 
   return (
-    <html lang={locale}>
+    <html lang={locale} className={`${playfair.variable} ${inter.variable}`}>
       <body className="antialiased">
         <NextIntlClientProvider locale={locale} messages={messages}>
           {children}

@@ -1,4 +1,5 @@
-export interface Attraction {
+/** 首页列表所需的精简字段 */
+export interface AttractionListItem {
   id: string;
   name: string;
   nameRu: string;
@@ -17,12 +18,14 @@ export interface Attraction {
   categoryEn?: string;
   categoryZh?: string;
   price: number;
-  originalPrice?: number; // 原价
+  originalPrice?: number;
   isFree: boolean;
   tags: string[];
-  video?: string; // 景点视频路径
-  
-  // 详情页扩展字段
+  video?: string;
+}
+
+/** 详情页完整字段（扩展自列表字段） */
+export interface Attraction extends AttractionListItem {
   detailedDescription?: string;
   detailedDescriptionRu?: string;
   detailedDescriptionZh?: string;
