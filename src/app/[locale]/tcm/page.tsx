@@ -315,6 +315,35 @@ export default function TcmPage() {
         </div>
       </div>
 
+      {/* ── Clinic Video ── */}
+      <div style={{ maxWidth: 680, margin: '0 auto', padding: '16px 16px 0' }}>
+        <div style={{
+          borderRadius: 20,
+          overflow: 'hidden',
+          background: '#000',
+          boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
+          position: 'relative',
+        }}>
+          <video
+            src="/video/中医理疗.mp4"
+            controls
+            playsInline
+            preload="metadata"
+            poster=""
+            style={{ width: '100%', display: 'block', maxHeight: 320, objectFit: 'cover' }}
+          />
+          <div style={{
+            position: 'absolute', top: 10, left: 12,
+            background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)',
+            borderRadius: 8, padding: '3px 10px',
+            fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.9)',
+            pointerEvents: 'none',
+          }}>
+            🎬 {locale === 'ru' ? 'Видео о клинике' : locale === 'zh' ? '诊所环境' : 'Clinic Tour'}
+          </div>
+        </div>
+      </div>
+
       {/* ── Category Tab Bar ── */}
       <div style={{
         position: 'sticky', top: 0, zIndex: 40,
