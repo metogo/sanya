@@ -161,6 +161,23 @@ export default function AttractionDetailPage() {
     <div className="min-h-screen bg-[var(--sand)]">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionJsonLd) }} />
 
+      {/* ── Fixed Top Nav ── */}
+      <div className="sticky top-0 z-40 bg-white border-b border-[var(--mist)] shadow-[var(--shadow-xs)]">
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '0 16px', height: 56, maxWidth: 720, margin: '0 auto' }}>
+          <button
+            onClick={() => router.push(`/${locale}`)}
+            style={{ width: 36, height: 36, borderRadius: 10, background: 'var(--sand)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-2)', flexShrink: 0 }}
+          >
+            <ArrowLeftIcon />
+          </button>
+          <span
+            style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 700, color: 'var(--text-1)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+          >
+            {getName()}
+          </span>
+        </div>
+      </div>
+
       {/* ── Hero Image ── */}
       <div className="relative h-[42vh] min-h-[260px] max-h-[460px] w-full bg-[var(--ocean)]">
         {!imageError ? (
