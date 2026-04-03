@@ -122,7 +122,7 @@ export default function Header({
           {/* Desktop Contact Links */}
           <div className="hidden lg:flex items-center gap-1.5">
             <a
-              href="https://t.me/saborovivan"
+              href="https://t.me/+8613903643352"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 header-contact-link bg-[#0088cc] hover:bg-[#0077b5]"

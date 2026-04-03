@@ -100,7 +100,7 @@ export default function ChauffeurPage() {
   const menuT = useTranslations('menu');
   const params = useParams();
 
-  const handleContact = () => { window.open('https://t.me/saborovivan', '_blank'); };
+  const handleContact = () => { window.open('https://t.me/+8613903643352', '_blank'); };
 
   const cars = [
     {

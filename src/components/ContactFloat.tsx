@@ -34,7 +34,7 @@ export default function ContactFloat() {
 
   const handleCall = () => { window.location.href = 'tel:+8613903643352'; };
   const handleWhatsApp = () => { window.open('https://wa.me/8613903643352', '_blank'); };
-  const handleTelegram = () => { window.open('https://t.me/saborovivan', '_blank'); };
+  const handleTelegram = () => { window.open('https://t.me/+8613903643352', '_blank'); };
 
   return (
     <>

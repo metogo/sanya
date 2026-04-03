@@ -139,7 +139,7 @@ export default function Home() {
       addressCountry: 'CN',
     },
     areaServed: { '@type': 'City', name: 'Sanya' },
-    sameAs: ['https://t.me/saborovivan'],
+    sameAs: ['https://t.me/+8613903643352'],
   };
 
   const itemListJsonLd = {

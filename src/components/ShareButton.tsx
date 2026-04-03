@@ -2,7 +2,7 @@
 
 export default function ShareButton() {
   const handleTelegram = () => {
-    window.open('https://t.me/saborovivan', '_blank');
+    window.open('https://t.me/+8613903643352', '_blank');
   };
 
   return (
