@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/routing';
+
+const ContactFloat = dynamic(() => import('@/components/ContactFloat'), { ssr: false });
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const HomeIcon = () => (
@@ -485,6 +488,8 @@ export default function TcmPage() {
           </div>
         </div>
       </div>
+
+      <ContactFloat />
 
       {/* ── Bottom Nav ── */}
       <div className="lg:hidden">
