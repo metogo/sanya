@@ -316,7 +316,7 @@ export default function TcmPage() {
       </div>
 
       {/* ── Clinic Video ── */}
-      <div style={{ maxWidth: 680, margin: '0 auto', padding: '16px 16px 0' }}>
+      <div style={{ maxWidth: 680, margin: '0 auto',         padding: '16px 16px 16px' }}>
         <div style={{
           borderRadius: 20,
           overflow: 'hidden',
