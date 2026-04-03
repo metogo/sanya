@@ -30,6 +30,13 @@ const CarIcon = () => (
   </svg>
 );
 
+const LeafIcon = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M11 20A7 7 0 0 1 4 13c0-5 4-9 9-9 1 4-1 8-4 11"/>
+    <path d="M11.7 20c.5-3.5 2.3-6.5 5.3-8.5"/>
+  </svg>
+);
+
 const SearchOffIcon = () => (
   <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" className="text-[var(--mist-dk)]">
     <circle cx="11" cy="11" r="8"/>
@@ -258,9 +265,10 @@ export default function Home() {
   );
 }
 
-function BottomNav({ locale, currentPage, t }: { locale: string; currentPage: 'home' | 'chauffeur'; t: any }) {
+function BottomNav({ locale, currentPage, t }: { locale: string; currentPage: 'home' | 'chauffeur' | 'tcm'; t: any }) {
   const homeActive = currentPage === 'home';
   const carActive  = currentPage === 'chauffeur';
+  const tcmActive  = currentPage === 'tcm';
 
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[9999] bg-white border-t border-[var(--mist)] shadow-[0_-2px_12px_rgba(0,0,0,0.06)] pb-safe">
@@ -281,6 +289,15 @@ function BottomNav({ locale, currentPage, t }: { locale: string; currentPage: 'h
                 <CarIcon />
               </div>
               <span className="text-[10px] font-semibold">{t('menu.chauffeur')}</span>
+            </div>
+          </Link>
+
+          <Link href="/tcm" className="flex-1">
+            <div className={`flex flex-col items-center justify-center gap-0.5 py-1.5 transition-colors ${tcmActive ? 'text-[var(--ocean)]' : 'text-[var(--text-3)]'}`}>
+              <div className={`p-1 rounded-xl transition-colors ${tcmActive ? 'bg-[var(--ocean-lt)]' : ''}`}>
+                <LeafIcon />
+              </div>
+              <span className="text-[10px] font-semibold">{t('menu.tcm')}</span>
             </div>
           </Link>
         </div>

@@ -143,7 +143,35 @@
   },
   "menu": {
     "home": "首页",
-    "chauffeur": "专车"
+    "chauffeur": "专车",
+    "tcm": "中医理疗"
+  },
+  "tcm": {
+    "title": "中医理疗",
+    "subtitle": "亚龙湾二分店 · 专业中医馆",
+    "address": "三亚亚龙湾",
+    "bookCta": "立即预约",
+    "contactCta": "咨询详情",
+    "categories": {
+      "diagnosis": "中医诊断",
+      "acupuncture": "针灸疗法",
+      "moxibustion": "艾灸热疗",
+      "massage": "推拿按摩",
+      "special": "专项调理",
+      "foot": "足部养生",
+      "beauty": "美容护理",
+      "spa": "SPA套餐"
+    },
+    "priceUnit": "元",
+    "duration": "时长",
+    "perZone": "每部位",
+    "perPoint": "每穴位",
+    "individual": "辩证开方",
+    "noteTitle": "预约须知",
+    "note1": "请提前电话或微信预约，避免等待",
+    "note2": "首诊需进行脉诊，约15-30分钟",
+    "note3": "价格均为单次费用，套餐另议",
+    "note4": "老中医坐诊，辩证施治"
   }
 }
 

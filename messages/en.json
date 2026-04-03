@@ -143,7 +143,35 @@
   },
   "menu": {
     "home": "Home",
-    "chauffeur": "Chauffeur"
+    "chauffeur": "Chauffeur",
+    "tcm": "TCM"
+  },
+  "tcm": {
+    "title": "Traditional Chinese Medicine",
+    "subtitle": "Yalong Bay Branch · Professional TCM Clinic",
+    "address": "Yalong Bay, Sanya",
+    "bookCta": "Book Now",
+    "contactCta": "Enquire",
+    "categories": {
+      "diagnosis": "Diagnosis",
+      "acupuncture": "Acupuncture",
+      "moxibustion": "Moxibustion & Heat Therapy",
+      "massage": "Therapeutic Massage",
+      "special": "Specialised Treatments",
+      "foot": "Foot Therapy",
+      "beauty": "Beauty Treatments",
+      "spa": "SPA Packages"
+    },
+    "priceUnit": "yuan",
+    "duration": "Duration",
+    "perZone": "per zone",
+    "perPoint": "per point",
+    "individual": "Custom prescription",
+    "noteTitle": "Booking Information",
+    "note1": "Please book in advance by phone or WeChat",
+    "note2": "First visit includes pulse diagnosis (15–30 min)",
+    "note3": "Prices are per single session; packages negotiable",
+    "note4": "Experienced TCM practitioners on site"
   }
 }
 
