@@ -314,7 +314,7 @@ export default function TcmPage() {
 
       {/* ── Category Tab Bar ── */}
       <div style={{
-        position: 'sticky', top: 56, zIndex: 40,
+        position: 'sticky', top: 0, zIndex: 40,
         background: 'rgba(255,255,255,0.97)', backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--mist)',
         boxShadow: 'var(--shadow-xs)',
