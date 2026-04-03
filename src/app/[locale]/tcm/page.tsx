@@ -166,16 +166,80 @@ const categories: Category[] = [
   },
 ];
 
+// ─── ServiceCard ──────────────────────────────────────────────────────────────
+function ServiceCard({ svc, locale, formatPrice }: { svc: Service; locale: string; formatPrice: (p: string) => string }) {
+  return (
+    <div style={{
+      background: 'white',
+      borderRadius: 16,
+      border: '1px solid var(--mist)',
+      boxShadow: 'var(--shadow-xs)',
+      padding: '14px 16px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start',
+      gap: 12,
+    }}>
+      {/* Left: names */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-1)', lineHeight: 1.4 }}>
+          {locale === 'zh' ? svc.nameZh : svc.nameRu}
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 3 }}>
+          {locale === 'zh' ? svc.nameRu : svc.nameZh}
+        </div>
+        {(svc.duration || svc.note) && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6 }}>
+            {svc.duration && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--text-3)', background: 'var(--sand)', borderRadius: 6, padding: '2px 6px' }}>
+                <ClockIcon />{svc.duration}
+              </span>
+            )}
+            {svc.note && (
+              <span style={{ fontSize: 11, color: 'var(--ocean)', background: 'var(--ocean-lt)', borderRadius: 6, padding: '2px 6px' }}>
+                {svc.note}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Right: price */}
+      <div style={{ textAlign: 'right', flexShrink: 0 }}>
+        {svc.price === 'инд.' ? (
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green)' }}>
+            {formatPrice(svc.price)}
+          </span>
+        ) : (
+          <>
+            <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--coral)', lineHeight: 1 }}>
+              ¥{svc.price}
+            </div>
+            <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>
+              {locale === 'ru' ? 'юаней' : locale === 'zh' ? '元' : 'yuan'}
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Page ─────────────────────────────────────────────────────────────────────
 export default function TcmPage() {
   const t = useTranslations('tcm');
   const tMenu = useTranslations('menu');
   const locale = useLocale();
-  const [activeCategory, setActiveCategory] = useState<string>('diagnosis');
+  const [activeCategory, setActiveCategory] = useState<string>('all');
 
-  const active = categories.find((c) => c.id === activeCategory) ?? categories[0];
+  const active = categories.find((c) => c.id === activeCategory) ?? null;
 
-  const getCategoryLabel = (id: string) => t(`categories.${id}` as any);
+  const allCount = categories.reduce((sum, c) => sum + c.services.length, 0);
+
+  const getCategoryLabel = (id: string) => {
+    if (id === 'all') return locale === 'zh' ? '全部' : locale === 'ru' ? 'Все' : 'All';
+    return t(`categories.${id}` as any);
+  };
 
   const formatPrice = (price: string) => {
     if (price === 'инд.') return locale === 'zh' ? '辩证开方' : locale === 'en' ? 'Custom' : 'Инд.';
@@ -257,7 +321,8 @@ export default function TcmPage() {
       }}>
         <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
           <div style={{ display: 'flex', gap: 6, padding: '10px 16px', width: 'max-content' }}>
-            {categories.map((cat) => {
+            {/* 全部 tab */}
+            {[{ id: 'all', icon: '☰' }, ...categories].map((cat) => {
               const isActive = cat.id === activeCategory;
               return (
                 <button
@@ -286,87 +351,70 @@ export default function TcmPage() {
       {/* ── Service List ── */}
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '20px 16px 0' }}>
 
-        {/* Category heading */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-          <span style={{ fontSize: 24 }}>{active.icon}</span>
-          <h2 style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 20, fontWeight: 700,
-            color: 'var(--text-1)',
-          }}>
-            {getCategoryLabel(active.id)}
-          </h2>
-          <span style={{
-            marginLeft: 'auto', fontSize: 12, fontWeight: 500,
-            color: 'var(--text-3)', background: 'var(--sand)',
-            border: '1px solid var(--mist)', borderRadius: 999,
-            padding: '2px 10px',
-          }}>
-            {active.services.length} {locale === 'ru' ? 'процедур' : locale === 'zh' ? '项' : 'items'}
-          </span>
-        </div>
-
-        {/* Service cards */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
-          {active.services.map((svc, i) => (
-            <div
-              key={i}
-              style={{
-                background: 'white',
-                borderRadius: 16,
-                border: '1px solid var(--mist)',
-                boxShadow: 'var(--shadow-xs)',
-                padding: '14px 16px',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'flex-start',
-                gap: 12,
-              }}
-            >
-              {/* Left: names */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-1)', lineHeight: 1.4 }}>
-                  {locale === 'zh' ? svc.nameZh : svc.nameRu}
-                </div>
-                <div style={{ fontSize: 12, color: 'var(--text-3)', marginTop: 3 }}>
-                  {locale === 'zh' ? svc.nameRu : svc.nameZh}
-                </div>
-                {(svc.duration || svc.note) && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 6 }}>
-                    {svc.duration && (
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 3, fontSize: 11, color: 'var(--text-3)', background: 'var(--sand)', borderRadius: 6, padding: '2px 6px' }}>
-                        <ClockIcon />{svc.duration}
-                      </span>
-                    )}
-                    {svc.note && (
-                      <span style={{ fontSize: 11, color: 'var(--ocean)', background: 'var(--ocean-lt)', borderRadius: 6, padding: '2px 6px' }}>
-                        {svc.note}
-                      </span>
-                    )}
-                  </div>
-                )}
-              </div>
-
-              {/* Right: price */}
-              <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                {svc.price === 'инд.' ? (
-                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--green)' }}>
-                    {formatPrice(svc.price)}
-                  </span>
-                ) : (
-                  <>
-                    <div style={{ fontSize: 18, fontWeight: 800, color: 'var(--coral)', lineHeight: 1 }}>
-                      ¥{svc.price}
-                    </div>
-                    <div style={{ fontSize: 11, color: 'var(--text-3)', marginTop: 2 }}>
-                      {locale === 'ru' ? 'юаней' : locale === 'zh' ? '元' : 'yuan'}
-                    </div>
-                  </>
-                )}
-              </div>
+        {activeCategory === 'all' ? (
+          /* ── 全部模式：按分类分组，h3 标题 ── */
+          <>
+            {/* 总数 badge */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 20 }}>
+              <span style={{ fontSize: 22 }}>☰</span>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-1)' }}>
+                {getCategoryLabel('all')}
+              </h2>
+              <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 500, color: 'var(--text-3)', background: 'var(--sand)', border: '1px solid var(--mist)', borderRadius: 999, padding: '2px 10px' }}>
+                {allCount} {locale === 'ru' ? 'процедур' : locale === 'zh' ? '项' : 'items'}
+              </span>
             </div>
-          ))}
-        </div>
+
+            {categories.map((cat) => (
+              <div key={cat.id} style={{ marginBottom: 32 }}>
+                {/* h3 分类标题 */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+                  <span style={{ fontSize: 18 }}>{cat.icon}</span>
+                  <h3 style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontSize: 16, fontWeight: 700,
+                    color: 'var(--ocean)',
+                    margin: 0,
+                  }}>
+                    {getCategoryLabel(cat.id)}
+                  </h3>
+                  <div style={{ flex: 1, height: 1, background: 'var(--mist)', marginLeft: 4 }} />
+                  <span style={{ fontSize: 11, color: 'var(--text-3)' }}>
+                    {cat.services.length}{locale === 'zh' ? '项' : ''}
+                  </span>
+                </div>
+
+                {/* 该分类的服务卡片 */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                  {cat.services.map((svc, i) => (
+                    <ServiceCard key={i} svc={svc} locale={locale} formatPrice={formatPrice} />
+                  ))}
+                </div>
+              </div>
+            ))}
+          </>
+        ) : (
+          /* ── 单分类模式 ── */
+          <>
+            {/* Category heading */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+              <span style={{ fontSize: 24 }}>{active?.icon}</span>
+              <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-1)' }}>
+                {active ? getCategoryLabel(active.id) : ''}
+              </h2>
+              <span style={{ marginLeft: 'auto', fontSize: 12, fontWeight: 500, color: 'var(--text-3)', background: 'var(--sand)', border: '1px solid var(--mist)', borderRadius: 999, padding: '2px 10px' }}>
+                {active?.services.length} {locale === 'ru' ? 'процедур' : locale === 'zh' ? '项' : 'items'}
+              </span>
+            </div>
+
+            {/* Service cards */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 24 }}>
+              {active?.services.map((svc, i) => (
+                <ServiceCard key={i} svc={svc} locale={locale} formatPrice={formatPrice} />
+              ))}
+            </div>
+          </>
+        )}
 
         {/* ── Notes Box ── */}
         <div style={{
